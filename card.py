@@ -5,6 +5,9 @@ class Card:
         self.cmc = cmc;
     def __str__(self) :
         return self.name
+    def getName(self):
+        return self.name
+    
 
 class Creature(Card):
     def __init__(self, name, cost, power, toughness) :
@@ -24,5 +27,7 @@ class Creature(Card):
     
     def getName(self):
         return self.name
+    def getCost(self):
+        return self.cost
 
     
