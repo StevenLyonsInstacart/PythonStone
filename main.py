@@ -45,7 +45,6 @@ def highlight(pos, screen, selcted, square):
 	    draw.rect(screen, GREEN, (200*i,400, 200, 250), 10)
     if selected != None:
 	square0 = abs(1-square[0])
-	print square
 	draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
 	    
 def showCard(gridSpot, card):
@@ -81,19 +80,19 @@ def showCard2(spot):
     screen.blit(pt, ptRect)
     
 def showHandCard(card, pos):
-    name = nameFont.render(card.getName() , True, (255, 255, 255), BOARD)
-    nameRect = name.get_rect()
-    nameRect.centerx = pos[1]*140 + 40
-    nameRect.centery = pos[0]*650 + 20
-    
-    cost = nameFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
-    costRect = cost.get_rect()
-    costRect.centerx = pos[1]*140 + 40
-    costRect.centery = pos[0]*650 + 40
-    
-    screen.blit(name, nameRect)
-    screen.blit(cost, costRect)
-    pass
+    if card.getName() != "Null":
+	name = nameFont.render(card.getName() , True, (255, 255, 255), BOARD)
+	nameRect = name.get_rect()
+	nameRect.centerx = pos[1]*140 + 40
+	nameRect.centery = pos[0]*650 + 20
+	
+	cost = nameFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
+	costRect = cost.get_rect()
+	costRect.centerx = pos[1]*140 + 40
+	costRect.centery = pos[0]*650 + 40
+	
+	screen.blit(name, nameRect)
+	screen.blit(cost, costRect)
     
 def showBoard(spots):
     for i in range(0,2):
@@ -125,7 +124,7 @@ def fight (spot1, spot2):
 	spot2.setOccupied(False)
 	
 		
-def select(mouseObj, spots, current, state):
+def select(mouseObj, spots, current, state, hands):
     if current  == None:
 	mx, my = mouseObj.pos
 	for i in range (0,2):
@@ -140,13 +139,13 @@ def select(mouseObj, spots, current, state):
 		    square = [i,j]
 		    print j, i
 		    
-		    return spots[0][j], [0, j*140, 140, 150], "H"
+		    return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 150], "H"
 		
 	    for j in range(0,10):
 		if 140*j < mx < 140*(j+1) and 650 < my < 800 :
 		    square = [i,j]
 		    print j, i
-		    return spots[1][j], [650, j*140, 140, 150], "H"
+		    return [hands[1].getCards()[j], [1,j]], [650, j*140, 140, 150], "H"
 		
     else:
 	mx, my = mouseObj.pos
@@ -156,12 +155,18 @@ def select(mouseObj, spots, current, state):
 		    i = abs(1-i)
 		    if state == "B":
 			
-			print spots[i][j].getCard().getName()
+			
 			fight(spots[i][j], current)
 			current = None
+			state = None
 		    else:
-			print current
-			spots[i][j].setCard(current.getCard())
+			print i, j, "WASSSUP"
+			print type(current[0].getPower()), state
+			spots[i][j].setCard(current[0])
+			spots[i][j].setOccupied(True)
+			hands[current[1][0]].setNull(current[1][1])
+			current = None
+			state = None
     return current, [i,j, 200, 250], state
     
 init()    
@@ -196,8 +201,8 @@ while (breaker and x < 5):
     newEvent = event.wait()
     if newEvent.type == MOUSEBUTTONDOWN:
 	print type(selected)
-	selected, square, state = select(newEvent, spots, selected, state)
-	print square, state
+	selected, square, state = select(newEvent, spots, selected, state, hands)
+	
     else:
 	breaker = check_to_quit()
     display.flip()

@@ -8,3 +8,6 @@ class Hand:
             
     def getCards(self):
         return self.cards
+    
+    def setNull(self, pos):
+        self.cards[pos] = Creature("Null", 0, 0, 0)

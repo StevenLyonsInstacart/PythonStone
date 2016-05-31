@@ -27,6 +27,7 @@ class Creature(Card):
     
     def getName(self):
         return self.name
+    
     def getCost(self):
         return self.cost
 
