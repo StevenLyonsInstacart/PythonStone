@@ -15,9 +15,19 @@ class Creature(Card):
         self.power = power;
         self.cost = cost;
         self.toughness = toughness;
+        self.state = None
     
+    def hasBattleCry(self):
+        return False
+    
+    def ping(self, val=1):
+        self.toughness = self.toughness - val
+        
     def getPower(self) :
         return self.power
+    
+    def setState(self, state):
+        self.state = state
     
     def setPower(self, newT):
         self.power = newT

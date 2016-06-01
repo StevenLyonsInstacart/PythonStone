@@ -2,6 +2,7 @@ from Spot import *
 from Hand import *
 from Deck import *
 from copy import *
+from State import *
 import random
 class Board:
     def __init__(self):
@@ -28,6 +29,8 @@ class Board:
             random.shuffle(cards2)
             newCard1 = cards1[0].copy()
             newCard2 = cards2[0].copy()
+            newCard1.setState(State(self.hands[0], self.Deck1, self))
+            newCard2.setState(State(self.hands[1], self.Deck2, self))
             self.Deck1.insertCard(newCard1)
             self.Deck2.insertCard(newCard2)
         return self.Deck1, self.Deck2

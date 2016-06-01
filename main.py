@@ -167,6 +167,8 @@ def select(mouseObj, spots, current, state, hands):
 			spots[i][j].setCard(current[0])
 			spots[i][j].setOccupied(True)
 			hands[current[1][0]].setNull(current[1][1])
+			if current[0].hasBattleCry():
+			    current[0].battleCry()
 			current = None
 			state = None
     return current, [i,j, 200, 250], state
@@ -184,7 +186,7 @@ grid = Grid()
 board = grid.getBoard()
 spots = board.getSpots()
 hands = board.getHands()
-deck1, deck2 = board.simpleDecks([CH_YETI()],[RIV_CROC()])
+deck1, deck2 = board.simpleDecks([CH_YETI()],[RIV_CROC(), FL_JUG()])
 hands[0].initialize(deck1)
 hands[1].initialize(deck2)
 
