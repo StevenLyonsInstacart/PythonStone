@@ -1,6 +1,7 @@
 from Spot import *
 from Hand import *
 from Deck import *
+from copy import *
 import random
 class Board:
     def __init__(self):
@@ -25,7 +26,9 @@ class Board:
         for i in range (30):
             random.shuffle(cards1)
             random.shuffle(cards2)
-            self.Deck1.insertCard(cards1[0])
-            self.Deck2.insertCard(cards2[0])
+            newCard1 = cards1[0].copy()
+            newCard2 = cards2[0].copy()
+            self.Deck1.insertCard(newCard1)
+            self.Deck2.insertCard(newCard2)
         return self.Deck1, self.Deck2
         

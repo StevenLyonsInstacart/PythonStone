@@ -193,7 +193,7 @@ twice = 0
 state = None
 x = 0
 
-while (breaker and x < 5):
+while (breaker):
     x = x + 0.02
     breaker = check_to_quit()
     drawGrid(screen)
@@ -209,6 +209,7 @@ while (breaker and x < 5):
 	selected, square, state = select(newEvent, spots, selected, state, hands)
 	
     else:
-	breaker = check_to_quit()
+	if newEvent.type == QUIT: 
+	    breaker = False
     display.flip()
 quit()

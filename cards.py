@@ -11,6 +11,9 @@ class CH_YETI(Creature):
     def getClass(self):
         return self.classType
     
+    def copy(self):
+        return CH_YETI()
+    
 class RIV_CROC(Creature):
     def __init__(self):
         self.name = "River Crocolisk"
@@ -22,3 +25,5 @@ class RIV_CROC(Creature):
         
     def getClass(self):
         return self.classType
+    def copy(self):
+        return RIV_CROC()
