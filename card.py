@@ -19,6 +19,9 @@ class Creature(Card):
     def getPower(self) :
         return self.power
     
+    def setPower(self, newT):
+        self.power = newT
+    
     def getToughness(self) :
         return self.toughness
     

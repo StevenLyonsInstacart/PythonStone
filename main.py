@@ -2,6 +2,8 @@
 from pygame import *
 from card import *
 from Grid import *
+from cards import *
+from random import *
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
@@ -50,7 +52,7 @@ def highlight(pos, screen, selcted, square):
 def showCard(gridSpot, card):
     name = nameFont.render(card.getName() , True, (255, 255, 255), BOARD)
     nameRect = name.get_rect()
-    nameRect.centerx = gridSpot[0] * 200 + 40
+    nameRect.centerx = gridSpot[0] * 200 + 100
     nameRect.centery = 400 + 40
     pts = str(card.getPower()) + "                  " + str(card.getToughness())
     pt = nameFont.render(pts, True, (255, 255, 255), BOARD)
@@ -69,7 +71,7 @@ def playCard(gridSpot, card, board):
 def showCard2(spot):
     name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
     nameRect = name.get_rect()
-    nameRect.centerx = spot.getPos()[0] - 20
+    nameRect.centerx = spot.getPos()[0] +15
     nameRect.centery = spot.getPos()[1]
     pts = str(spot.getCard().getPower()) + "                  " + str(spot.getCard().getToughness())
     pt = nameFont.render(pts, True, (255, 255, 255), BOARD)
@@ -81,14 +83,14 @@ def showCard2(spot):
     
 def showHandCard(card, pos):
     if card.getName() != "Null":
-	name = nameFont.render(card.getName() , True, (255, 255, 255), BOARD)
+	name = handFont.render(card.getName() , True, (255, 255, 255), BOARD)
 	nameRect = name.get_rect()
-	nameRect.centerx = pos[1]*140 + 40
+	nameRect.centerx = pos[1]*140 + 70
 	nameRect.centery = pos[0]*650 + 20
 	
-	cost = nameFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
+	cost = handFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
 	costRect = cost.get_rect()
-	costRect.centerx = pos[1]*140 + 40
+	costRect.centerx = pos[1]*140 + 70
 	costRect.centery = pos[0]*650 + 40
 	
 	screen.blit(name, nameRect)
@@ -173,6 +175,7 @@ init()
 size =(1400,800)
 screen= display.set_mode (size)
 nameFont = font.Font(None, 30)
+handFont = font.Font(None, 15)
 selected = None
 square = None
 display.flip()
@@ -181,14 +184,15 @@ grid = Grid()
 board = grid.getBoard()
 spots = board.getSpots()
 hands = board.getHands()
-yeti = Creature("YETI", 4, 4, 5)
-beti = Creature("YETI", 4, 3, 5)
-shrek = Creature("YETI", 4, 2, 5)
+deck1, deck2 = board.simpleDecks([CH_YETI()],[RIV_CROC()])
+hands[0].initialize(deck1)
+hands[1].initialize(deck2)
+
+twice = 0
+
 state = None
 x = 0
-playCard((1,5), yeti, board)
-playCard((1,0), shrek, board)
-playCard((0,0), beti, board)
+
 while (breaker and x < 5):
     x = x + 0.02
     breaker = check_to_quit()
@@ -200,7 +204,8 @@ while (breaker and x < 5):
     showHand(hands)
     newEvent = event.wait()
     if newEvent.type == MOUSEBUTTONDOWN:
-	print type(selected)
+	
+	hands[0].draw(deck2)
 	selected, square, state = select(newEvent, spots, selected, state, hands)
 	
     else:
