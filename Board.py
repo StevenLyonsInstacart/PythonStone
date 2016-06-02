@@ -34,5 +34,8 @@ class Board:
             self.Deck1.insertCard(newCard1)
             self.Deck2.insertCard(newCard2)
         return self.Deck1, self.Deck2
+    
+    def getDecks(self):
+        return self.Deck1, self.Deck2
 
         

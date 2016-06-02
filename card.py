@@ -18,6 +18,7 @@ class Creature(Card):
         self.state = None
         self.owner = owner
         self.tired = True
+        self.buffs = []
         
     def getTired(self):
         return self.tired
@@ -57,5 +58,11 @@ class Creature(Card):
     
     def getCost(self):
         return self.cost
+    
+    def getBuffs(self):
+        return self.buffs
+    
+    def addBuff(self, buff):
+        self.buffs.append(buff)
 
     

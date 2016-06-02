@@ -31,7 +31,7 @@ def checkExit(mouse):
     return  True
 
 def addCard(pos, cards):
-    for i in range (4):
+    for i in range (5):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
 	    return cards[i].copy()
     return None
@@ -51,6 +51,11 @@ def drawGrid(screen):
     draw.line(screen, RED, (0, 650) , (1400, 650))
     
     draw.rect(screen, (100, 100, 255*turn), (1400,400,150,100))
+    name = nameFont.render("End Turn" , True, (155,155,255 - 255*turn), (100, 100, 255*turn))
+    nameRect = name.get_rect()
+    nameRect.centerx = 1475 
+    nameRect.centery = 450
+    screen.blit(name, nameRect)
     
 def showSelect(screen, cards, num, background):
     draw.rect(screen, background, (0,0,1400,800))
@@ -65,7 +70,7 @@ def showSelect(screen, cards, num, background):
     screen.blit(name, nameRect)
     
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
-    for i in range (4):
+    for i in range (5):
 	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
 	nameRect = name.get_rect()
 	nameRect.centerx = 500 
@@ -182,14 +187,15 @@ def select(mouseObj, spots, current, state, hands):
 		if 140*j < mx < 140*(j+1) and 0 < my < 150 :
 		    square = [i,j]
 		    print j, i
-		    
-		    return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 150], "H"
+		    if turn == 1:
+			return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 150], "H"
 		
 	    for j in range(0,10):
 		if 140*j < mx < 140*(j+1) and 650 < my < 800 :
 		    square = [i,j]
 		    print j, i
-		    return [hands[1].getCards()[j], [1,j]], [650, j*140, 140, 150], "H"
+		    if turn == 0:
+			return [hands[1].getCards()[j], [1,j]], [650, j*140, 140, 150], "H"
 		
     else:
 	mx, my = mouseObj.pos
@@ -235,7 +241,7 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID()]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board)]
 deck1Cards = []
 deck2Cards = []
 while (selecting):
@@ -273,15 +279,15 @@ while (breaker):
 
     showBoard(spots)
     showHand(hands)
-    newEvent = event.wait()
-    if newEvent.type == MOUSEBUTTONDOWN:
-	
-	hands[0].draw(deck2)
-	selected, square, state = select(newEvent, spots, selected, state, hands)
-	turn = endTurn(newEvent.pos, turn, spots)
-	print turn, "YOOO"
-    else:
-	if newEvent.type == QUIT: 
-	    breaker = False
+    time.wait(10)
+    for newEvent in event.get():
+	if newEvent.type == MOUSEBUTTONDOWN:
+	    
+	    selected, square, state = select(newEvent, spots, selected, state, hands)
+	    turn = endTurn(newEvent.pos, turn, board)
+	    print turn, "YOOO"
+	else:
+	    if newEvent.type == QUIT: 
+		breaker = False
     display.flip()
 quit()

@@ -1,5 +1,6 @@
 from card import *
 from random import *
+from pygame import *
 
 class NULL_CREATURE(Creature):
     def __init__(self):
@@ -77,7 +78,7 @@ class FL_JUG(Creature):
         return FL_JUG()
         
     def hasBattleCry(self):
-        return 
+        return True
     
 class MUR_RAID(Creature):
     
@@ -96,3 +97,43 @@ class MUR_RAID(Creature):
     
     def getClass(self):
         return self.classType
+    
+class ABU_SRG(Creature):
+    
+    def __init__(self, board):
+        self.name = "Abusive Sergeant"
+        self.power = 2
+        self.toughness = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+        
+    def copy(self):
+        return ABU_SRG(self.board)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+	
+        waiting = True
+	spots = self.board.getSpots()
+        while waiting:
+	    for evnt in event.get():
+		if evnt.type == MOUSEBUTTONDOWN:
+		    mx, my = evnt.pos
+		    i = 1
+		    for j in range(0,7):
+			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+			    square = [i,j]
+			    reversei = abs(1-i)
+			    if spots[reversei][j].getOccupied():
+				    spots[reversei][j].getCard().setPower(spots[reversei][j].getCard().getPower() + 2)
+				    waiting = False
+    
