@@ -5,7 +5,7 @@ class Hand:
         self.name = 3
         self.cards = []
         for i in range (10):
-            self.cards.append(Creature("Null", 0, 0, 0))
+            self.cards.append(NULL_CREATURE())
             
     def draw(self, deck):
         i = 0
@@ -20,7 +20,7 @@ class Hand:
         return self.cards
     
     def setNull(self, pos):
-        self.cards[pos] = Creature("Null", 0, 0, 0)
+        self.cards[pos] = NULL_CREATURE()
         
     def initialize(self, deck):
         for i in range (7):

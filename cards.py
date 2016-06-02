@@ -1,5 +1,16 @@
 from card import *
 from random import *
+
+class NULL_CREATURE(Creature):
+    def __init__(self):
+        self.name = "Null"
+        self.power = 0
+        self.toughness = 0
+        self.cost = 0
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+    
 class CH_YETI(Creature):
     def __init__(self):
         self.name = "Chillwind Yeti"
@@ -9,6 +20,8 @@ class CH_YETI(Creature):
         self.classType = "neutral"
         self.creatureType = None
         self.battleCry = None
+        self.owner = 0
+        self.tired = True
         
     def getClass(self):
         return self.classType
@@ -25,6 +38,8 @@ class RIV_CROC(Creature):
         self.classType = "neutral"
         self.creatureType = "Beast"
         self.battleCry = None
+        self.owner = 0
+        self.tired = True
         
     def getClass(self):
         return self.classType
@@ -43,9 +58,7 @@ class FL_JUG(Creature):
             check = int(random()*7)
         if sanity < 100:
             card = enemySide[check].getCard()
-            card.ping()
-            
-        
+            card.ping()           
         
     def __init__(self):
         self.name = "Flame Juggler"
@@ -54,6 +67,8 @@ class FL_JUG(Creature):
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
+        self.owner = 0
+        self.tired = True
         
     def getClass(self):
         return self.classType
@@ -62,4 +77,22 @@ class FL_JUG(Creature):
         return FL_JUG()
         
     def hasBattleCry(self):
-        return True
+        return 
+    
+class MUR_RAID(Creature):
+    
+    def __init__(self):
+        self.name = "Murloc Raider"
+        self.power = 2
+        self.toughness = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = "Murloc"
+        self.owner = 0
+        self.tired = True
+        
+    def copy(self):
+        return MUR_RAID()
+    
+    def getClass(self):
+        return self.classType

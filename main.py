@@ -5,12 +5,14 @@ from card import *
 from Grid import *
 from cards import *
 from random import *
+from Turn import *
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
 LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
+turn = 0
 
 def check_to_quit():
     for evnt in event.get(): # checks all events that happen
@@ -20,6 +22,8 @@ def check_to_quit():
             return False
     return True
 
+
+
 def checkExit(mouse):
     mx, my = mouse.pos
     if 1000 < mx < 1200 and 600 < my < 670:
@@ -27,8 +31,8 @@ def checkExit(mouse):
     return  True
 
 def addCard(pos, cards):
-    for i in range (3):
-	if 400 < pos[0] < 650 and 100+50*i < pos[1] < 100+(50*(i+1)):
+    for i in range (4):
+	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
 	    return cards[i].copy()
     return None
 
@@ -46,21 +50,23 @@ def drawGrid(screen):
     draw.line(screen, RED, (0, 150) , (1400, 150))
     draw.line(screen, RED, (0, 650) , (1400, 650))
     
-def showSelect(screen, cards, num):
-    draw.rect(screen, (255,255,255), (0,0,1400,800))
+    draw.rect(screen, (100, 100, 255*turn), (1400,400,150,100))
+    
+def showSelect(screen, cards, num, background):
+    draw.rect(screen, background, (0,0,1400,800))
     
     #Finish  Deck Building
     draw.rect(screen, RED, (1000,600, 200, 70), 5)
     
-    name = nameFont.render("Submit Deck" , True, (50,50,50), (255,255,255))
+    name = nameFont.render("Submit Deck" , True, (50,50,50), background)
     nameRect = name.get_rect()
     nameRect.centerx = 1100 
     nameRect.centery = 635
     screen.blit(name, nameRect)
     
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
-    for i in range (3):
-	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), (255,255,255))
+    for i in range (4):
+	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
 	nameRect = name.get_rect()
 	nameRect.centerx = 500 
 	nameRect.centery = 100 + 50*i
@@ -170,7 +176,8 @@ def select(mouseObj, spots, current, state, hands):
 		    square = [i,j]
 		    reversei = abs(1-i)
 		    if spots[reversei][j].getOccupied():
-			return spots[reversei][j], [i*250 + 150, j*200, 200, 250], "B"
+			if spots[reversei][j].getCard().getTired() == False:
+			    return spots[reversei][j], [i*250 + 150, j*200, 200, 250], "B"
 	    for j in range(0,10):
 		if 140*j < mx < 140*(j+1) and 0 < my < 150 :
 		    square = [i,j]
@@ -209,7 +216,7 @@ def select(mouseObj, spots, current, state, hands):
     return current, [i,j, 200, 250], state
     
 init()    
-size =(1400,800)
+size =(1600,800)
 screen= display.set_mode (size)
 nameFont = font.Font(None, 30)
 handFont = font.Font(None, 15)
@@ -228,25 +235,37 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC()]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID()]
 deck1Cards = []
+deck2Cards = []
 while (selecting):
-    showSelect(screen, cardList, 1)
+    showSelect(screen, cardList, 1, (255,255,255))
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
 	    newCard = addCard(evnt.pos, cardList)
-	    print newCard
 	    if newCard:
 		deck1Cards.append(newCard)
+	elif evnt.type == QUIT:
+	    quit()
+    display.flip()
+selecting = True 
+
+while (selecting):
+    showSelect(screen, cardList, 1, (200, 200, 200))
+    for evnt in event.get():
+	if evnt.type == MOUSEBUTTONDOWN:
+	    selecting = checkExit(evnt)
+	    newCard = addCard(evnt.pos, cardList)
+	    if newCard:
+		deck2Cards.append(newCard)
     display.flip()
 
-deck1, deck2 = board.simpleDecks(deck1Cards,[RIV_CROC(), FL_JUG()])
+deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards)
 hands[0].initialize(deck1)
 hands[1].initialize(deck2)    
     
 while (breaker):
-    x = x + 0.02
     breaker = check_to_quit()
     drawGrid(screen)
     highlight(mouse.get_pos(), screen, selected, square)
@@ -259,7 +278,8 @@ while (breaker):
 	
 	hands[0].draw(deck2)
 	selected, square, state = select(newEvent, spots, selected, state, hands)
-	
+	turn = endTurn(newEvent.pos, turn, spots)
+	print turn, "YOOO"
     else:
 	if newEvent.type == QUIT: 
 	    breaker = False

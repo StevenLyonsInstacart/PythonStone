@@ -10,13 +10,27 @@ class Card:
     
 
 class Creature(Card):
-    def __init__(self, name, cost, power, toughness) :
+    def __init__(self, name, cost, power, toughness, owner) :
         self.name = name;
         self.power = power;
         self.cost = cost;
         self.toughness = toughness;
         self.state = None
+        self.owner = owner
+        self.tired = True
+        
+    def getTired(self):
+        return self.tired
     
+    def setTired(self, tire):
+        self.tired = tire
+        
+    def setOwner(self, owner):
+        self.owner = owner
+    
+    def getOwner(self):
+        return self.owner
+        
     def hasBattleCry(self):
         return False
     
