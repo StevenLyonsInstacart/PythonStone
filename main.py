@@ -1,4 +1,5 @@
 #Main  HS game
+#To Lindsay
 from pygame import *
 from card import *
 from Grid import *
@@ -8,7 +9,8 @@ RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
-
+LINDSAY = (255, 7, 162)
+#BOARD = LINDSAY
 
 def check_to_quit():
     for evnt in event.get(): # checks all events that happen
@@ -17,6 +19,18 @@ def check_to_quit():
         if evnt.type == QUIT:
             return False
     return True
+
+def checkExit(mouse):
+    mx, my = mouse.pos
+    if 1000 < mx < 1200 and 600 < my < 670:
+	return False
+    return  True
+
+def addCard(pos, cards):
+    for i in range (3):
+	if 400 < pos[0] < 650 and 100+50*i < pos[1] < 100+(50*(i+1)):
+	    return cards[i].copy()
+    return None
 
 def drawGrid(screen):
     draw.rect(screen, BOARD, (0,0,1400,800))
@@ -30,7 +44,28 @@ def drawGrid(screen):
 	
     #Horizontals
     draw.line(screen, RED, (0, 150) , (1400, 150))
-    draw.line(screen, RED, (0, 650) , (1400, 650))    
+    draw.line(screen, RED, (0, 650) , (1400, 650))
+    
+def showSelect(screen, cards, num):
+    draw.rect(screen, (255,255,255), (0,0,1400,800))
+    
+    #Finish  Deck Building
+    draw.rect(screen, RED, (1000,600, 200, 70), 5)
+    
+    name = nameFont.render("Submit Deck" , True, (50,50,50), (255,255,255))
+    nameRect = name.get_rect()
+    nameRect.centerx = 1100 
+    nameRect.centery = 635
+    screen.blit(name, nameRect)
+    
+    draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
+    for i in range (3):
+	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), (255,255,255))
+	nameRect = name.get_rect()
+	nameRect.centerx = 500 
+	nameRect.centery = 100 + 50*i
+	screen.blit(name, nameRect)
+    
     
 def highlight(pos, screen, selcted, square):
     for i in range (0,10):
@@ -186,15 +221,30 @@ grid = Grid()
 board = grid.getBoard()
 spots = board.getSpots()
 hands = board.getHands()
-deck1, deck2 = board.simpleDecks([CH_YETI()],[RIV_CROC(), FL_JUG()])
-hands[0].initialize(deck1)
-hands[1].initialize(deck2)
+
 
 twice = 0
 
 state = None
 x = 0
+selecting = True
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC()]
+deck1Cards = []
+while (selecting):
+    showSelect(screen, cardList, 1)
+    for evnt in event.get():
+	if evnt.type == MOUSEBUTTONDOWN:
+	    selecting = checkExit(evnt)
+	    newCard = addCard(evnt.pos, cardList)
+	    print newCard
+	    if newCard:
+		deck1Cards.append(newCard)
+    display.flip()
 
+deck1, deck2 = board.simpleDecks(deck1Cards,[RIV_CROC(), FL_JUG()])
+hands[0].initialize(deck1)
+hands[1].initialize(deck2)    
+    
 while (breaker):
     x = x + 0.02
     breaker = check_to_quit()
