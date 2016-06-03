@@ -19,6 +19,14 @@ class Creature(Card):
         self.owner = owner
         self.tired = True
         self.buffs = []
+        self.screen = screen
+        
+        
+    def getSscreen(self):
+        return self.screen
+    
+    def setScreen(self, screen):
+        self.screen = screen
         
     def getTired(self):
         return self.tired

@@ -2,6 +2,14 @@ from card import *
 from random import *
 from pygame import *
 
+RED = (255, 0, 0)
+GREEN = (0, 200, 0)
+BLUE = (0, 0, 255)
+BOARD = (205,182,139)
+
+
+#handFont = font.Font(None, 15)
+
 class NULL_CREATURE(Creature):
     def __init__(self):
         self.name = "Null"
@@ -100,7 +108,7 @@ class MUR_RAID(Creature):
     
 class ABU_SRG(Creature):
     
-    def __init__(self, board):
+    def __init__(self, board, screen):
         self.name = "Abusive Sergeant"
         self.power = 2
         self.toughness = 1
@@ -110,9 +118,10 @@ class ABU_SRG(Creature):
         self.owner = 0
         self.tired = True
         self.board = board
+	self.screen = screen
         
     def copy(self):
-        return ABU_SRG(self.board)
+        return ABU_SRG(self.board, self.screen)
     
     def getClass(self):
         return self.classType
@@ -125,7 +134,9 @@ class ABU_SRG(Creature):
         waiting = True
 	spots = self.board.getSpots()
         while waiting:
+	    
 	    for evnt in event.get():
+		
 		if evnt.type == MOUSEBUTTONDOWN:
 		    mx, my = evnt.pos
 		    i = 1
@@ -136,4 +147,87 @@ class ABU_SRG(Creature):
 			    if spots[reversei][j].getOccupied():
 				    spots[reversei][j].getCard().setPower(spots[reversei][j].getCard().getPower() + 2)
 				    waiting = False
+		drawGrid(self.screen)
+		showBoard(self.board.getSpots(), self.screen)
+		showHand(self.board.getHands(), self.screen)
+		highlight((255, 255, 0), evnt.pos, self.screen)
+		display.flip()
+
+def highlight(colour, pos, screen):
+    for i in range (0,10):
+	if pos[1] < 150 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    xcor = pos[0] % 140
+	    draw.rect(screen, colour, (140*i,0, 140, 150), 10)
+	if pos[1] > 650 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    xcor = pos[0] % 140
+	    draw.rect(screen, colour, (140*i,650, 140, 150), 10)
+    for i in range (0,7):
+	if pos[1] > 150 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, colour, (200*i,150, 200, 250), 10)
+	if pos[1] < 650 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, colour, (200*i,400, 200, 250), 10)
+	    
+def showBoard(spots, screen):
+    for i in range(0,2):
+	for j in range(0,6):
+	    if (spots[i][j].getOccupied()):
+		showCard2(spots[i][j], screen)
+		
+def showHand(hands, screen):
+    for i in range (2):
+	for j in range (10):
+	    showHandCard(hands[i].getCards()[j], [i,j], screen)
+	    
+def showCard2(spot, screen):
+    nameFont = font.Font(None, 30)
+    name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
+    nameRect = name.get_rect()
+    nameRect.centerx = spot.getPos()[0] +15
+    nameRect.centery = spot.getPos()[1]
+    pts = str(spot.getCard().getPower()) + "                  " + str(spot.getCard().getToughness())
+    pt = nameFont.render(pts, True, (255, 255, 255), BOARD)
+    ptRect = pt.get_rect()
+    ptRect.centerx = spot.getPos()[0] + 30
+    ptRect.centery = spot.getPos()[1] + 200
+    screen.blit(name, nameRect)
+    screen.blit(pt, ptRect)
+    
+def showHandCard(card, pos, screen):
+    handFont = font.Font(None, 15)
+    if card.getName() != "Null":
+	name = handFont.render(card.getName() , True, (255, 255, 255), BOARD)
+	nameRect = name.get_rect()
+	nameRect.centerx = pos[1]*140 + 70
+	nameRect.centery = pos[0]*650 + 20
+	
+	cost = handFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
+	costRect = cost.get_rect()
+	costRect.centerx = pos[1]*140 + 70
+	costRect.centery = pos[0]*650 + 40
+	
+	screen.blit(name, nameRect)
+	screen.blit(cost, costRect)
+	
+def drawGrid(screen):
+    nameFont = font.Font(None, 30)
+    draw.rect(screen, BOARD, (0,0,1400,800))
+    #Verticals
+    for i in range (1,7):
+	draw.line(screen, RED, (200*i, 150) , (200*i, 650))
+        
+    for i in range (1,10):
+	draw.line(screen, RED, (140*i, 0) , (140*i, 150))
+	draw.line(screen, RED, (140*i, 650) , (140*i, 800))
+	
+    #Horizontals
+    draw.line(screen, RED, (0, 150) , (1400, 150))
+    draw.line(screen, RED, (0, 650) , (1400, 650))
+    
+    draw.rect(screen, (100, 100, 255), (1400,400,150,100))
+    name = nameFont.render("End Turn" , True, (155,155,255 ), (100, 100, 0))
+    nameRect = name.get_rect()
+    nameRect.centerx = 1475 
+    nameRect.centery = 450
+    screen.blit(name, nameRect)
+	
     

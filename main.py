@@ -215,6 +215,8 @@ def select(mouseObj, spots, current, state, hands):
 			spots[i][j].setCard(current[0])
 			spots[i][j].setOccupied(True)
 			hands[current[1][0]].setNull(current[1][1])
+			showBoard(spots)
+			display.flip()
 			if current[0].hasBattleCry():
 			    current[0].battleCry()
 			current = None
@@ -241,7 +243,7 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board)]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen)]
 deck1Cards = []
 deck2Cards = []
 while (selecting):
