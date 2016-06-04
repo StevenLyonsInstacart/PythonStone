@@ -22,7 +22,7 @@ class Creature(Card):
         self.screen = screen
         
         
-    def getSscreen(self):
+    def getScreen(self):
         return self.screen
     
     def setScreen(self, screen):

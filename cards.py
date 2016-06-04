@@ -1,6 +1,8 @@
 from card import *
 from random import *
 from pygame import *
+from Buffs import *
+from Buff import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -19,6 +21,7 @@ class NULL_CREATURE(Creature):
         self.classType = "neutral"
         self.creatureType = None
         self.battleCry = None
+	self.buffs = []
     
 class CH_YETI(Creature):
     def __init__(self):
@@ -31,7 +34,8 @@ class CH_YETI(Creature):
         self.battleCry = None
         self.owner = 0
         self.tired = True
-        
+        self.buffs = []
+	
     def getClass(self):
         return self.classType
     
@@ -49,6 +53,7 @@ class RIV_CROC(Creature):
         self.battleCry = None
         self.owner = 0
         self.tired = True
+	self.buffs = []
         
     def getClass(self):
         return self.classType
@@ -78,7 +83,8 @@ class FL_JUG(Creature):
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        
+        self.buffs = []
+	
     def getClass(self):
         return self.classType
     
@@ -99,6 +105,7 @@ class MUR_RAID(Creature):
         self.creatureType = "Murloc"
         self.owner = 0
         self.tired = True
+	self.buffs = []
         
     def copy(self):
         return MUR_RAID()
@@ -119,6 +126,7 @@ class ABU_SRG(Creature):
         self.tired = True
         self.board = board
 	self.screen = screen
+	self.buffs = []
         
     def copy(self):
         return ABU_SRG(self.board, self.screen)
@@ -145,8 +153,10 @@ class ABU_SRG(Creature):
 			    square = [i,j]
 			    reversei = abs(1-i)
 			    if spots[reversei][j].getOccupied():
-				    spots[reversei][j].getCard().setPower(spots[reversei][j].getCard().getPower() + 2)
-				    waiting = False
+				newBuff = ABU_BUFF(spots[reversei][j].getCard())
+				spots[reversei][j].getCard().addBuff(newBuff)
+				newBuff.applyBuff()
+				waiting = False
 		drawGrid(self.screen)
 		showBoard(self.board.getSpots(), self.screen)
 		showHand(self.board.getHands(), self.screen)
