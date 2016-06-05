@@ -33,7 +33,7 @@ def checkExit(mouse):
     return  True
 
 def addCard(pos, cards):
-    for i in range (5):
+    for i in range (7):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
 	    return cards[i].copy()
     return None
@@ -154,7 +154,7 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen)]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen)]
 deck1Cards = []
 deck2Cards = []
 while (selecting):

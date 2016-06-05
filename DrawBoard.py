@@ -87,7 +87,7 @@ def showSelect(screen, cards, num, background):
     screen.blit(name, nameRect)
     
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
-    for i in range (5):
+    for i in range (7):
 	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
 	nameRect = name.get_rect()
 	nameRect.centerx = 500 

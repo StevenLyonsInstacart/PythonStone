@@ -72,5 +72,10 @@ class Creature(Card):
     
     def addBuff(self, buff):
         self.buffs.append(buff)
+        
+    def clearBuffs(self):
+        for buff in self.buffs:
+            buff.removeBuff()
+        self.buffs = []
 
     

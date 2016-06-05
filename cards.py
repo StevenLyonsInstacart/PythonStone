@@ -139,30 +139,86 @@ class ABU_SRG(Creature):
         return True
     
     def battleCry(self):
+	selectedBattleCry(ABU_BUFF(None), self.board, self.screen)
 	
-        waiting = True
-	spots = self.board.getSpots()
-        while waiting:
+class LNC_CAR(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Lance Carrier"
+        self.power = 1
+        self.toughness = 2
+        self.cost = 2
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+	self.screen = screen
+	self.buffs = []
+        
+    def copy(self):
+        return ABU_SRG(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+	selectedBattleCry(LNC_BUFF(None), self.board, self.screen)
+	
+class IRN_OWL(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Iron Beak Owl"
+        self.power = 2
+        self.toughness = 1
+        self.cost = 3
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+	self.screen = screen
+	self.buffs = []
+        
+    def copy(self):
+        return IRN_OWL(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+	selectedBattleCry(OWL_BUFF(None), self.board, self.screen)
+        
+def selectedBattleCry(buff, board, screen):	
+    waiting = True
+    spots = board.getSpots()
+    while waiting:
+	
+	for evnt in event.get():
 	    
-	    for evnt in event.get():
-		
-		if evnt.type == MOUSEBUTTONDOWN:
-		    mx, my = evnt.pos
-		    i = 1
-		    for j in range(0,7):
-			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
-			    square = [i,j]
-			    reversei = abs(1-i)
-			    if spots[reversei][j].getOccupied():
-				newBuff = ABU_BUFF(spots[reversei][j].getCard())
-				spots[reversei][j].getCard().addBuff(newBuff)
-				newBuff.applyBuff()
-				waiting = False
-		drawGrid(self.screen)
-		showBoard(self.board.getSpots(), self.screen)
-		showHand(self.board.getHands(), self.screen)
-		highlight((255, 255, 0), evnt.pos, self.screen)
-		display.flip()
+	    if evnt.type == MOUSEBUTTONDOWN:
+		mx, my = evnt.pos
+		i = 1
+		for j in range(0,7):
+		    if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+			square = [i,j]
+			reversei = abs(1-i)
+			if spots[reversei][j].getOccupied():
+			    buff.setCreature(spots[reversei][j].getCard())
+			    spots[reversei][j].getCard().addBuff(buff)
+			    buff.applyBuff()
+			    waiting = False
+	    drawGrid(screen)
+	    showBoard(board.getSpots(), screen)
+	    showHand(board.getHands(), screen)
+	    highlight((255, 255, 0), evnt.pos, screen)
+	    display.flip()
 
 def highlight(colour, pos, screen):
     for i in range (0,10):
