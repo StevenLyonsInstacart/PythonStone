@@ -51,7 +51,7 @@ def showHandCard(card, pos, screen):
 	screen.blit(name, nameRect)
 	screen.blit(cost, costRect)
 	
-def drawGrid(screen):
+def drawGrid(screen, board):
     nameFont = font.Font(None, 30)
     draw.rect(screen, BOARD, (0,0,1400,800))
     #Verticals
@@ -72,6 +72,18 @@ def drawGrid(screen):
     nameRect.centerx = 1475 
     nameRect.centery = 450
     screen.blit(name, nameRect)
+    
+    player1Mana = nameFont.render(str(board.getCurMana1()) , True, (155,155,255 ), (0, 0, 0))
+    manaRect = player1Mana.get_rect()
+    manaRect.centerx = 1475 
+    manaRect.centery = 150
+    screen.blit(player1Mana, manaRect)
+    
+    player2Mana = nameFont.render(str(board.getCurMana2()) , True, (155,155,255 ), (0, 0, 0))
+    mana2Rect = player2Mana.get_rect()
+    mana2Rect.centerx = 1475 
+    mana2Rect.centery = 650
+    screen.blit(player2Mana, mana2Rect)
     
 def showSelect(screen, cards, num, background):
     nameFont = font.Font(None, 30)

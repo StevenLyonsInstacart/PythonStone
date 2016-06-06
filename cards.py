@@ -214,7 +214,7 @@ def selectedBattleCry(buff, board, screen):
 			    spots[reversei][j].getCard().addBuff(buff)
 			    buff.applyBuff()
 			    waiting = False
-	    drawGrid(screen)
+	    drawGrid(screen, board)
 	    showBoard(board.getSpots(), screen)
 	    showHand(board.getHands(), screen)
 	    highlight((255, 255, 0), evnt.pos, screen)

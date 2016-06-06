@@ -5,6 +5,14 @@ def endTurn(pos, turn, board):
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
 	print "endTurn"
+	if turn == 1:
+	    board.changeTotMana1(1)
+	    board.player2Turn()
+	    
+	else:
+	    board.changeTotMana2(1)
+	    board.player1Turn()
+	    
 	hands[turn].draw(decks[turn])
 	for j in range (7):
 	    if spots[turn][j].getOccupied():

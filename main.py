@@ -120,18 +120,26 @@ def select(mouseObj, spots, current, state, hands):
 			fight(spots[i][j], current)
 			current = None
 			state = None
+			
+		    #Play Card
 		    else:
-			print i, j, "WASSSUP"
-			print type(current[0].getPower()), state
-			spots[i][j].setCard(current[0])
-			spots[i][j].setOccupied(True)
-			hands[current[1][0]].setNull(current[1][1])
-			showBoard(spots, screen)
-			display.flip()
-			if current[0].hasBattleCry():
-			    current[0].battleCry()
-			current = None
-			state = None
+			mana = [board.getCurMana1(), board.getCurMana2()]
+			if mana[abs(turn - 1)] >= current[0].getCost():
+			    if turn == 1:
+				board.changeCurMana1(-current[0].getCost())
+			    else:
+				board.changeCurMana2(-current[0].getCost())
+			    spots[i][j].setCard(current[0])
+			    spots[i][j].setOccupied(True)
+			    hands[current[1][0]].setNull(current[1][1])
+			    showBoard(spots, screen)
+			    display.flip()
+			    if current[0].hasBattleCry():
+				current[0].battleCry()
+			    current = None
+			    state = None
+			else:
+			    return None, None, None
     return current, [i,j, 200, 250], state
     
 init()    
@@ -186,7 +194,7 @@ hands[1].initialize(deck2)
     
 while (breaker):
     breaker = check_to_quit()
-    drawGrid(screen)
+    drawGrid(screen, board)
     highlight(mouse.get_pos(), screen, selected, square)
 
 
