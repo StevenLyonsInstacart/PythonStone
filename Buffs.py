@@ -50,3 +50,20 @@ class OWL_BUFF(Buff):
     def setCreature(self, creature):
         self.host = creature
         
+class GRM_BUFF(Buff):
+    
+    def __init__(self, creature, board):
+        self.oneTurn = False
+        self.constant = True
+        self.growing = False
+        self.host = creature
+        self.board = board
+        
+    def applyBuff(self):
+        self.host.setPower(self.host.getPower() + 1)
+    def removeBuff(self):
+        self.host.setPower(self.host.getPower() - 1)
+        
+    def setCreature(self, creature):
+        self.host = creature
+        

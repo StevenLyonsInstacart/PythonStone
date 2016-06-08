@@ -12,7 +12,7 @@ LINDSAY = (255, 7, 162)
 
 def showBoard(spots, screen):
     for i in range(0,2):
-	for j in range(0,6):
+	for j in range(7):
 	    if (spots[i][j].getOccupied()):
 		showCard2(spots[i][j], screen)
 		
@@ -99,7 +99,7 @@ def showSelect(screen, cards, num, background):
     screen.blit(name, nameRect)
     
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
-    for i in range (7):
+    for i in range (9):
 	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
 	nameRect = name.get_rect()
 	nameRect.centerx = 500 

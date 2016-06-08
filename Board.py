@@ -14,9 +14,10 @@ class Board:
         self.Deck1 = Deck("Player1", "Warlock")
         self.Deck2 = Deck("Player2", "Druid")
         self.curMana1 = 0
-        self.curMana2 = 0
+        self.curMana2 = 1
         self.totMana1 = 0
-        self.totMana2 = 0
+        self.totMana2 = 1
+        self.effects = []
             
     def getSpots(self):
         return self.spots
@@ -72,5 +73,20 @@ class Board:
         
     def player2Turn (self):
         self.curMana2 = self.totMana2
+        
+    def addEffect(self, eff):
+        self.effects.append(eff)
+        
+    def getEffects(self):
+        return self.effects()
+    
+    def playedCreature(self, card):
+        for eff in self.effects:
+            eff.playCreature(card)
+            
+    def cardDeath(self, card):
+        for eff in self.effects:
+            eff.killCreature(card)
+        
 
         

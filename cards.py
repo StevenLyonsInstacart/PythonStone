@@ -4,6 +4,9 @@ from pygame import *
 from Buffs import *
 from Buff import *
 from DrawBoard import *
+from Damage import *
+from Effect import *
+from Effects import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -114,6 +117,35 @@ class MUR_RAID(Creature):
     def getClass(self):
         return self.classType
     
+class GRM_MUR(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Grimscale Oracle"
+        self.power = 1
+        self.toughness = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = "Murloc"
+        self.owner = 0
+        self.tired = True
+	self.board = board
+	self.screen = screen
+	self.buffs = []
+	self.effects = [GRM_EFF(board, self)]
+        
+    def copy(self):
+        return GRM_MUR(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasEffect(self):
+	return True
+    
+    def doEffect(self):
+	self.board.addEffect(self.effects[0])
+	self.effects[0].onPlay()
+    
 class ABU_SRG(Creature):
     
     def __init__(self, board, screen):
@@ -128,6 +160,7 @@ class ABU_SRG(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
+	self.effects = []
         
     def copy(self):
         return ABU_SRG(self.board, self.screen)
@@ -194,6 +227,57 @@ class IRN_OWL(Creature):
     
     def battleCry(self):
 	selectedBattleCry(OWL_BUFF(None), self.board, self.screen)
+	
+class ELF_ARC(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Elvish Archer"
+        self.power = 1
+        self.toughness = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+	self.screen = screen
+	self.buffs = []
+        
+    def copy(self):
+        return ELF_ARC(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+	target = selectCard(self.board, self.screen)
+	dealDamage(target, 1, self.board)
+	
+def selectCard(board, screen):	
+    waiting = True
+    spots = board.getSpots()
+    while waiting:
+	
+	for evnt in event.get():
+	    
+	    if evnt.type == MOUSEBUTTONDOWN:
+		mx, my = evnt.pos
+		for i in range (2):
+		    for j in range(0,7):
+			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+			    square = [i,j]
+			    reversei = abs(1-i)
+			    if spots[reversei][j].getOccupied():
+				return spots[reversei][j]
+	    drawGrid(screen, board)
+	    showBoard(board.getSpots(), screen)
+	    showHand(board.getHands(), screen)
+	    highlight((255, 255, 0), evnt.pos, screen)
+	    display.flip()
+
         
 def selectedBattleCry(buff, board, screen):	
     waiting = True
@@ -219,6 +303,8 @@ def selectedBattleCry(buff, board, screen):
 	    showHand(board.getHands(), screen)
 	    highlight((255, 255, 0), evnt.pos, screen)
 	    display.flip()
+	    
+
 
 def highlight(colour, pos, screen):
     for i in range (0,10):

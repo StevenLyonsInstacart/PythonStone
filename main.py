@@ -33,7 +33,7 @@ def checkExit(mouse):
     return  True
 
 def addCard(pos, cards):
-    for i in range (7):
+    for i in range (9):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
 	    return cards[i].copy()
     return None
@@ -66,8 +66,10 @@ def playCard(gridSpot, card, board):
 		
 def fight (spot1, spot2):
     print "fight!"
+    
     attacker = spot1.getCard()
     defender = spot2.getCard()
+    defender.setTired(True)
     nh1 = attacker.getToughness() - defender.getPower()
     nh2 = defender.getToughness() - attacker.getPower()
     attacker.setToughness(nh1)
@@ -116,11 +118,12 @@ def select(mouseObj, spots, current, state, hands):
 		    i = abs(1-i)
 		    if state == "B":
 			
-			
-			fight(spots[i][j], current)
-			current = None
-			state = None
-			
+			if spots[i][j].getOccupied():
+			    fight(spots[i][j], current)
+			    current = None
+			    state = None
+			else:
+			    return None, None, None
 		    #Play Card
 		    else:
 			mana = [board.getCurMana1(), board.getCurMana2()]
@@ -136,6 +139,10 @@ def select(mouseObj, spots, current, state, hands):
 			    display.flip()
 			    if current[0].hasBattleCry():
 				current[0].battleCry()
+				
+			    if current[0].hasEffect():
+				current[0].doEffect()
+			    board.playedCreature(current[0])
 			    current = None
 			    state = None
 			else:
@@ -162,7 +169,8 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen)]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen), ELF_ARC(board, screen),
+            GRM_MUR(board, screen)]
 deck1Cards = []
 deck2Cards = []
 while (selecting):

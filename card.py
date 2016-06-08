@@ -16,11 +16,21 @@ class Creature(Card):
         self.cost = cost;
         self.toughness = toughness;
         self.state = None
+        self.creatureType = None
         self.owner = owner
         self.tired = True
         self.buffs = []
+        self.effects = []
         self.screen = screen
         
+    def getCreatureType(self):
+        return self.creatureType
+    
+    def incPower(self, inc):
+        self.power = self.power + inc
+        
+    def takeDamage(self, damage):
+        self.toughness = self.toughness - damage
         
     def getScreen(self):
         return self.screen
@@ -77,5 +87,11 @@ class Creature(Card):
         for buff in self.buffs:
             buff.removeBuff()
         self.buffs = []
+        
+    def hasEffect(self):
+        return False
+    
+    def doEffect(self):
+        pass
 
     
