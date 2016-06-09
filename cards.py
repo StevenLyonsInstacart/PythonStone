@@ -40,7 +40,7 @@ class CH_YETI(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
-	self.img = "murloc_raider.png"
+	self.img = "chillwind_yeti.png"
 	
     def getClass(self):
         return self.classType
@@ -92,7 +92,7 @@ class FL_JUG(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
-	self.img = "murloc_raider.png"
+	self.img = "flame_juggler.png"
 	
     def getClass(self):
         return self.classType
@@ -138,7 +138,7 @@ class GRM_MUR(Creature):
 	self.screen = screen
 	self.buffs = []
 	self.effects = [GRM_EFF(board, self)]
-	self.img = "murloc_raider.png"
+	self.img = "grimscale_oracle.png"
         
     def copy(self):
         return GRM_MUR(self.board, self.screen)
@@ -196,7 +196,7 @@ class LNC_CAR(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
-	self.img = "murloc_raider.png"
+	self.img = "lance_carrier.png"
         
     def copy(self):
         return ABU_SRG(self.board, self.screen)
@@ -224,7 +224,7 @@ class IRN_OWL(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
-	self.img = "murloc_raider.png"
+	self.img = "ironbeak_owl.png"
         
     def copy(self):
         return IRN_OWL(self.board, self.screen)
@@ -252,7 +252,7 @@ class ELF_ARC(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
-	self.img = "murloc_raider.png"
+	self.img = "elven_archer.png"
         
     def copy(self):
         return ELF_ARC(self.board, self.screen)

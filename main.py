@@ -42,6 +42,27 @@ def addCard(pos, cards, start):
 	    return cards[i + start].copy()
     return None
 
+def hoverCard(filename, pos, cards, start):
+    for i in range (min(len(cards) - start, 4)):
+	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
+	    return cards[i + start].getFilename()
+    return filename
+
+def hoverCardMain(filename, pos, spots, hands):
+    for i in range (0,10):
+	if pos[1] < 150 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    return hands[0].getCards()[i].getFilename()
+	if pos[1] > 650 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    return hands[1].getCards()[i].getFilename()
+    for i in range (0,7):
+	if pos[1] > 150 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    if spots[1][i].getOccupied():
+		return spots[1][i].getCard().getFilename()
+	if pos[1] < 650 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    if spots[0][i].getOccupied():
+		return spots[0][i].getCard().getFilename()
+    return filename
+
 def updateList(pos):
     if 400 < pos[0] < 500 and 400 < pos[1] < 500:
 	    return -DISPLAYNUM
@@ -192,7 +213,7 @@ deck1Cards = []
 deck2Cards = []
 start = 0
 while (selecting):
-    showSelect(screen, cardList, 1, (255,255,255), start)
+    showSelect(screen, cardList, 1, (255,255,255), start, filename)
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
@@ -202,11 +223,13 @@ while (selecting):
 	    start += updateList(evnt.pos)
 	elif evnt.type == QUIT:
 	    quit()
+	elif evnt.type == MOUSEMOTION:
+	    filename = hoverCard(filename, evnt.pos, cardList, start)
     display.flip()
 selecting = True 
 
 while (selecting):
-    showSelect(screen, cardList, 1, (200, 200, 200), start)
+    showSelect(screen, cardList, 1, (200, 200, 200), start, filename)
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
@@ -237,6 +260,8 @@ while (breaker):
 	    selected, square, state = select(newEvent, spots, selected, state, hands)
 	    turn = endTurn(newEvent.pos, turn, board)
 	    print turn, "YOOO"
+	elif newEvent.type == MOUSEMOTION:
+	    filename = hoverCardMain(filename, newEvent.pos, spots, hands)
 	else:
 	    if newEvent.type == QUIT: 
 		breaker = False

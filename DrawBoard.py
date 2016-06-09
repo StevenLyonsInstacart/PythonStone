@@ -93,7 +93,7 @@ def drawGrid(screen, board, filename):
     imgRect = Rect(1400, 0, 200, 200)
     screen.blit(img, imgRect)
     
-def showSelect(screen, cards, num, background, start):
+def showSelect(screen, cards, num, background, start, filename):
     nameFont = font.Font(None, 30)
     draw.rect(screen, background, (0,0,1400,800))
     
@@ -120,3 +120,7 @@ def showSelect(screen, cards, num, background, start):
     
     draw.rect(screen, BLUE, (400, 400, 100, 100))
     draw.rect(screen, RED, (600, 400, 100, 100))
+    
+    img = image.load(filename)
+    imgRect = Rect(1400, 0, 200, 200)
+    screen.blit(img, imgRect)
