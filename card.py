@@ -22,6 +22,10 @@ class Creature(Card):
         self.buffs = []
         self.effects = []
         self.screen = screen
+        self.img = ""
+        
+    def getFilename(self):
+        return self.img
         
     def getCreatureType(self):
         return self.creatureType

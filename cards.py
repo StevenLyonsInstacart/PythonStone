@@ -26,6 +26,7 @@ class NULL_CREATURE(Creature):
         self.creatureType = None
         self.battleCry = None
 	self.buffs = []
+	self.img = "abusive_sergeant.png"
     
 class CH_YETI(Creature):
     def __init__(self):
@@ -39,6 +40,7 @@ class CH_YETI(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+	self.img = "murloc_raider.png"
 	
     def getClass(self):
         return self.classType
@@ -58,6 +60,8 @@ class RIV_CROC(Creature):
         self.owner = 0
         self.tired = True
 	self.buffs = []
+	self.img = "river_crocolisk.png"
+	
         
     def getClass(self):
         return self.classType
@@ -88,6 +92,7 @@ class FL_JUG(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+	self.img = "murloc_raider.png"
 	
     def getClass(self):
         return self.classType
@@ -110,6 +115,7 @@ class MUR_RAID(Creature):
         self.owner = 0
         self.tired = True
 	self.buffs = []
+	self.img = "murloc_raider.png"
         
     def copy(self):
         return MUR_RAID()
@@ -132,6 +138,7 @@ class GRM_MUR(Creature):
 	self.screen = screen
 	self.buffs = []
 	self.effects = [GRM_EFF(board, self)]
+	self.img = "murloc_raider.png"
         
     def copy(self):
         return GRM_MUR(self.board, self.screen)
@@ -161,6 +168,7 @@ class ABU_SRG(Creature):
 	self.screen = screen
 	self.buffs = []
 	self.effects = []
+	self.img = "abusive_sergeant.png"
         
     def copy(self):
         return ABU_SRG(self.board, self.screen)
@@ -172,7 +180,7 @@ class ABU_SRG(Creature):
         return True
     
     def battleCry(self):
-	selectedBattleCry(ABU_BUFF(None), self.board, self.screen)
+	selectedBattleCry(ABU_BUFF(None), self.board, self.screen, self.img)
 	
 class LNC_CAR(Creature):
     
@@ -188,6 +196,7 @@ class LNC_CAR(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
+	self.img = "murloc_raider.png"
         
     def copy(self):
         return ABU_SRG(self.board, self.screen)
@@ -199,7 +208,7 @@ class LNC_CAR(Creature):
         return True
     
     def battleCry(self):
-	selectedBattleCry(LNC_BUFF(None), self.board, self.screen)
+	selectedBattleCry(LNC_BUFF(None), self.board, self.screen, self.img)
 	
 class IRN_OWL(Creature):
     
@@ -215,6 +224,7 @@ class IRN_OWL(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
+	self.img = "murloc_raider.png"
         
     def copy(self):
         return IRN_OWL(self.board, self.screen)
@@ -226,7 +236,7 @@ class IRN_OWL(Creature):
         return True
     
     def battleCry(self):
-	selectedBattleCry(OWL_BUFF(None), self.board, self.screen)
+	selectedBattleCry(OWL_BUFF(None), self.board, self.screen, self.img)
 	
 class ELF_ARC(Creature):
     
@@ -242,6 +252,7 @@ class ELF_ARC(Creature):
         self.board = board
 	self.screen = screen
 	self.buffs = []
+	self.img = "murloc_raider.png"
         
     def copy(self):
         return ELF_ARC(self.board, self.screen)
@@ -253,10 +264,10 @@ class ELF_ARC(Creature):
         return True
     
     def battleCry(self):
-	target = selectCard(self.board, self.screen)
+	target = selectCard(self.board, self.screen, self.img)
 	dealDamage(target, 1, self.board)
 	
-def selectCard(board, screen):	
+def selectCard(board, screen, filename):	
     waiting = True
     spots = board.getSpots()
     while waiting:
@@ -272,14 +283,14 @@ def selectCard(board, screen):
 			    reversei = abs(1-i)
 			    if spots[reversei][j].getOccupied():
 				return spots[reversei][j]
-	    drawGrid(screen, board)
+	    drawGrid(screen, board, filename)
 	    showBoard(board.getSpots(), screen)
 	    showHand(board.getHands(), screen)
 	    highlight((255, 255, 0), evnt.pos, screen)
 	    display.flip()
 
         
-def selectedBattleCry(buff, board, screen):	
+def selectedBattleCry(buff, board, screen, filename):	
     waiting = True
     spots = board.getSpots()
     while waiting:
@@ -288,17 +299,17 @@ def selectedBattleCry(buff, board, screen):
 	    
 	    if evnt.type == MOUSEBUTTONDOWN:
 		mx, my = evnt.pos
-		i = 1
-		for j in range(0,7):
-		    if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
-			square = [i,j]
-			reversei = abs(1-i)
-			if spots[reversei][j].getOccupied():
-			    buff.setCreature(spots[reversei][j].getCard())
-			    spots[reversei][j].getCard().addBuff(buff)
-			    buff.applyBuff()
-			    waiting = False
-	    drawGrid(screen, board)
+		for i in range (2):
+		    for j in range(0,7):
+			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+			    square = [i,j]
+			    reversei = abs(1-i)
+			    if spots[reversei][j].getOccupied():
+				buff.setCreature(spots[reversei][j].getCard())
+				spots[reversei][j].getCard().addBuff(buff)
+				buff.applyBuff()
+				waiting = False
+	    drawGrid(screen, board, filename)
 	    showBoard(board.getSpots(), screen)
 	    showHand(board.getHands(), screen)
 	    highlight((255, 255, 0), evnt.pos, screen)

@@ -4,6 +4,10 @@ from pygame import *
 from Buffs import *
 from Buff import *
 
+
+
+DISPLAYNUM = 4
+
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
@@ -51,7 +55,7 @@ def showHandCard(card, pos, screen):
 	screen.blit(name, nameRect)
 	screen.blit(cost, costRect)
 	
-def drawGrid(screen, board):
+def drawGrid(screen, board, filename):
     nameFont = font.Font(None, 30)
     draw.rect(screen, BOARD, (0,0,1400,800))
     #Verticals
@@ -85,9 +89,15 @@ def drawGrid(screen, board):
     mana2Rect.centery = 650
     screen.blit(player2Mana, mana2Rect)
     
-def showSelect(screen, cards, num, background):
+    img = image.load(filename)
+    imgRect = Rect(1400, 0, 200, 200)
+    screen.blit(img, imgRect)
+    
+def showSelect(screen, cards, num, background, start):
     nameFont = font.Font(None, 30)
     draw.rect(screen, background, (0,0,1400,800))
+    
+    
     
     #Finish  Deck Building
     draw.rect(screen, RED, (1000,600, 200, 70), 5)
@@ -98,11 +108,15 @@ def showSelect(screen, cards, num, background):
     nameRect.centery = 635
     screen.blit(name, nameRect)
     
+    
+    
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
-    for i in range (9):
+    for i in range (start, min(start + DISPLAYNUM, len(cards))):
 	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
 	nameRect = name.get_rect()
 	nameRect.centerx = 500 
-	nameRect.centery = 100 + 50*i
+	nameRect.centery = 100 + 50*(i - start)
 	screen.blit(name, nameRect)
-	
+    
+    draw.rect(screen, BLUE, (400, 400, 100, 100))
+    draw.rect(screen, RED, (600, 400, 100, 100))

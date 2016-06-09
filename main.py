@@ -16,6 +16,10 @@ LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
 turn = 0
 
+DISPLAYNUM = 4
+filename = "abusive_sergeant.png"
+
+
 def check_to_quit():
     for evnt in event.get(): # checks all events that happen
         keys = key.get_pressed()
@@ -32,11 +36,18 @@ def checkExit(mouse):
 	return False
     return  True
 
-def addCard(pos, cards):
-    for i in range (9):
+def addCard(pos, cards, start):
+    for i in range (4):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-	    return cards[i].copy()
+	    return cards[i + start].copy()
     return None
+
+def updateList(pos):
+    if 400 < pos[0] < 500 and 400 < pos[1] < 500:
+	    return -DISPLAYNUM
+    elif 600 < pos[0] < 700 and 400 < pos[1] < 500:
+	    return DISPLAYNUM
+    return 0
     
     
 def highlight(pos, screen, selcted, square):
@@ -86,6 +97,7 @@ def fight (spot1, spot2):
 	
 		
 def select(mouseObj, spots, current, state, hands):
+    global filename
     if current  == None:
 	mx, my = mouseObj.pos
 	for i in range (0,2):
@@ -95,12 +107,14 @@ def select(mouseObj, spots, current, state, hands):
 		    reversei = abs(1-i)
 		    if spots[reversei][j].getOccupied():
 			if spots[reversei][j].getCard().getTired() == False:
+			    filename = spots[reversei][j].getCard().getFilename()
 			    return spots[reversei][j], [i*250 + 150, j*200, 200, 250], "B"
 	    for j in range(0,10):
 		if 140*j < mx < 140*(j+1) and 0 < my < 150 :
 		    square = [i,j]
 		    print j, i
 		    if turn == 1:
+			filename = hands[0].getCards()[j].getFilename()
 			return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 150], "H"
 		
 	    for j in range(0,10):
@@ -108,6 +122,9 @@ def select(mouseObj, spots, current, state, hands):
 		    square = [i,j]
 		    print j, i
 		    if turn == 0:
+			newfilename = hands[1].getCards()[j].getFilename()
+			filename = newfilename
+			print filename
 			return [hands[1].getCards()[j], [1,j]], [650, j*140, 140, 150], "H"
 		
     else:
@@ -173,27 +190,32 @@ cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen),
             GRM_MUR(board, screen)]
 deck1Cards = []
 deck2Cards = []
+start = 0
 while (selecting):
-    showSelect(screen, cardList, 1, (255,255,255))
+    showSelect(screen, cardList, 1, (255,255,255), start)
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList)
+	    newCard = addCard(evnt.pos, cardList, start)
 	    if newCard:
 		deck1Cards.append(newCard)
+	    start += updateList(evnt.pos)
 	elif evnt.type == QUIT:
 	    quit()
     display.flip()
 selecting = True 
 
 while (selecting):
-    showSelect(screen, cardList, 1, (200, 200, 200))
+    showSelect(screen, cardList, 1, (200, 200, 200), start)
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList)
+	    newCard = addCard(evnt.pos, cardList, start)
 	    if newCard:
 		deck2Cards.append(newCard)
+	    start += updateList(evnt.pos)
+	elif evnt.type == QUIT:
+	    quit()
     display.flip()
 
 deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards)
@@ -202,7 +224,7 @@ hands[1].initialize(deck2)
     
 while (breaker):
     breaker = check_to_quit()
-    drawGrid(screen, board)
+    drawGrid(screen, board, filename)
     highlight(mouse.get_pos(), screen, selected, square)
 
 
