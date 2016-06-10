@@ -238,6 +238,64 @@ class IRN_OWL(Creature):
     def battleCry(self):
 	selectedBattleCry(OWL_BUFF(None), self.board, self.screen, self.img)
 	
+class NOV_ENG(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Novice Engineer"
+        self.power = 1
+        self.toughness = 1
+        self.cost = 2
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+	self.screen = screen
+	self.buffs = []
+	self.img = "novice_engineer.png"
+        
+    def copy(self):
+        return NOV_ENG(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+	player = self.getPlayer()
+	player.getHand().draw(player.getDeck())
+	
+class LOT_HRD(Creature):
+    
+    def __init__(self, board, screen):
+        self.name = "Loot Hoarder"
+        self.power = 2
+        self.toughness = 1
+        self.cost = 2
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+        self.board = board
+	self.screen = screen
+	self.buffs = []
+	self.img = "loot_hoarder.png"
+        
+    def copy(self):
+        return LOT_HRD(self.board, self.screen)
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasDeathRattle(self):
+        return True
+    
+    def deathRattle(self):
+	player = self.getPlayer()
+	player.getHand().draw(player.getDeck())
+	
 class ELF_ARC(Creature):
     
     def __init__(self, board, screen):

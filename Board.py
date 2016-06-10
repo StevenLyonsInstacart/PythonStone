@@ -3,6 +3,7 @@ from Hand import *
 from Deck import *
 from copy import *
 from State import *
+from Player import *
 import random
 class Board:
     def __init__(self):
@@ -18,6 +19,9 @@ class Board:
         self.totMana1 = 0
         self.totMana2 = 1
         self.effects = []
+        
+        self.player1 = Player(self.hands[0], self.Deck1, self.spots[0])
+        self.player2 = Player(self.hands[1], self.Deck2, self.spots[1])
             
     def getSpots(self):
         return self.spots
@@ -28,12 +32,14 @@ class Board:
     def getHands(self):
         return self.hands
     
-    def simpleDecks(self, cards1, cards2):
+    def simpleDecks(self, cards1, cards2, player1, player2):
         for i in range (30):
             random.shuffle(cards1)
             random.shuffle(cards2)
             newCard1 = cards1[0].copy()
+            newCard1.setPlayer(player1)
             newCard2 = cards2[0].copy()
+            newCard2.setPlayer(player2)
             newCard1.setState(State(self.hands[0], self.Deck1, self))
             newCard2.setState(State(self.hands[1], self.Deck2, self))
             self.Deck1.insertCard(newCard1)
@@ -87,6 +93,12 @@ class Board:
     def cardDeath(self, card):
         for eff in self.effects:
             eff.killCreature(card)
+            
+    def getPlayer1(self):
+        return self.player1
+    
+    def getPlayer2(self):
+        return self.player2
         
 
         

@@ -23,6 +23,13 @@ class Creature(Card):
         self.effects = []
         self.screen = screen
         self.img = ""
+        self.player = None
+        
+    def setPlayer(self, player):
+        self.player = player
+        
+    def getPlayer(self):
+        return self.player
         
     def getFilename(self):
         return self.img
@@ -55,6 +62,9 @@ class Creature(Card):
         return self.owner
         
     def hasBattleCry(self):
+        return False
+    
+    def hasDeathRattle(self):
         return False
     
     def ping(self, val=1):

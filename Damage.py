@@ -10,11 +10,20 @@ from Spot import *
 def dealDamage(target, total, board):
     target.getCard().takeDamage(total)
     if target.getCard().getToughness() <= 0:
+	if target.getCard().hasDeathRattle():
+	    target.getCard().deathRattle()
 	board.cardDeath(target.getCard())
         target.setCard(NULL_CR())
 	target.getCard().clearBuffs()
 	target.setOccupied(False)
 	
+def fight(spot1, spot2, board):
+    attacker = spot1.getCard()
+    defender = spot2.getCard()
+    defender.setTired(True)
+    attackPower = attacker.getPower()
+    dealDamage(spot1, defender.getPower(), board)
+    dealDamage(spot2, attacker.getPower(), board)
         
 class NULL_CR(Creature):
     def __init__(self):

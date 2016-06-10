@@ -7,6 +7,7 @@ from cards import *
 from random import *
 from Turn import *
 from DrawBoard import *
+from Damage import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -36,10 +37,12 @@ def checkExit(mouse):
 	return False
     return  True
 
-def addCard(pos, cards, start):
+def addCard(pos, cards, start, player):
     for i in range (4):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-	    return cards[i + start].copy()
+	    newCard = cards[i + start].copy()
+	    newCard.setPlayer(player)
+	    return newCard
     return None
 
 def hoverCard(filename, pos, cards, start):
@@ -96,25 +99,6 @@ def playCard(gridSpot, card, board):
     updateSpot.setOccupied(True)
     
 		
-def fight (spot1, spot2):
-    print "fight!"
-    
-    attacker = spot1.getCard()
-    defender = spot2.getCard()
-    defender.setTired(True)
-    nh1 = attacker.getToughness() - defender.getPower()
-    nh2 = defender.getToughness() - attacker.getPower()
-    attacker.setToughness(nh1)
-    defender.setToughness(nh2)
-    print attacker.getToughness()
-    if attacker.getToughness() < 1:
-	print "A"
-	spot1.setCard(None)
-	spot1.setOccupied(False)
-    if defender.getToughness() < 1:
-	print "B"
-	spot2.setCard(None)
-	spot2.setOccupied(False)
 	
 		
 def select(mouseObj, spots, current, state, hands):
@@ -157,7 +141,7 @@ def select(mouseObj, spots, current, state, hands):
 		    if state == "B":
 			
 			if spots[i][j].getOccupied():
-			    fight(spots[i][j], current)
+			    fight(spots[i][j], current, board)
 			    current = None
 			    state = None
 			else:
@@ -200,6 +184,8 @@ grid = Grid()
 board = grid.getBoard()
 spots = board.getSpots()
 hands = board.getHands()
+player1 = board.getPlayer1()
+player2 = board.getPlayer2()
 
 
 twice = 0
@@ -208,7 +194,7 @@ state = None
 x = 0
 selecting = True
 cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen), ELF_ARC(board, screen),
-            GRM_MUR(board, screen)]
+            GRM_MUR(board, screen), NOV_ENG(board, screen), LOT_HRD(board, screen)]
 deck1Cards = []
 deck2Cards = []
 start = 0
@@ -217,7 +203,7 @@ while (selecting):
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList, start)
+	    newCard = addCard(evnt.pos, cardList, start, player1)
 	    if newCard:
 		deck1Cards.append(newCard)
 	    start += updateList(evnt.pos)
@@ -233,7 +219,7 @@ while (selecting):
     for evnt in event.get():
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList, start)
+	    newCard = addCard(evnt.pos, cardList, start, player2)
 	    if newCard:
 		deck2Cards.append(newCard)
 	    start += updateList(evnt.pos)
@@ -241,7 +227,7 @@ while (selecting):
 	    quit()
     display.flip()
 
-deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards)
+deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards, player1, player2)
 hands[0].initialize(deck1)
 hands[1].initialize(deck2)    
     
