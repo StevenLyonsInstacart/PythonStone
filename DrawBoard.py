@@ -18,24 +18,33 @@ def showBoard(spots, screen):
     for i in range(0,2):
 	for j in range(7):
 	    if (spots[i][j].getOccupied()):
-		showCard2(spots[i][j], screen)
+		if i != 0:
+		    showCard2(spots[i][j], screen, True)
+		else:
+		    showCard2(spots[i][j], screen, False)
 		
 def showHand(hands, screen):
     for i in range (2):
 	for j in range (10):
 	    showHandCard(hands[i].getCards()[j], [i,j], screen)
 	    
-def showCard2(spot, screen):
+def showCard2(spot, screen, row1):
     nameFont = font.Font(None, 30)
     name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
     nameRect = name.get_rect()
     nameRect.centerx = spot.getPos()[0] +15
-    nameRect.centery = spot.getPos()[1]
+    if row1:
+	nameRect.centery = spot.getPos()[1] + 50
+    else:
+	nameRect.centery = spot.getPos()[1]
     pts = str(spot.getCard().getPower()) + "                  " + str(spot.getCard().getToughness())
     pt = nameFont.render(pts, True, (255, 255, 255), BOARD)
     ptRect = pt.get_rect()
     ptRect.centerx = spot.getPos()[0] + 30
-    ptRect.centery = spot.getPos()[1] + 200
+    if row1:
+	ptRect.centery = spot.getPos()[1] + 150
+    else:
+	ptRect.centery = spot.getPos()[1] + 100
     screen.blit(name, nameRect)
     screen.blit(pt, ptRect)
     
@@ -45,12 +54,12 @@ def showHandCard(card, pos, screen):
 	name = handFont.render(card.getName() , True, (255, 255, 255), BOARD)
 	nameRect = name.get_rect()
 	nameRect.centerx = pos[1]*140 + 70
-	nameRect.centery = pos[0]*650 + 20
+	nameRect.centery = pos[0]*700 + 20
 	
 	cost = handFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
 	costRect = cost.get_rect()
 	costRect.centerx = pos[1]*140 + 70
-	costRect.centery = pos[0]*650 + 40
+	costRect.centery = pos[0]*700 + 40
 	
 	screen.blit(name, nameRect)
 	screen.blit(cost, costRect)
@@ -60,15 +69,17 @@ def drawGrid(screen, board, filename):
     draw.rect(screen, BOARD, (0,0,1400,800))
     #Verticals
     for i in range (1,7):
-	draw.line(screen, RED, (200*i, 150) , (200*i, 650))
+	draw.line(screen, RED, (200*i, 200) , (200*i, 600))
         
     for i in range (1,10):
-	draw.line(screen, RED, (140*i, 0) , (140*i, 150))
-	draw.line(screen, RED, (140*i, 650) , (140*i, 800))
+	draw.line(screen, RED, (140*i, 0) , (140*i, 100))
+	draw.line(screen, RED, (140*i, 700) , (140*i, 800))
 	
     #Horizontals
-    draw.line(screen, RED, (0, 150) , (1400, 150))
-    draw.line(screen, RED, (0, 650) , (1400, 650))
+    draw.line(screen, RED, (0, 100) , (1400, 100))
+    draw.line(screen, RED, (0, 200) , (1400, 200))
+    draw.line(screen, RED, (0, 600) , (1400, 600))
+    draw.line(screen, RED, (0, 700) , (1400, 700))
     
     draw.rect(screen, (100, 100, 255), (1400,400,150,100))
     name = nameFont.render("End Turn" , True, (155,155,255 ), (100, 100, 0))

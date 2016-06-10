@@ -53,15 +53,15 @@ def hoverCard(filename, pos, cards, start):
 
 def hoverCardMain(filename, pos, spots, hands):
     for i in range (0,10):
-	if pos[1] < 150 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    return hands[0].getCards()[i].getFilename()
-	if pos[1] > 650 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    return hands[1].getCards()[i].getFilename()
     for i in range (0,7):
-	if pos[1] > 150 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[1][i].getOccupied():
 		return spots[1][i].getCard().getFilename()
-	if pos[1] < 650 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	if pos[1] < 700 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[0][i].getOccupied():
 		return spots[0][i].getCard().getFilename()
     return filename
@@ -76,17 +76,17 @@ def updateList(pos):
     
 def highlight(pos, screen, selcted, square):
     for i in range (0,10):
-	if pos[1] < 150 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    xcor = pos[0] % 140
-	    draw.rect(screen, GREEN, (140*i,0, 140, 150), 10)
-	if pos[1] > 650 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    draw.rect(screen, GREEN, (140*i,0, 140, 100), 10)
+	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    xcor = pos[0] % 140
-	    draw.rect(screen, GREEN, (140*i,650, 140, 150), 10)
+	    draw.rect(screen, GREEN, (140*i,700, 140, 100), 10)
     for i in range (0,7):
-	if pos[1] > 150 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, GREEN, (200*i,150, 200, 250), 10)
-	if pos[1] < 650 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, GREEN, (200*i,400, 200, 250), 10)
+	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, GREEN, (200*i,200, 200, 200), 10)
+	if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, GREEN, (200*i,400, 200, 200), 10)
     if selected != None:
 	square0 = abs(1-square[0])
 	draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
@@ -107,36 +107,36 @@ def select(mouseObj, spots, current, state, hands):
 	mx, my = mouseObj.pos
 	for i in range (0,2):
 	    for j in range(0,7):
-		if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+		if 200*j < mx < 200*(j+1) and 200 + 200*(i) < my < 200 + 200*(i+1):
 		    square = [i,j]
 		    reversei = abs(1-i)
 		    if spots[reversei][j].getOccupied():
 			if spots[reversei][j].getCard().getTired() == False:
 			    filename = spots[reversei][j].getCard().getFilename()
-			    return spots[reversei][j], [i*250 + 150, j*200, 200, 250], "B"
+			    return spots[reversei][j], [i*200 + 200, j*200, 200, 200], "B"
 	    for j in range(0,10):
-		if 140*j < mx < 140*(j+1) and 0 < my < 150 :
+		if 140*j < mx < 140*(j+1) and 0 < my < 100 :
 		    square = [i,j]
 		    print j, i
 		    if turn == 1:
 			filename = hands[0].getCards()[j].getFilename()
-			return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 150], "H"
+			return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 100], "H"
 		
 	    for j in range(0,10):
-		if 140*j < mx < 140*(j+1) and 650 < my < 800 :
+		if 140*j < mx < 140*(j+1) and 700 < my < 800 :
 		    square = [i,j]
 		    print j, i
 		    if turn == 0:
 			newfilename = hands[1].getCards()[j].getFilename()
 			filename = newfilename
 			print filename
-			return [hands[1].getCards()[j], [1,j]], [650, j*140, 140, 150], "H"
+			return [hands[1].getCards()[j], [1,j]], [700, j*140, 140, 100], "H"
 		
     else:
 	mx, my = mouseObj.pos
 	for i in range (0,2):
 	    for j in range(0,7):
-		if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+		if 200*j < mx < 200*(j+1) and 200 + 200*(i) < my < 200 + 200*(i+1):
 		    i = abs(1-i)
 		    if state == "B":
 			
