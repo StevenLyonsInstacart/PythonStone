@@ -65,8 +65,34 @@ def showHandCard(card, pos, screen):
 	screen.blit(cost, costRect)
 	
 def drawGrid(screen, board, filename):
+    
     nameFont = font.Font(None, 30)
     draw.rect(screen, BOARD, (0,0,1400,800))
+    
+    player1 = board.getPlayer1()
+    portrait1 = image.load(player1.getPortrait())
+    port1Rect = Rect(550, 100, 300, 100)
+    screen.blit(portrait1, port1Rect)
+    
+    player2 = board.getPlayer2()
+    portrait2 = image.load(player2.getPortrait())
+    port2Rect = Rect(550, 600, 300, 100)
+    screen.blit(portrait2, port2Rect)
+    
+    
+    health1 = nameFont.render(str(player1.getLife()) , True, (255, 255, 255), BOARD)
+    health1Rect = health1.get_rect()
+    health1Rect.centerx = 900
+    health1Rect.centery = 150
+    screen.blit(health1, health1Rect)
+    
+    health2 = nameFont.render(str(player2.getLife()) , True, (255, 255, 255), BOARD)
+    health2Rect = health1.get_rect()
+    health2Rect.centerx = 900
+    health2Rect.centery = 650
+    screen.blit(health2, health2Rect)
+    
+    
     #Verticals
     for i in range (1,7):
 	draw.line(screen, RED, (200*i, 200) , (200*i, 600))
@@ -80,6 +106,18 @@ def drawGrid(screen, board, filename):
     draw.line(screen, RED, (0, 200) , (1400, 200))
     draw.line(screen, RED, (0, 600) , (1400, 600))
     draw.line(screen, RED, (0, 700) , (1400, 700))
+    
+    
+    #Hero Section
+    draw.line(screen, RED, (450, 100), (450, 200))
+    draw.line(screen, RED, (450, 600), (450, 700))
+    draw.line(screen, RED, (550, 100), (550, 200))
+    draw.line(screen, RED, (550, 600), (550, 700))
+    
+    draw.line(screen, RED, (850, 100), (850, 200))
+    draw.line(screen, RED, (850, 600), (850, 700))
+    draw.line(screen, RED, (950, 100), (950, 200))
+    draw.line(screen, RED, (950, 600), (950, 700))
     
     draw.rect(screen, (100, 100, 255), (1400,400,150,100))
     name = nameFont.render("End Turn" , True, (155,155,255 ), (100, 100, 0))
@@ -103,6 +141,8 @@ def drawGrid(screen, board, filename):
     img = image.load(filename)
     imgRect = Rect(1400, 0, 200, 200)
     screen.blit(img, imgRect)
+    
+    
     
 def showSelect(screen, cards, num, background, start, filename):
     nameFont = font.Font(None, 30)

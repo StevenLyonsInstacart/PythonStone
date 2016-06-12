@@ -377,17 +377,17 @@ def selectedBattleCry(buff, board, screen, filename):
 
 def highlight(colour, pos, screen):
     for i in range (0,10):
-	if pos[1] < 150 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    xcor = pos[0] % 140
-	    draw.rect(screen, colour, (140*i,0, 140, 150), 10)
-	if pos[1] > 650 and pos[0]> i*140 and pos[0] < (i+1)*140:
+	    draw.rect(screen, colour, (140*i,0, 140, 100), 10)
+	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
 	    xcor = pos[0] % 140
-	    draw.rect(screen, colour, (140*i,650, 140, 150), 10)
+	    draw.rect(screen, colour, (140*i,700, 140, 100), 10)
     for i in range (0,7):
-	if pos[1] > 150 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,150, 200, 250), 10)
-	if pos[1] < 650 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,400, 200, 250), 10)
+	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, colour, (200*i,200, 200, 200), 10)
+	if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
+	    draw.rect(screen, colour, (200*i,400, 200, 200), 10)
 	    
 
     

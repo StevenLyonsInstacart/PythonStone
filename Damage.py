@@ -24,6 +24,12 @@ def fight(spot1, spot2, board):
     attackPower = attacker.getPower()
     dealDamage(spot1, defender.getPower(), board)
     dealDamage(spot2, attacker.getPower(), board)
+    
+def goFace(creature, player):
+    player.incLife(-creature.getPower())
+    creature.setTired(True)
+    if player.getLife() < 1:
+	quit()
         
 class NULL_CR(Creature):
     def __init__(self):

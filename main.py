@@ -169,6 +169,12 @@ def select(mouseObj, spots, current, state, hands):
 			    state = None
 			else:
 			    return None, None, None
+	if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
+	    goFace(current.getCard(), player1)
+	    return None, None, None
+	elif 550 < mx < 850 and 600 < my  < 700 and not (current.getCard().getTired()):
+	    goFace(current.getCard(), player2)
+	    return None, None,  None
     return current, [i,j, 200, 250], state
     
 init()    
