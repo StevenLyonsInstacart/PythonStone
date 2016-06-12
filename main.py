@@ -45,6 +45,13 @@ def addCard(pos, cards, start, player):
 	    return newCard
     return None
 
+def updateClass(player, pos):
+    classPort = ["guldan_portrait.jpg", "rexxar_portrait.jpg","garrosh_portrait.png","thrall_portrait.jpg","uther_portrait.png",
+     "jaina_portrait.jpg","anduin_portrait.png","valeera_portrait.png", "malfurion_portrait.png"]
+    for i in range (9):
+	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
+	    player.setPortrait(classPort[i])
+
 def hoverCard(filename, pos, cards, start):
     for i in range (min(len(cards) - start, 4)):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
@@ -210,6 +217,7 @@ while (selecting):
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
 	    newCard = addCard(evnt.pos, cardList, start, player1)
+	    updateClass(player1, evnt.pos)
 	    if newCard:
 		deck1Cards.append(newCard)
 	    start += updateList(evnt.pos)
@@ -226,11 +234,14 @@ while (selecting):
 	if evnt.type == MOUSEBUTTONDOWN:
 	    selecting = checkExit(evnt)
 	    newCard = addCard(evnt.pos, cardList, start, player2)
+	    updateClass(player2, evnt.pos)
 	    if newCard:
 		deck2Cards.append(newCard)
 	    start += updateList(evnt.pos)
 	elif evnt.type == QUIT:
 	    quit()
+	elif evnt.type == MOUSEMOTION:
+	    filename = hoverCard(filename, evnt.pos, cardList, start)
     display.flip()
 
 deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards, player1, player2)

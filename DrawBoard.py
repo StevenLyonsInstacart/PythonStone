@@ -168,6 +168,18 @@ def showSelect(screen, cards, num, background, start, filename):
 	nameRect.centerx = 500 
 	nameRect.centery = 100 + 50*(i - start)
 	screen.blit(name, nameRect)
+	
+    draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
+    classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
+    for i in range (9):
+	name = nameFont.render(classes[i], True, (50,50,50), background)
+	nameRect = name.get_rect()
+	nameRect.centerx = 925 
+	nameRect.centery = 95 + 30*i
+	screen.blit(name, nameRect)
+	
+    for i in range (9):
+	draw.line(screen, BLUE, (800, 80 + 30*i), (1050, 80 + 30*i))
     
     draw.rect(screen, BLUE, (400, 400, 100, 100))
     draw.rect(screen, RED, (600, 400, 100, 100))

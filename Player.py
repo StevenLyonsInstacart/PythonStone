@@ -39,6 +39,8 @@ class Player:
         self.spots = spots
     def setRole(self, role):
         self.role = role
+    def setPortrait(self, port):
+        self.portrait = port
     def setLife(self, life):
         self.life = life
         
