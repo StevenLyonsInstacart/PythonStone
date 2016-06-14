@@ -8,6 +8,7 @@ from random import *
 from Turn import *
 from DrawBoard import *
 from Damage import *
+from heroPower import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -45,12 +46,21 @@ def addCard(pos, cards, start, player):
 	    return newCard
     return None
 
+def checkHeroPower(pos, turn):
+    if turn  == 1:
+	if 950 < pos[0] < 1050 and 100 < pos[1] < 200:
+	    player1.doHeroPower()
+    else:
+	if 950 < pos[0] < 1050 and 600 < pos[1] < 700:
+	    player2.doHeroPower()
+
 def updateClass(player, pos):
     classPort = ["guldan_portrait.jpg", "rexxar_portrait.jpg","garrosh_portrait.png","thrall_portrait.jpg","uther_portrait.png",
      "jaina_portrait.jpg","anduin_portrait.png","valeera_portrait.png", "malfurion_portrait.png"]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
 	    player.setPortrait(classPort[i])
+	    player.setHP(HunterPower(player))
 
 def hoverCard(filename, pos, cards, start):
     for i in range (min(len(cards) - start, 4)):
@@ -155,12 +165,12 @@ def select(mouseObj, spots, current, state, hands):
 			    return None, None, None
 		    #Play Card
 		    else:
-			mana = [board.getCurMana1(), board.getCurMana2()]
+			mana = [player1.getCurMana(), player2.getCurMana()]
 			if mana[abs(turn - 1)] >= current[0].getCost():
 			    if turn == 1:
-				board.changeCurMana1(-current[0].getCost())
+				player1.changeCurMana(-current[0].getCost())
 			    else:
-				board.changeCurMana2(-current[0].getCost())
+				player2.changeCurMana(-current[0].getCost())
 			    spots[i][j].setCard(current[0])
 			    spots[i][j].setOccupied(True)
 			    hands[current[1][0]].setNull(current[1][1])
@@ -261,6 +271,7 @@ while (breaker):
 	if newEvent.type == MOUSEBUTTONDOWN:
 	    
 	    selected, square, state = select(newEvent, spots, selected, state, hands)
+	    checkHeroPower(newEvent.pos, turn)
 	    turn = endTurn(newEvent.pos, turn, board)
 	    print turn, "YOOO"
 	elif newEvent.type == MOUSEMOTION:

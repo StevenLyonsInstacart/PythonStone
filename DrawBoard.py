@@ -66,6 +66,9 @@ def showHandCard(card, pos, screen):
 	
 def drawGrid(screen, board, filename):
     
+    player1 = board.getPlayer1()
+    player2 = board.getPlayer2()
+    
     nameFont = font.Font(None, 30)
     draw.rect(screen, BOARD, (0,0,1400,800))
     
@@ -114,10 +117,14 @@ def drawGrid(screen, board, filename):
     draw.line(screen, RED, (550, 100), (550, 200))
     draw.line(screen, RED, (550, 600), (550, 700))
     
+    
     draw.line(screen, RED, (850, 100), (850, 200))
     draw.line(screen, RED, (850, 600), (850, 700))
     draw.line(screen, RED, (950, 100), (950, 200))
     draw.line(screen, RED, (950, 600), (950, 700))
+    
+    draw.rect(screen, BLUE, (950, 100, 100, 100))
+    draw.rect(screen, BLUE, (950, 600, 100, 100))
     
     draw.rect(screen, (100, 100, 255), (1400,400,150,100))
     name = nameFont.render("End Turn" , True, (155,155,255 ), (100, 100, 0))
@@ -126,13 +133,13 @@ def drawGrid(screen, board, filename):
     nameRect.centery = 450
     screen.blit(name, nameRect)
     
-    player1Mana = nameFont.render(str(board.getCurMana1()) , True, (155,155,255 ), (0, 0, 0))
+    player1Mana = nameFont.render(str(player1.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
     manaRect = player1Mana.get_rect()
     manaRect.centerx = 1475 
     manaRect.centery = 150
     screen.blit(player1Mana, manaRect)
     
-    player2Mana = nameFont.render(str(board.getCurMana2()) , True, (155,155,255 ), (0, 0, 0))
+    player2Mana = nameFont.render(str(player2.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
     mana2Rect = player2Mana.get_rect()
     mana2Rect.centerx = 1475 
     mana2Rect.centery = 650

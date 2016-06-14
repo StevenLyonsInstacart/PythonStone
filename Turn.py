@@ -2,16 +2,20 @@ def endTurn(pos, turn, board):
     spots = board.getSpots()
     decks = board.getDecks()
     hands= board.getHands()
+    player1 = board.getPlayer1()
+    player2 = board.getPlayer2()
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
 	print "endTurn", turn
 	if turn == 1:
-	    board.changeTotMana2(1)
-	    board.player2Turn()
+	    player2.changeTotMana(1)
+	    player2.startTurn()
+	    player2.getHP().setTired(False)
 	    
 	else:
-	    board.changeTotMana1(1)
-	    board.player1Turn()
+	    player1.changeTotMana(1)
+	    player1.startTurn()
+	    player1.getHP().setTired(False)
 	    
 	hands[turn].draw(decks[turn])
 	for j in range (7):
