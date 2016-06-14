@@ -2,7 +2,6 @@
 #To Lindsay
 from pygame import *
 from card import *
-from Grid import *
 from cards import *
 from random import *
 from Turn import *
@@ -56,12 +55,15 @@ def checkHeroPower(pos, turn):
 	    player2.doHeroPower()
 
 def updateClass(player, pos):
-    classPort = ["guldan_portrait.jpg", "rexxar_portrait.jpg","garrosh_portrait.png","thrall_portrait.jpg","uther_portrait.png",
-     "jaina_portrait.jpg","anduin_portrait.png","valeera_portrait.png", "malfurion_portrait.png"]
+    classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
+                 ["garrosh_portrait.png", WarlockPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
+                 ,["uther_portrait.png", WarlockPower(player)], ["jaina_portrait.jpg", WarlockPower(player)],
+                 ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", WarlockPower(player)], 
+                 ["malfurion_portrait.png", WarlockPower(player)]]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
-	    player.setPortrait(foldername + classPort[i])
-	    player.setHP(HunterPower(player))
+	    player.setPortrait(foldername + classPort[i][0])
+	    player.setHP(classPort[i][1])
 
 def hoverCard(filename, pos, cards, start):
     for i in range (min(len(cards) - start, 4)):
@@ -204,8 +206,7 @@ selected = None
 square = None
 display.flip()
 breaker = True
-grid = Grid()
-board = grid.getBoard()
+board = Board()
 spots = board.getSpots()
 hands = board.getHands()
 player1 = board.getPlayer1()

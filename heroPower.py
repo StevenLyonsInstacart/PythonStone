@@ -8,6 +8,7 @@ from Damage import *
 from Effect import *
 from Effects import *
 
+
 class heroPower():
     
     def __init__(self, name, className, player):
@@ -50,4 +51,30 @@ class HunterPower(heroPower):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
             self.player.getEnemy().incLife(-2)
+            
+class WarlockPower(heroPower):
+    
+    def __init__(self, player):
+        heroPower.__init__(self, "Life Tap", "Warlock", player)
+        
+        
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            self.player.changeCurMana(-self.cost)
+            self.player.incLife(-2)
+            self.player.draw()
+            
+class MagePower(heroPower):
+    
+    def __init__(self, player, screen):
+        heroPower.__init__(self, "Fireball", "Mage", player)
+        self.screen = screen
+        
+        
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            self.player.changeCurMana(-self.cost)
+            while True:
+                highlight((255, 255, 0), evnt.pos, screen)
+            
         

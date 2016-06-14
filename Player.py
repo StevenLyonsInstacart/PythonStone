@@ -82,5 +82,8 @@ class Player:
     def setEnemies(self, player):
         self.enemy = player
         player.setEnemy(self) 
+        
+    def draw(self):
+        self.hand.draw(self.deck)
     
     

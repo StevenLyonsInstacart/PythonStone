@@ -1,6 +1,5 @@
 from pygame import *
 from card import *
-from Grid import *
 from cards import *
 from random import *
 from Turn import *

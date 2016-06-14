@@ -6,7 +6,7 @@ class Hand:
         self.name = 3
         self.cards = []
         for i in range (10):
-            self.cards.append(NULL_CREATURE())
+            self.cards.append(NULL_CR())
             
     def draw(self, deck):
         i = 0
@@ -21,9 +21,21 @@ class Hand:
         return self.cards
     
     def setNull(self, pos):
-        self.cards[pos] = NULL_CREATURE()
+        self.cards[pos] = NULL_CR()
         
     def initialize(self, deck):
         for i in range (7):
             self.cards[i] = deck.draw()
+            
+class NULL_CR(Creature):
+    def __init__(self):
+        self.name = "Null"
+        self.power = 0
+        self.toughness = 0
+        self.cost = 0
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+	self.buffs = []
+	self.img = "abusive_sergeant.png"
     
