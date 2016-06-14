@@ -17,6 +17,7 @@ BOARD = (205,182,139)
 LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
 turn = 0
+foldername = "pics/"
 
 DISPLAYNUM = 4
 filename = "abusive_sergeant.png"
@@ -59,28 +60,28 @@ def updateClass(player, pos):
      "jaina_portrait.jpg","anduin_portrait.png","valeera_portrait.png", "malfurion_portrait.png"]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
-	    player.setPortrait(classPort[i])
+	    player.setPortrait(foldername + classPort[i])
 	    player.setHP(HunterPower(player))
 
 def hoverCard(filename, pos, cards, start):
     for i in range (min(len(cards) - start, 4)):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-	    return cards[i + start].getFilename()
+	    return foldername + cards[i + start].getFilename()
     return filename
 
 def hoverCardMain(filename, pos, spots, hands):
     for i in range (0,10):
 	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    return hands[0].getCards()[i].getFilename()
+	    return foldername + hands[0].getCards()[i].getFilename()
 	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    return hands[1].getCards()[i].getFilename()
+	    return foldername + hands[1].getCards()[i].getFilename()
     for i in range (0,7):
 	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[1][i].getOccupied():
-		return spots[1][i].getCard().getFilename()
+		return foldername + spots[1][i].getCard().getFilename()
 	if pos[1] < 700 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[0][i].getOccupied():
-		return spots[0][i].getCard().getFilename()
+		return foldername + spots[0][i].getCard().getFilename()
     return filename
 
 def updateList(pos):
