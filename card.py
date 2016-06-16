@@ -28,6 +28,9 @@ class Creature(Card):
     def setPlayer(self, player):
         self.player = player
         
+    def isNull(self):
+        return False
+        
     def getPlayer(self):
         return self.player
         

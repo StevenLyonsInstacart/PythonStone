@@ -5,7 +5,7 @@ from Buffs import *
 from Buff import *
 
 
-
+foldername = "pics/"
 DISPLAYNUM = 4
 
 RED = (255, 0, 0)
@@ -23,10 +23,20 @@ def showBoard(spots, screen):
 		else:
 		    showCard2(spots[i][j], screen, False)
 		
-def showHand(hands, screen):
+def showHand(hands, screen, turn):
+    cardBack = image.load(foldername+"cardback.png")
     for i in range (2):
 	for j in range (10):
-	    showHandCard(hands[i].getCards()[j], [i,j], screen)
+	    if i != turn:
+		showHandCard(hands[i].getCards()[j], [i,j], screen)
+	    else:
+		showCardBack(hands[i].getCards()[j], [j,i], screen, cardBack)
+		
+def showCardBack(card, pos, screen, img):
+    if card.isNull() == False:
+	imgRect = Rect(pos[0]*140, 700*pos[1], 140, 100)
+	screen.blit(img, imgRect)
+    
 	    
 def showCard2(spot, screen, row1):
     nameFont = font.Font(None, 30)

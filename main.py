@@ -8,6 +8,7 @@ from Turn import *
 from DrawBoard import *
 from Damage import *
 from heroPower import *
+from Board import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -267,7 +268,7 @@ while (breaker):
 
 
     showBoard(spots, screen)
-    showHand(hands, screen)
+    showHand(hands, screen, turn)
     time.wait(10)
     for newEvent in event.get():
 	if newEvent.type == MOUSEBUTTONDOWN:

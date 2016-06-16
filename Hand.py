@@ -38,4 +38,7 @@ class NULL_CR(Creature):
         self.battleCry = None
 	self.buffs = []
 	self.img = "abusive_sergeant.png"
+	
+    def isNull(self):
+	return True
     
