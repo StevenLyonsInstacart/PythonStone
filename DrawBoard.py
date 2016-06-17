@@ -74,7 +74,7 @@ def showHandCard(card, pos, screen):
 	screen.blit(name, nameRect)
 	screen.blit(cost, costRect)
 	
-def drawGrid(screen, board, filename):
+def drawGrid(screen, board, filename, pos=[0,0], status=0):
     
     player1 = board.getPlayer1()
     player2 = board.getPlayer2()
@@ -155,9 +155,14 @@ def drawGrid(screen, board, filename):
     mana2Rect.centery = 650
     screen.blit(player2Mana, mana2Rect)
     
-    img = image.load(filename)
-    imgRect = Rect(1400, 0, 200, 200)
-    screen.blit(img, imgRect)
+    if status == 1:
+	
+	img = image.load(filename)
+	if pos[1] > 184:
+	    imgRect = Rect(pos[0], pos[1] - 184, 184, 254)
+	else:
+	    imgRect = Rect(pos[0], pos[1], 184, 254)
+	screen.blit(img, imgRect)
     
     
     

@@ -29,6 +29,13 @@ def goFace(creature, player):
     creature.setTired(True)
     if player.getLife() < 1:
 	quit()
+	
+def burstFace(player, inc):
+    player.incLife(-inc)
+    if player.getLife() < 1:
+	quit()
+    
+    
         
 class NULL_CR(Creature):
     def __init__(self):

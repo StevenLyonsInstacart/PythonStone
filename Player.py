@@ -11,7 +11,7 @@ from heroPower import *
 
 class Player:
     
-    def __init__(self, hand, deck, spots, mana, role="None"):
+    def __init__(self, hand, deck, spots, mana, order, role="None"):
         self.hand = hand
         self.deck = deck
         self.spots = spots
@@ -20,6 +20,7 @@ class Player:
         self.life = 30
         self.enemy = None
         self.hp = None
+        self.order = order
         self.curMana = mana
         self.totMana = mana
         
@@ -39,6 +40,8 @@ class Player:
         return self.enemy
     def getHP(self):
         return self.hp
+    def getOrder(self):
+        return self.order
     
     def setHand(self, hand):
         self.hand = hand

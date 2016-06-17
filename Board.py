@@ -16,8 +16,8 @@ class Board:
         self.Deck2 = Deck("Player2", "Druid")
         self.effects = []
         
-        self.player1 = Player(self.hands[0], self.Deck1, self.spots[0], 0)
-        self.player2 = Player(self.hands[1], self.Deck2, self.spots[1], 1)
+        self.player1 = Player(self.hands[0], self.Deck1, self.spots[0], 0, 0)
+        self.player2 = Player(self.hands[1], self.Deck2, self.spots[1], 1, 1)
         self.player1.setEnemies(self.player2)
             
     def getSpots(self):

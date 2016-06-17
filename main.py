@@ -58,7 +58,7 @@ def checkHeroPower(pos, turn):
 def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
                  ["garrosh_portrait.png", WarlockPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
-                 ,["uther_portrait.png", WarlockPower(player)], ["jaina_portrait.jpg", WarlockPower(player)],
+                 ,["uther_portrait.png", WarlockPower(player)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
                  ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", WarlockPower(player)], 
                  ["malfurion_portrait.png", WarlockPower(player)]]
     for i in range (9):
@@ -75,17 +75,17 @@ def hoverCard(filename, pos, cards, start):
 def hoverCardMain(filename, pos, spots, hands):
     for i in range (0,10):
 	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    return foldername + hands[0].getCards()[i].getFilename()
+	    return foldername + hands[0].getCards()[i].getFilename(), 1
 	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    return foldername + hands[1].getCards()[i].getFilename()
+	    return foldername + hands[1].getCards()[i].getFilename(), 1
     for i in range (0,7):
 	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[1][i].getOccupied():
-		return foldername + spots[1][i].getCard().getFilename()
+		return foldername + spots[1][i].getCard().getFilename(), 1
 	if pos[1] < 700 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    if spots[0][i].getOccupied():
-		return foldername + spots[0][i].getCard().getFilename()
-    return filename
+		return foldername + spots[0][i].getCard().getFilename(), 1
+    return filename, 0
 
 def updateList(pos):
     if 400 < pos[0] < 500 and 400 < pos[1] < 500:
@@ -260,10 +260,11 @@ while (selecting):
 deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards, player1, player2)
 hands[0].initialize(deck1)
 hands[1].initialize(deck2)    
-    
+lastpos = [1400, 0]    
+stat = 0
 while (breaker):
     breaker = check_to_quit()
-    drawGrid(screen, board, filename)
+    drawGrid(screen, board, filename, lastpos, stat)
     highlight(mouse.get_pos(), screen, selected, square)
 
 
@@ -278,7 +279,8 @@ while (breaker):
 	    turn = endTurn(newEvent.pos, turn, board)
 	    print turn, "YOOO"
 	elif newEvent.type == MOUSEMOTION:
-	    filename = hoverCardMain(filename, newEvent.pos, spots, hands)
+	    lastpos = newEvent.pos
+	    filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
 	else:
 	    if newEvent.type == QUIT: 
 		breaker = False
