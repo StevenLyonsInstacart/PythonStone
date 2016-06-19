@@ -1,4 +1,5 @@
 from card import *
+from cards import *
 from random import *
 from pygame import *
 from Buffs import *
@@ -76,7 +77,33 @@ class MagePower(heroPower):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
 	    MagePing(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
-			
+	    
+class PaladinPower(heroPower):
+    def __init__(self, player, board):
+        heroPower.__init__(self, "Call to Arms", "Paladin", player)
+	self.board = board
+	
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            self.player.changeCurMana(-self.cost)
+	    spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
+    
+def spawnCreature(card, spots, board):
+    for j in range (7):
+	i = 6 - j
+	if spots[i].getOccupied() == False:
+	    spot = spots[i]
+	    spot.setCard(card)
+	    spot.setOccupied(True)
+	    if card.hasBattleCry():
+		card.battleCry()
+				
+	    if card.hasEffect():
+		card.doEffect()
+		board.playedCreature(card)
+	    return True
+    return False
+	
 def MagePing(board, screen, filename, player, enemy):	
     waiting = True
     spots = board.getSpots()

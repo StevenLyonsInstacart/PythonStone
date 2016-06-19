@@ -155,16 +155,18 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
     mana2Rect.centery = 650
     screen.blit(player2Mana, mana2Rect)
     
-    if status == 1:
+
+    
+def hoveredCard(screen, pos, status, filename):
+        if status == 1:
 	
-	img = image.load(filename)
-	if pos[1] > 184:
-	    imgRect = Rect(pos[0], pos[1] - 184, 184, 254)
-	else:
-	    imgRect = Rect(pos[0], pos[1], 184, 254)
-	screen.blit(img, imgRect)
-    
-    
+	    img = image.load(filename)
+	    if pos[1] > 184:
+		imgRect = Rect(pos[0], pos[1] - 184, 184, 254)
+	    else:
+		imgRect = Rect(pos[0], pos[1], 184, 254)
+	    screen.blit(img, imgRect)
+	    display.flip()
     
 def showSelect(screen, cards, num, background, start, filename):
     nameFont = font.Font(None, 30)

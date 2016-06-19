@@ -4,6 +4,7 @@ def endTurn(pos, turn, board):
     hands= board.getHands()
     player1 = board.getPlayer1()
     player2 = board.getPlayer2()
+    board.switchCurrent()
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
 	print "endTurn", turn

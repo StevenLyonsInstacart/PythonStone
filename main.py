@@ -58,7 +58,7 @@ def checkHeroPower(pos, turn):
 def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
                  ["garrosh_portrait.png", WarlockPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
-                 ,["uther_portrait.png", WarlockPower(player)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
+                 ,["uther_portrait.png", PaladinPower(player, board)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
                  ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", WarlockPower(player)], 
                  ["malfurion_portrait.png", WarlockPower(player)]]
     for i in range (9):
@@ -113,12 +113,6 @@ def highlight(pos, screen, selcted, square):
 	draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
 	    
     
-def playCard(gridSpot, card, board):
-    spots = board.getSpots()
-    updateSpot = spots[gridSpot[0]][gridSpot[1]]
-    updateSpot.setCard(card)
-    updateSpot.setOccupied(True)
-    
 		
 	
 		
@@ -169,27 +163,26 @@ def select(mouseObj, spots, current, state, hands):
 			    return None, None, None
 		    #Play Card
 		    else:
-			mana = [player1.getCurMana(), player2.getCurMana()]
-			if mana[abs(turn - 1)] >= current[0].getCost():
-			    if turn == 1:
-				player1.changeCurMana(-current[0].getCost())
-			    else:
-				player2.changeCurMana(-current[0].getCost())
-			    spots[i][j].setCard(current[0])
-			    spots[i][j].setOccupied(True)
-			    hands[current[1][0]].setNull(current[1][1])
-			    showBoard(spots, screen)
-			    display.flip()
-			    if current[0].hasBattleCry():
-				current[0].battleCry()
-				
-			    if current[0].hasEffect():
-				current[0].doEffect()
-			    board.playedCreature(current[0])
-			    current = None
-			    state = None
+			if spots[i][j].getOccupied() == False:
+			    return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j], 
+			                    hands[current[1][0]], current[1][1])
 			else:
+			    prevCard = spots[i][j].getCard()
+			    canRight = checkRight([i,j], spots)
+			    canLeft = checkLeft([i,j], spots)
+			    if canLeft or canRight:
+				playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j], 
+			                    hands[current[1][0]], current[1][1])
+			    
+			    if mx > 200*j + 100 and canRight:
+				shiftRight([i,j], spots, prevCard)
+			    elif canLeft:
+				shiftLeft([i,j], spots, prevCard)
+			    elif canRight:
+				shiftRight([i,j], spots, prevCard)
 			    return None, None, None
+			    
+			
 	if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
 	    goFace(current.getCard(), player1)
 	    return None, None, None
@@ -197,6 +190,62 @@ def select(mouseObj, spots, current, state, hands):
 	    goFace(current.getCard(), player2)
 	    return None, None,  None
     return current, [i,j, 200, 250], state
+    
+def playCard(player, mana, card, spot, hand1, hand2):
+    if card.getCost() <= player.getCurMana():
+	player.changeCurMana(-card.getCost())
+	spot.setCard(card)
+	spot.setOccupied(True)
+	hand1.setNull(hand2)
+	
+	if card.hasBattleCry():
+	    card.battleCry()
+				
+	if card.hasEffect():
+	    card.doEffect()
+	    board.playedCreature(card)
+    display.flip()
+    return None, None, None
+
+def checkRight(pos, spots):
+    for i in range (pos[1], 7):
+	if spots[pos[0]][i].getOccupied() == False:
+	    return True
+    return False
+
+def checkLeft(pos, spots):
+    for i in range (pos[1], 7):
+	if spots[pos[0]][7 - i].getOccupied() == False:
+	    return True
+    return False
+
+def shiftLeft(pos, spots, curCard):
+    ind = pos[1] + 1
+    while spots[pos[0]][ind].getOccupied():
+	holdover = spots[pos[0]][ind].getCard()
+	spots[pos[0]][ind].setCard(curCard)
+	curCard = holdover
+	ind += 1
+    holdover = spots[pos[0]][ind].getCard()
+    spots[pos[0]][ind].setCard(curCard)
+    spots[pos[0]][ind].setOccupied(True)
+    curCard = holdover
+    
+
+def shiftRight(pos, spots, curCard):
+    ind = pos[1] - 1
+    while spots[pos[0]][ind].getOccupied():
+	holdover = spots[pos[0]][ind].getCard()
+	spots[pos[0]][ind].setCard(curCard)
+	curCard = holdover
+	ind -= 1
+    holdover = spots[pos[0]][ind].getCard()
+    spots[pos[0]][ind].setCard(curCard)
+    spots[pos[0]][ind].setOccupied(True)
+    curCard = holdover	
+    
+
+	    
     
 init()    
 size =(1600,800)
@@ -262,6 +311,7 @@ hands[0].initialize(deck1)
 hands[1].initialize(deck2)    
 lastpos = [1400, 0]    
 stat = 0
+curpos = [1200, 0]
 while (breaker):
     breaker = check_to_quit()
     drawGrid(screen, board, filename, lastpos, stat)
@@ -277,12 +327,14 @@ while (breaker):
 	    selected, square, state = select(newEvent, spots, selected, state, hands)
 	    checkHeroPower(newEvent.pos, turn)
 	    turn = endTurn(newEvent.pos, turn, board)
-	    print turn, "YOOO"
+	    filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
 	elif newEvent.type == MOUSEMOTION:
 	    lastpos = newEvent.pos
 	    filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
+	    curpos = newEvent.pos
 	else:
 	    if newEvent.type == QUIT: 
 		breaker = False
+    hoveredCard(screen, curpos, stat, filename)
     display.flip()
 quit()

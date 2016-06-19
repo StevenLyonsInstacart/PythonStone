@@ -18,10 +18,16 @@ class Board:
         
         self.player1 = Player(self.hands[0], self.Deck1, self.spots[0], 0, 0)
         self.player2 = Player(self.hands[1], self.Deck2, self.spots[1], 1, 1)
+        
+        
         self.player1.setEnemies(self.player2)
+        self.currentPlayer = self.player1
             
     def getSpots(self):
         return self.spots
+    
+    def getCurrentPlayer(self):
+        return self.currentPlayer
     
     def getSpot(self,i,j):
         return self.spots[i][j]
@@ -65,6 +71,8 @@ class Board:
     
     def getPlayer2(self):
         return self.player2
+    def switchCurrent(self):
+        self.currentPlayer = self.currentPlayer.getEnemy()
         
 
         

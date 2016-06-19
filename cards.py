@@ -267,6 +267,26 @@ class NOV_ENG(Creature):
 	player = self.getPlayer()
 	player.getHand().draw(player.getDeck())
 	
+class DUDE(Creature):
+    
+    def __init__(self):
+        self.name = "SilverHand recruit"
+        self.power = 1
+        self.toughness = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = None
+        self.owner = 0
+        self.tired = True
+	self.buffs = []
+	self.img = "silverhand_recruit.png"
+        
+    def copy(self):
+        return DUDE()
+    
+    def getClass(self):
+        return self.classType
+	
 class LOT_HRD(Creature):
     
     def __init__(self, board, screen):
