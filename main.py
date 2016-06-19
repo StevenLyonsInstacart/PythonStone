@@ -9,6 +9,7 @@ from DrawBoard import *
 from Damage import *
 from heroPower import *
 from Board import *
+from spawn import *
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -207,42 +208,7 @@ def playCard(player, mana, card, spot, hand1, hand2):
     display.flip()
     return None, None, None
 
-def checkRight(pos, spots):
-    for i in range (pos[1], 7):
-	if spots[pos[0]][i].getOccupied() == False:
-	    return True
-    return False
 
-def checkLeft(pos, spots):
-    for i in range (pos[1], 7):
-	if spots[pos[0]][7 - i].getOccupied() == False:
-	    return True
-    return False
-
-def shiftLeft(pos, spots, curCard):
-    ind = pos[1] + 1
-    while spots[pos[0]][ind].getOccupied():
-	holdover = spots[pos[0]][ind].getCard()
-	spots[pos[0]][ind].setCard(curCard)
-	curCard = holdover
-	ind += 1
-    holdover = spots[pos[0]][ind].getCard()
-    spots[pos[0]][ind].setCard(curCard)
-    spots[pos[0]][ind].setOccupied(True)
-    curCard = holdover
-    
-
-def shiftRight(pos, spots, curCard):
-    ind = pos[1] - 1
-    while spots[pos[0]][ind].getOccupied():
-	holdover = spots[pos[0]][ind].getCard()
-	spots[pos[0]][ind].setCard(curCard)
-	curCard = holdover
-	ind -= 1
-    holdover = spots[pos[0]][ind].getCard()
-    spots[pos[0]][ind].setCard(curCard)
-    spots[pos[0]][ind].setOccupied(True)
-    curCard = holdover	
     
 
 	    

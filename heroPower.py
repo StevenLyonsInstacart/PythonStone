@@ -8,6 +8,7 @@ from DrawBoard import *
 from Damage import *
 from Effect import *
 from Effects import *
+from spawn import *
 
 
 class heroPower():
@@ -88,21 +89,6 @@ class PaladinPower(heroPower):
             self.player.changeCurMana(-self.cost)
 	    spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
     
-def spawnCreature(card, spots, board):
-    for j in range (7):
-	i = 6 - j
-	if spots[i].getOccupied() == False:
-	    spot = spots[i]
-	    spot.setCard(card)
-	    spot.setOccupied(True)
-	    if card.hasBattleCry():
-		card.battleCry()
-				
-	    if card.hasEffect():
-		card.doEffect()
-		board.playedCreature(card)
-	    return True
-    return False
 	
 def MagePing(board, screen, filename, player, enemy):	
     waiting = True
