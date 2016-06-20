@@ -23,8 +23,9 @@ class Player:
         self.order = order
         self.curMana = mana
         self.totMana = mana
-        self.power = 2
+        self.power = 0
         self.ready = True
+        self.armor = 0
         
     def isReady(self):
         return self.ready
@@ -48,6 +49,8 @@ class Player:
         return self.hp
     def getOrder(self):
         return self.order
+    def getArmor(self):
+        return self.armor
     
     def setHand(self, hand):
         self.hand = hand
@@ -81,6 +84,12 @@ class Player:
         self.totMana = self.totMana + change
         if self.totMana > 10:
             self.totMana = 10
+            
+    def changeArmor(self, inc):
+        output = min(0, self.armor +inc)
+        self.armor = max(0, self.armor +inc)
+        return output
+    
     def startTurn (self):
         self.curMana = self.totMana
     
@@ -90,7 +99,11 @@ class Player:
             self.hp.setTired(True)
         
     def incLife(self, inc):
-        self.life += inc
+        if self.armor > 0:
+            lifeDeduct = self.changeArmor(inc)
+            self.life = self.life + lifeDeduct
+        else:
+            self.life += inc
         
     def setEnemies(self, player):
         self.enemy = player

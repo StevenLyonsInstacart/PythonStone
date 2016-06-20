@@ -65,6 +65,30 @@ class WarlockPower(heroPower):
             self.player.changeCurMana(-self.cost)
             self.player.incLife(-2)
             self.player.draw()
+	    
+class DruidPower(heroPower):
+    
+    def __init__(self, player):
+        heroPower.__init__(self, "Druidia", "Druid", player)
+        
+        
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+	    self.player.changeCurMana(-self.cost)
+            self.player.changeArmor(1)
+            self.player.setPower(self.player.getPower() + 1)
+	    
+class WarriorPower(heroPower):
+    
+    def __init__(self, player):
+        heroPower.__init__(self, "Armor Up", "Warrior", player)
+        
+        
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+	    self.player.changeCurMana(-self.cost)
+            self.player.changeArmor(2)
+            
             
 class MagePower(heroPower):
     

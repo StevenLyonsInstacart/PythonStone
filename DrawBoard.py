@@ -93,13 +93,13 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
     screen.blit(portrait2, port2Rect)
     
     
-    health1 = nameFont.render(str(player1.getLife()) , True, (255, 255, 255), BOARD)
+    health1 = nameFont.render((str(player1.getLife()) +" "+ str(player1.getArmor())) , True, (255, 255, 255), BOARD)
     health1Rect = health1.get_rect()
     health1Rect.centerx = 900
     health1Rect.centery = 150
     screen.blit(health1, health1Rect)
     
-    health2 = nameFont.render(str(player2.getLife()) , True, (255, 255, 255), BOARD)
+    health2 = nameFont.render((str(player2.getLife()) +" "+ str(player2.getArmor())) , True, (255, 255, 255), BOARD)
     health2Rect = health1.get_rect()
     health2Rect.centerx = 900
     health2Rect.centery = 650

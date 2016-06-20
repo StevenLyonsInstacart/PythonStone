@@ -58,10 +58,10 @@ def checkHeroPower(pos, turn):
 
 def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
-                 ["garrosh_portrait.png", WarlockPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
+                 ["garrosh_portrait.png", WarriorPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
                  ,["uther_portrait.png", PaladinPower(player, board)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
                  ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", WarlockPower(player)], 
-                 ["malfurion_portrait.png", WarlockPower(player)]]
+                 ["malfurion_portrait.png", DruidPower(player)]]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
 	    player.setPortrait(foldername + classPort[i][0])
