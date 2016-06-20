@@ -109,6 +109,13 @@ def highlight(pos, screen, selcted, square):
 	    draw.rect(screen, GREEN, (200*i,200, 200, 200), 10)
 	if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
 	    draw.rect(screen, GREEN, (200*i,400, 200, 200), 10)
+    for i in range (2):
+	if 550 < pos[0] < 850 and 100 + 500*i < pos[1] < 200 + 500*i:
+	    draw.rect(screen, GREEN, (550,100 + 500*i, 300, 100), 10)
+	    
+	if 950 < pos[0] < 1050 and 100 + 500*i < pos[1] < 200 + 500*i:
+	    draw.rect(screen, GREEN, (950,100 + 500*i, 100, 100), 10)
+	    
     if selected != None:
 	square0 = abs(1-square[0])
 	draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
@@ -147,6 +154,11 @@ def select(mouseObj, spots, current, state, hands):
 			filename = newfilename
 			print filename
 			return [hands[1].getCards()[j], [1,j]], [700, j*140, 140, 100], "H"
+	    murn = abs(1 - turn)
+	    if 550 < mx < 850 and 100 + 500*murn < my < 200 + 500*murn and board.getCurrentPlayer().getPower() > 0 and board.getCurrentPlayer().isReady():
+		return 1, [100 + 500*murn,550, 300, 100], "C"
+	    elif 550 < mx < 850 and 100 + 500*murn < my < 200 + 500*murn and board.getCurrentPlayer().getPower() > 0:
+		return  None, None, None
 		
     else:
 	mx, my = mouseObj.pos
@@ -163,7 +175,7 @@ def select(mouseObj, spots, current, state, hands):
 			else:
 			    return None, None, None
 		    #Play Card
-		    else:
+		    elif state == "H":
 			if spots[i][j].getOccupied() == False:
 			    return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j], 
 			                    hands[current[1][0]], current[1][1])
@@ -182,14 +194,27 @@ def select(mouseObj, spots, current, state, hands):
 			    elif canRight:
 				shiftRight([i,j], spots, prevCard)
 			    return None, None, None
-			    
-			
-	if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
-	    goFace(current.getCard(), player1)
-	    return None, None, None
-	elif 550 < mx < 850 and 600 < my  < 700 and not (current.getCard().getTired()):
-	    goFace(current.getCard(), player2)
-	    return None, None,  None
+		    #Hero attack
+		    elif state == "C":
+			if spots[i][j].getOccupied():
+			    faceGo(board.getCurrentPlayer(), spots[i][j], board)
+			    board.getCurrentPlayer().setReady(False)
+			return None, None, None
+	if state == "B":		
+	    if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
+		goFace(current.getCard(), player1)
+		return None, None, None
+	    elif 550 < mx < 850 and 600 < my  < 700 and not (current.getCard().getTired()):
+		goFace(current.getCard(), player2)
+		return None, None,  None
+	elif state == "C":
+	    if 550 < mx < 850 and 100 < my  < 200 and player2.isReady():
+		faceToFace(player1, player2)
+		return None, None, None
+	    elif 550 < mx < 850 and 600 < my  < 700 and player1.isReady():
+		faceToFace(player2, player1)
+		return None, None,  None
+	
     return current, [i,j, 200, 250], state
     
 def playCard(player, mana, card, spot, hand1, hand2):

@@ -34,6 +34,14 @@ def burstFace(player, inc):
     player.incLife(-inc)
     if player.getLife() < 1:
 	quit()
+	
+def faceGo(player, spot, board):
+    burstFace(player, spot.getCard().getPower())
+    dealDamage(spot, player.getPower(), board)
+    
+def faceToFace(player1, player2):
+    burstFace(player1, player2.getPower())
+    player2.setReady(False)
     
     
         

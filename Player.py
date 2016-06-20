@@ -23,7 +23,13 @@ class Player:
         self.order = order
         self.curMana = mana
         self.totMana = mana
+        self.power = 2
+        self.ready = True
         
+    def isReady(self):
+        return self.ready
+    def getPower(self):
+        return self.power
     def getHand(self):
         return self.hand
     def getDeck(self):
@@ -59,6 +65,10 @@ class Player:
         self.enemy = player
     def setHP(self, power):
         self.hp = power
+    def setPower(self, power):
+        self.power = power
+    def setReady(self, ready):
+        self.ready = ready
         
     def getTotalMana(self):
         return self.totMana

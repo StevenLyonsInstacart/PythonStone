@@ -4,9 +4,12 @@ def endTurn(pos, turn, board):
     hands= board.getHands()
     player1 = board.getPlayer1()
     player2 = board.getPlayer2()
-    board.switchCurrent()
+   
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
+	board.getCurrentPlayer().setReady(False)
+	board.getCurrentPlayer().getEnemy().setReady(True)
+	board.switchCurrent()
 	print "endTurn", turn
 	if turn == 1:
 	    player2.changeTotMana(1)

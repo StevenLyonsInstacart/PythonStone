@@ -42,7 +42,7 @@ def showCard2(spot, screen, row1):
     nameFont = font.Font(None, 30)
     name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
     nameRect = name.get_rect()
-    nameRect.centerx = spot.getPos()[0] +15
+    nameRect.centerx = spot.getPos()[0] +25
     if row1:
 	nameRect.centery = spot.getPos()[1] + 50
     else:
@@ -148,6 +148,18 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
     manaRect.centerx = 1475 
     manaRect.centery = 150
     screen.blit(player1Mana, manaRect)
+    
+    player1Power = nameFont.render(str(player1.getPower()) , True, (205,155,20), BOARD)
+    powerRect = player1Power.get_rect()
+    powerRect.centerx = 500
+    powerRect.centery = 150
+    screen.blit(player1Power, powerRect)
+    
+    player2Power = nameFont.render(str(player2.getPower()) , True, (205,155,20), BOARD)
+    power2Rect = player2Power.get_rect()
+    power2Rect.centerx = 500
+    power2Rect.centery = 650
+    screen.blit(player2Power, power2Rect)
     
     player2Mana = nameFont.render(str(player2.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
     mana2Rect = player2Mana.get_rect()

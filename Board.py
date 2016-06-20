@@ -21,7 +21,7 @@ class Board:
         
         
         self.player1.setEnemies(self.player2)
-        self.currentPlayer = self.player1
+        self.currentPlayer = self.player2
             
     def getSpots(self):
         return self.spots
