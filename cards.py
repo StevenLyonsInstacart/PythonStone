@@ -21,6 +21,7 @@ class NULL_CREATURE(Creature):
         self.name = "Null"
         self.power = 0
         self.toughness = 0
+	self.maxHealth = 0
         self.cost = 0
         self.classType = "neutral"
         self.creatureType = None
@@ -33,6 +34,7 @@ class CH_YETI(Creature):
         self.name = "Chillwind Yeti"
         self.power = 4
         self.toughness = 5
+	self.maxHealth = 5
         self.cost = 4
         self.classType = "neutral"
         self.creatureType = None
@@ -53,6 +55,7 @@ class RIV_CROC(Creature):
         self.name = "River Crocolisk"
         self.power = 2
         self.toughness = 3
+	self.maxHealth = 3
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = "Beast"
@@ -86,6 +89,7 @@ class FL_JUG(Creature):
         self.name = "Flame Juggler"
         self.power = 2
         self.toughness = 3
+	self.maxHealth = 3
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
@@ -109,6 +113,7 @@ class MUR_RAID(Creature):
         self.name = "Murloc Raider"
         self.power = 2
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = "Murloc"
@@ -129,6 +134,7 @@ class GRM_MUR(Creature):
         self.name = "Grimscale Oracle"
         self.power = 1
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = "Murloc"
@@ -159,6 +165,7 @@ class ABU_SRG(Creature):
         self.name = "Abusive Sergeant"
         self.power = 2
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
@@ -188,6 +195,7 @@ class LNC_CAR(Creature):
         self.name = "Lance Carrier"
         self.power = 1
         self.toughness = 2
+	self.maxHealth = 2
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
@@ -216,6 +224,7 @@ class IRN_OWL(Creature):
         self.name = "Iron Beak Owl"
         self.power = 2
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 3
         self.classType = "neutral"
         self.creatureType = None
@@ -244,6 +253,7 @@ class NOV_ENG(Creature):
         self.name = "Novice Engineer"
         self.power = 1
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
@@ -273,6 +283,7 @@ class DUDE(Creature):
         self.name = "SilverHand recruit"
         self.power = 1
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
@@ -293,6 +304,7 @@ class LOT_HRD(Creature):
         self.name = "Loot Hoarder"
         self.power = 2
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
@@ -322,6 +334,7 @@ class ELF_ARC(Creature):
         self.name = "Elvish Archer"
         self.power = 1
         self.toughness = 1
+	self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
@@ -389,7 +402,7 @@ def selectedBattleCry(buff, board, screen, filename):
 				waiting = False
 	    drawGrid(screen, board, filename)
 	    showBoard(board.getSpots(), screen)
-	    showHand(board.getHands(), screen)
+	    showHand(board.getHands(), screen, 1)
 	    highlight((255, 255, 0), evnt.pos, screen)
 	    display.flip()
 	    

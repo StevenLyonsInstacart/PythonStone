@@ -129,5 +129,8 @@ class Player:
         
     def draw(self):
         self.hand.draw(self.deck)
+        
+    def heal(self, inc):
+        self.life = min(30, self.life + 2)
     
     

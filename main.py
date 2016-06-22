@@ -60,7 +60,7 @@ def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
                  ["garrosh_portrait.png", WarriorPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
                  ,["uther_portrait.png", PaladinPower(player, board)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
-                 ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", RoguePower(player)], 
+                 ["anduin_portrait.png", PriestPower(player, screen, board)],["valeera_portrait.png", RoguePower(player)], 
                  ["malfurion_portrait.png", DruidPower(player)]]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
@@ -216,9 +216,21 @@ def select(mouseObj, spots, current, state, hands):
 	elif state == "C":
 	    if 550 < mx < 850 and 100 < my  < 200 and player2.isReady():
 		faceToFace(player1, player2)
+		attacker = player2
+		if attacker.isArmed():
+		    weapon = attacker.getWeapon()
+		    if weapon.attackCheck():
+			attacker.unarmed()
+			attacker.setWeapon(None)
 		return None, None, None
 	    elif 550 < mx < 850 and 600 < my  < 700 and player1.isReady():
 		faceToFace(player2, player1)
+		attacker = player1
+		if attacker.isArmed():
+		    weapon = attacker.getWeapon()
+		    if weapon.attackCheck():
+			attacker.unarmed()
+			attacker.setWeapon(None)
 		return None, None,  None
 	
     return current, [i,j, 200, 250], state

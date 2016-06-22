@@ -10,6 +10,7 @@ from Effect import *
 from Effects import *
 from spawn import *
 from Weapon import *
+from Health import *
 
 
 class heroPower():
@@ -102,7 +103,14 @@ class MagePower(heroPower):
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-	    MagePing(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
+	    target, typ = MagePing(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
+	    if typ == "Creature":
+		dealDamage(target, 1, self.board)
+	    else:
+		if target == self.player.getOrder():
+		    burstFace(self.player, 1)
+		else:
+		    burstFace(self.player.getEnemy(), 1)
 	    
 class PaladinPower(heroPower):
     def __init__(self, player, board):
@@ -123,6 +131,24 @@ class RoguePower(heroPower):
             self.player.changeCurMana(-self.cost)
 	    self.player.armed()
 	    self.player.setWeapon(Dagger())
+	    
+class PriestPower(heroPower):
+    def __init__(self, player, screen, board):
+        heroPower.__init__(self, "The Light Shall Burn You", "Priest", player)
+	self.board = board
+	self.screen = screen
+	
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            self.player.changeCurMana(-self.cost)
+	    target, typ = MagePing(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
+	    if typ == "Creature":
+		healCreature(target.getCard(), 2)
+	    else:
+		if target == self.player.getOrder():
+		    self.player.heal(2)
+		else:
+		    self.player.getEnemy().heal(2)
     
 	
 def MagePing(board, screen, filename, player, enemy):	
@@ -140,15 +166,11 @@ def MagePing(board, screen, filename, player, enemy):
 			    square = [i,j]
 			    reversei = abs(1-i)
 			    if spots[reversei][j].getOccupied():
-				dealDamage(spots[reversei][j], 1, board)
-				waiting = False
+				return spots[reversei][j], "Creature"
 		for i in range (2):
 		    if 550 < mx < 850 and 100 + 500*i < my < 200 + i*500:
-			if i == player.getOrder():
-			    burstFace(player, 1)
-			else:
-			    burstFace(enemy, 1)
-			waiting = False
+			return i, "Player"
+			
 	    elif evnt.type == MOUSEMOTION:
 		drawGrid(screen, board, filename)
 		showBoard(board.getSpots(), screen)

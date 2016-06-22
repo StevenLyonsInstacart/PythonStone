@@ -93,16 +93,43 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
     screen.blit(portrait2, port2Rect)
     
     
-    health1 = nameFont.render((str(player1.getLife()) +" "+ str(player1.getArmor())) , True, (255, 255, 255), BOARD)
+    crest = image.load("pics/armor.png")
+    crest1Rect = Rect(900, 150, 40, 45)
+    screen.blit(crest, crest1Rect)
+    
+    crest = image.load("pics/armor.png")
+    crest2Rect = Rect(900, 650, 40, 45)
+    screen.blit(crest, crest2Rect)
+    
+    health1 = nameFont.render((str(player1.getLife()) +"    "+ str(player1.getArmor())) , True, (255, 255, 255), BOARD)
     health1Rect = health1.get_rect()
     health1Rect.centerx = 900
-    health1Rect.centery = 150
+    health1Rect.centery = 120
     screen.blit(health1, health1Rect)
     
-    health2 = nameFont.render((str(player2.getLife()) +" "+ str(player2.getArmor())) , True, (255, 255, 255), BOARD)
+    if player1.isArmed():
+	weapon = player1.getWeapon()
+    
+	Weapon1 = nameFont.render((str(weapon.getPower()) +" / "+ str(weapon.getDurability())) , True, (255, 255, 255), BOARD)
+	Weapon1Rect = Weapon1.get_rect()
+	Weapon1Rect.centerx = 300
+	Weapon1Rect.centery = 150
+	screen.blit(Weapon1, Weapon1Rect)
+	
+    if player2.isArmed():
+	weapon = player2.getWeapon()
+    
+	Weapon2 = nameFont.render((str(weapon.getPower()) +" / "+ str(weapon.getDurability())) , True, (255, 255, 255), BOARD)
+	Weapon2Rect = Weapon2.get_rect()
+	Weapon2Rect.centerx = 300
+	Weapon2Rect.centery = 650
+	screen.blit(Weapon2, Weapon2Rect)
+	
+	
+    health2 = nameFont.render((str(player2.getLife()) +"    "+ str(player2.getArmor())) , True, (255, 255, 255), BOARD)
     health2Rect = health1.get_rect()
     health2Rect.centerx = 900
-    health2Rect.centery = 650
+    health2Rect.centery = 620
     screen.blit(health2, health2Rect)
     
     

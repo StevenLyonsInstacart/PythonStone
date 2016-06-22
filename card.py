@@ -24,6 +24,12 @@ class Creature(Card):
         self.screen = screen
         self.img = ""
         self.player = None
+        self.maxHealth = toughness
+        
+    def getMaxHealth (self):
+        return self.maxHealth
+    def setMaxHealth(self, maxh):
+        self.maxHealth = maxh
         
     def setPlayer(self, player):
         self.player = player
