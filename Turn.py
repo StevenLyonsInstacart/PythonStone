@@ -8,7 +8,10 @@ def endTurn(pos, turn, board):
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
 	board.getCurrentPlayer().setReady(False)
-	board.getCurrentPlayer().setPower(0)
+	newPower = 0
+	if board.getCurrentPlayer().isArmed():
+	    newPower += board.getCurrentPlayer().getWeapon().getPower()
+	board.getCurrentPlayer().setPower(newPower)
 	board.getCurrentPlayer().getEnemy().setReady(True)
 	board.switchCurrent()
 	print "endTurn", turn

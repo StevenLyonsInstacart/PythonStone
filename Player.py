@@ -26,6 +26,8 @@ class Player:
         self.power = 0
         self.ready = True
         self.armor = 0
+        self.weapon = None
+        self.hasWeapon = False
         
     def isReady(self):
         return self.ready
@@ -51,6 +53,16 @@ class Player:
         return self.order
     def getArmor(self):
         return self.armor
+    def getWeapon(self):
+        return self.weapon
+    
+    def armed(self):
+        self.hasWeapon = True
+    def isArmed(self):
+        return self.hasWeapon
+    def unarmed(self):
+        self.hasWeapon = False
+    
     
     def setHand(self, hand):
         self.hand = hand
@@ -72,6 +84,12 @@ class Player:
         self.power = power
     def setReady(self, ready):
         self.ready = ready
+    def setWeapon(self, weapon):
+        self.weapon = weapon
+        if weapon:
+            self.power += weapon.getPower()
+        else:
+            self.power = 0
         
     def getTotalMana(self):
         return self.totMana

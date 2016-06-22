@@ -9,6 +9,7 @@ from Damage import *
 from Effect import *
 from Effects import *
 from spawn import *
+from Weapon import *
 
 
 class heroPower():
@@ -112,6 +113,16 @@ class PaladinPower(heroPower):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
 	    spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
+	    
+class RoguePower(heroPower):
+    def __init__(self, player):
+        heroPower.__init__(self, "Daggers Yo", "Rogue", player)
+	
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            self.player.changeCurMana(-self.cost)
+	    self.player.armed()
+	    self.player.setWeapon(Dagger())
     
 	
 def MagePing(board, screen, filename, player, enemy):	

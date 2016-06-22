@@ -60,7 +60,7 @@ def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
                  ["garrosh_portrait.png", WarriorPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
                  ,["uther_portrait.png", PaladinPower(player, board)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
-                 ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", WarlockPower(player)], 
+                 ["anduin_portrait.png", WarlockPower(player)],["valeera_portrait.png", RoguePower(player)], 
                  ["malfurion_portrait.png", DruidPower(player)]]
     for i in range (9):
 	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
@@ -196,9 +196,15 @@ def select(mouseObj, spots, current, state, hands):
 			    return None, None, None
 		    #Hero attack
 		    elif state == "C":
+			attacker = board.getCurrentPlayer()
 			if spots[i][j].getOccupied():
-			    faceGo(board.getCurrentPlayer(), spots[i][j], board)
-			    board.getCurrentPlayer().setReady(False)
+			    faceGo(attacker, spots[i][j], board)
+			    attacker.setReady(False)
+			    if attacker.isArmed():
+				weapon = attacker.getWeapon()
+				if weapon.attackCheck():
+				    attacker.unarmed()
+				    attacker.setWeapon(None)
 			return None, None, None
 	if state == "B":		
 	    if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
