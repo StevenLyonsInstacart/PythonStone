@@ -402,7 +402,7 @@ def selectCard(board, screen, filename):
     				        return spots[reversei][j]
     	    drawGrid(screen, board, filename)
     	    showBoard(board.getSpots(), screen)
-    	    showHand(board.getHands(), screen)
+    	    showHand(board.getHands(), screen, 1)
     	    highlight((255, 255, 0), evnt.pos, screen)
     	    display.flip()
 
