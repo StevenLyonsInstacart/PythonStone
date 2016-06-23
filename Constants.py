@@ -1,2 +1,2 @@
 def foldername():
-    return "blanks/"
+    return "pics/"

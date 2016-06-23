@@ -106,5 +106,6 @@ class Board:
     def switchCurrent(self):
         self.currentPlayer = self.currentPlayer.getEnemy()
         
+        
 
         

@@ -139,13 +139,15 @@ class Creature(Card):
             buff.removeBuff()
         self.buffs = []
         
+    def removeBuff(self, buff):
+        self.buffs.remove(buff)
         
    
     #Buff power by a set amount
     def incPower(self, inc):
         self.power = self.power + inc
         
-    # This function should be removed    
+    # Deals damage to the creature 
     def takeDamage(self, damage):
         self.toughness = self.toughness - damage
         

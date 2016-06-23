@@ -9,15 +9,16 @@ from Effect import *
 from Effects import *
 from card import *
 
-
+#Colours
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
 
 
-#handFont = font.Font(None, 15)
 
+#Null Creature is an empty creature that wont be shown on screen.
+#Currently Null_Creature is used in empty board and hand spaces
 class NULL_CREATURE(Creature):
     def __init__(self):
         self.name = "Null"
@@ -31,6 +32,8 @@ class NULL_CREATURE(Creature):
 	self.buffs = []
 	self.img = "abusive_sergeant.png"
     
+    
+#Representation of Chillwind Yeti    
 class CH_YETI(Creature):
     def __init__(self):
         self.name = "Chillwind Yeti"
@@ -52,6 +55,7 @@ class CH_YETI(Creature):
     def copy(self):
         return CH_YETI()
     
+#Representation of River Crocolisk    
 class RIV_CROC(Creature):
     def __init__(self):
         self.name = "River Crocolisk"
@@ -72,9 +76,11 @@ class RIV_CROC(Creature):
         return self.classType
     def copy(self):
         return RIV_CROC()
-    
+
+#Representation of Flame Juggler    
 class FL_JUG(Creature):
     
+    #BattleCry: deal 1 damage to a random enemy
     def battleCry(self):
         curBoard = self.state.getBoard()
         enemySide = curBoard.getSpots()[1]
@@ -105,10 +111,11 @@ class FL_JUG(Creature):
     
     def copy(self):
         return FL_JUG()
-        
+    #Has a battlecry    
     def hasBattleCry(self):
         return True
-    
+
+#Representation of Murloc Raider    
 class MUR_RAID(Creature):
     
     def __init__(self):
@@ -130,6 +137,7 @@ class MUR_RAID(Creature):
     def getClass(self):
         return self.classType
     
+#Representation of Grimscale Oracle    
 class GRM_MUR(Creature):
     
     def __init__(self, board, screen):
@@ -157,10 +165,12 @@ class GRM_MUR(Creature):
     def hasEffect(self):
 	return True
     
+    #Buff all other murlocs with +1 attack
     def doEffect(self):
 	self.board.addEffect(self.effects[0])
 	self.effects[0].onPlay()
     
+#Representation of Abusive Sergeant    
 class ABU_SRG(Creature):
     
     def __init__(self, board, screen):
@@ -188,9 +198,11 @@ class ABU_SRG(Creature):
     def hasBattleCry(self):
         return True
     
+    #Give a minion +2 attack until end of turn
     def battleCry(self):
 	selectedBattleCry(ABU_BUFF(None), self.board, self.screen, self.img)
-	
+
+#Lance Carrier Representation	
 class LNC_CAR(Creature):
     
     def __init__(self, board, screen):
@@ -216,10 +228,11 @@ class LNC_CAR(Creature):
     
     def hasBattleCry(self):
         return True
-    
+    #Ggive a minion +2 attack permanently
     def battleCry(self):
 	selectedBattleCry(LNC_BUFF(None), self.board, self.screen, self.img)
 	
+#Representation of IronBeak Owl    
 class IRN_OWL(Creature):
     
     def __init__(self, board, screen):
@@ -246,9 +259,11 @@ class IRN_OWL(Creature):
     def hasBattleCry(self):
         return True
     
+    #Silence a Creature
     def battleCry(self):
 	selectedBattleCry(OWL_BUFF(None), self.board, self.screen, self.img)
-	
+
+#Representation of Novice Engineer	
 class NOV_ENG(Creature):
     
     def __init__(self, board, screen):
@@ -274,11 +289,12 @@ class NOV_ENG(Creature):
     
     def hasBattleCry(self):
         return True
-    
+    #Draw a card
     def battleCry(self):
 	player = self.getPlayer()
 	player.getHand().draw(player.getDeck())
-	
+
+#Representation of Silver Hand Recruit	
 class DUDE(Creature):
     
     def __init__(self):
@@ -299,7 +315,8 @@ class DUDE(Creature):
     
     def getClass(self):
         return self.classType
-	
+    
+#Rrepresentation of Loot Hoarder	
 class LOT_HRD(Creature):
     
     def __init__(self, board, screen):
@@ -326,10 +343,12 @@ class LOT_HRD(Creature):
     def hasDeathRattle(self):
         return True
     
+    #Draw a card on Death
     def deathRattle(self):
-	player = self.getPlayer()
-	player.getHand().draw(player.getDeck())
-	
+	       player = self.getPlayer()
+	       player.getHand().draw(player.getDeck())
+
+#Representation of Elven Archer	
 class ELF_ARC(Creature):
     
     def __init__(self, board, screen):
@@ -356,33 +375,38 @@ class ELF_ARC(Creature):
     def hasBattleCry(self):
         return True
     
+    #Deal 1 Damage
     def battleCry(self):
 	target = selectCard(self.board, self.screen, self.img)
 	dealDamage(target, 1, self.board)
-	
+
+#A helper function that will return the spot of a selected card.	
 def selectCard(board, screen, filename):	
     waiting = True
     spots = board.getSpots()
     while waiting:
 	
-	for evnt in event.get():
-	    
-	    if evnt.type == MOUSEBUTTONDOWN:
-		mx, my = evnt.pos
-		for i in range (2):
-		    for j in range(0,7):
-			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
-			    square = [i,j]
-			    reversei = abs(1-i)
-			    if spots[reversei][j].getOccupied():
-				return spots[reversei][j]
-	    drawGrid(screen, board, filename)
-	    showBoard(board.getSpots(), screen)
-	    showHand(board.getHands(), screen)
-	    highlight((255, 255, 0), evnt.pos, screen)
-	    display.flip()
+    	for evnt in event.get():
+    	    
+    	    if evnt.type == MOUSEBUTTONDOWN:
+    		mx, my = evnt.pos
+            #i represents the side of the board
+    		for i in range (2):
+                #j represents the index of the spot
+    		    for j in range(0,7):
+    			     if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+    			         square = [i,j]
+    			         reversei = abs(1-i)
+                         #Exit when clicked on a spot with a card in it
+    			         if spots[reversei][j].getOccupied():
+    				        return spots[reversei][j]
+    	    drawGrid(screen, board, filename)
+    	    showBoard(board.getSpots(), screen)
+    	    showHand(board.getHands(), screen)
+    	    highlight((255, 255, 0), evnt.pos, screen)
+    	    display.flip()
 
-        
+#Apply a buff to a card currently on the fiels
 def selectedBattleCry(buff, board, screen, filename):	
     waiting = True
     spots = board.getSpots()
@@ -409,7 +433,7 @@ def selectedBattleCry(buff, board, screen, filename):
 	    display.flip()
 	    
 
-
+#While selecting a battle cry, highlight wherever the mouse is
 def highlight(colour, pos, screen):
     for i in range (0,10):
 	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:

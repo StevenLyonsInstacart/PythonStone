@@ -42,10 +42,15 @@ def endTurn(pos, turn, board):
     
 def checkBuffs(spots):
     for i in range (2):
-	for j in range (7):
-	    if spots[i][j].getOccupied():
-		buffs = spots[i][j].getCard().getBuffs()
-		for k in buffs:
-		    if k.getOneTurn():
-			k.removeBuff()
+        for j in range (7):
+            if spots[i][j].getOccupied():
+                buffs = spots[i][j].getCard().getBuffs()
+                minion = spots[i][j].getCard()
+                getRid = []
+                for k in buffs:
+                    if k.getOneTurn():
+                        k.removeBuff()
+                        getRid.append(k)
+                for buf in getRid:
+                    minion.removeBuff(buf)
 	
