@@ -1,5 +1,6 @@
 from card import *
 
+# The Buff class represents Buffs that can be on minions.
 
 class Buff:
     
@@ -8,21 +9,28 @@ class Buff:
         self.constant = False
         self.growing = False
         
+    ######################
+    #    Get Statements  #
+    ######################
     def getOneTurn(self):
         return self.oneTurn
+    
+    def getGrowing(self):
+        return self.growing
+    
+    def getConsant(self):
+        return self.constant
+    
+    ######################
+    #    Set Statements  #
+    ######################
     
     def setOneTurn(self, boo):
         self.oneTurn = boo
         
-    def getConsant(self):
-        return self.constant
-    
     def setConstant(self, boo):
         self.constant = boo
         
-    def getGrowing(self):
-        return self.growing
-    
     def setGrowing(self, boo):
         self.growing = boo
     
