@@ -1,7 +1,8 @@
-from Spot import *
-from Hand import *
-from Deck import *
 from Board import *
+from Deck import *
+from Hand import *
+from Spot import *
+
 
 class State:
     

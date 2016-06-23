@@ -1,10 +1,13 @@
-from Spot import *
-from Hand import *
-from Deck import *
 from copy import *
-from State import *
+from random import *
+
+from Deck import *
+from Hand import *
 from Player import *
-import random
+from Spot import *
+from State import *
+
+
 class Board:
     def __init__(self):
         self.spots = ([],[])
@@ -37,8 +40,8 @@ class Board:
     
     def simpleDecks(self, cards1, cards2, player1, player2):
         for i in range (30):
-            random.shuffle(cards1)
-            random.shuffle(cards2)
+            shuffle(cards1)
+            shuffle(cards2)
             newCard1 = cards1[0].copy()
             newCard1.setPlayer(player1)
             newCard2 = cards2[0].copy()

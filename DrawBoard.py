@@ -1,11 +1,13 @@
-from card import *
-from random import *
 from pygame import *
-from Buffs import *
+from random import *
+
 from Buff import *
+from Buffs import *
+from card import *
+from Constants import *
 
 
-foldername = "pics/"
+foldername = foldername()
 DISPLAYNUM = 4
 
 RED = (255, 0, 0)

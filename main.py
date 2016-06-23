@@ -1,15 +1,20 @@
 #Main  HS game
 #To Lindsay
 from pygame import *
+import random
+
+from Board import *
+from Damage import *
+from DrawBoard import *
+from Turn import *
 from card import *
 from cards import *
-from random import *
-from Turn import *
-from DrawBoard import *
-from Damage import *
 from heroPower import *
-from Board import *
 from spawn import *
+from Constants import *
+
+
+
 
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
@@ -18,10 +23,10 @@ BOARD = (205,182,139)
 LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
 turn = 0
-foldername = "pics/"
+foldername = foldername()
 
 DISPLAYNUM = 4
-filename = "abusive_sergeant.png"
+filename = foldername+"abusive_sergeant.png"
 
 
 def check_to_quit():

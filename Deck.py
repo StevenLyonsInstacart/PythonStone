@@ -1,4 +1,6 @@
 from card import *
+
+
 class Deck:
     def __init__(self, name, className):
         self.cardlist = []

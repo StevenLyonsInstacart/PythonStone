@@ -1,4 +1,6 @@
 from card import *
+
+
 class CH_YETI(Creature):
     def __init__(self):
         self.name = "Chillwind Yeti"

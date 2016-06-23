@@ -1,10 +1,12 @@
 from pygame import *
-from card import *
-from cards import *
 from random import *
-from Turn import *
+
 from DrawBoard import *
 from Spot import *
+from Turn import *
+from card import *
+from cards import *
+
 
 def dealDamage(target, total, board):
     target.getCard().takeDamage(total)
