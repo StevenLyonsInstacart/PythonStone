@@ -249,16 +249,22 @@ def hoveredCard(screen, pos, status, filename):
             screen.blit(img, imgRect)
             display.flip()
             
-    
+#Draws the Screen selection Screen
+# screen: surface that is being drawn on
+# cards: Possible cards to add to deck
+# background: The background colour
+# start: the current position in the card list
+# filename: the filename of an image to highlight
 def showSelect(screen, cards, num, background, start, filename):
+    
     nameFont = font.Font(None, 30)
+    #Draws the background
     draw.rect(screen, background, (0,0,1400,800))
     
     
     
-    #Finish  Deck Building
+    #Submit Deck button
     draw.rect(screen, RED, (1000,600, 200, 70), 5)
-    
     name = nameFont.render("Submit Deck" , True, (50,50,50), background)
     nameRect = name.get_rect()
     nameRect.centerx = 1100 
@@ -266,7 +272,7 @@ def showSelect(screen, cards, num, background, start, filename):
     screen.blit(name, nameRect)
     
     
-    
+    #Box of Card choices
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
 	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
@@ -275,6 +281,7 @@ def showSelect(screen, cards, num, background, start, filename):
 	nameRect.centery = 100 + 50*(i - start)
 	screen.blit(name, nameRect)
 	
+    #Box of class choices
     draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
     classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
     for i in range (9):
@@ -284,12 +291,15 @@ def showSelect(screen, cards, num, background, start, filename):
 	nameRect.centery = 95 + 30*i
 	screen.blit(name, nameRect)
 	
+    #Lines between class choices
     for i in range (9):
 	draw.line(screen, BLUE, (800, 80 + 30*i), (1050, 80 + 30*i))
     
+    #Left and right card selectors
     draw.rect(screen, BLUE, (400, 400, 100, 100))
     draw.rect(screen, RED, (600, 400, 100, 100))
     
+    #Hover Card
     img = image.load(filename)
     imgRect = Rect(1400, 0, 200, 200)
     screen.blit(img, imgRect)

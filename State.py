@@ -3,7 +3,6 @@ from Deck import *
 from Hand import *
 from Spot import *
 
-
 class State:
     
     def __init__(self, Hand, Deck, Board):

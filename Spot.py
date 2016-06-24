@@ -1,3 +1,4 @@
+#Spot is a space on the Board which can hold a card
 class Spot:
     def __init__(self, pos):
         self.occupied = False

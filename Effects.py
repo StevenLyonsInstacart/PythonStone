@@ -8,6 +8,8 @@ from DrawBoard import *
 from Effect import *
 from card import *
 
+# Grimscale oracle effect
+# While Grimscale Oracle is in play, all other murlocs gain +1 attack
 
 class GRM_EFF(Effect):
     
@@ -18,6 +20,7 @@ class GRM_EFF(Effect):
         self.board = board
         self.host = card
         
+    #On play give each other Murloc +1 attack
     def onPlay(self):
         spots = self.board.getSpots()
         for i in range (2):
@@ -29,13 +32,14 @@ class GRM_EFF(Effect):
                         card.addBuff(curBuff)
                         curBuff.applyBuff()
                         
-                        
+    #On another creature being played, check if its a murloc and give buff if needed                    
     def playCreature(self, card):
         if card.getCreatureType() == "Murloc" and card != self.host:
                         curBuff = GRM_BUFF(card, self.board)
                         card.addBuff(curBuff)
                         curBuff.applyBuff()
-                        
+     
+    #When the Grimscale oracle dies, remove the buff from all other murlocs                    
     def killCreature(self, card):
         if card == self.host:
             spots = self.board.getSpots()

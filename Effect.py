@@ -7,7 +7,9 @@ from Damage import *
 from DrawBoard import *
 from card import *
 
-
+# Effects can do many different things, but they all trigger during some 
+# specific instance. These instances are set to NULL, but are overwritten for
+# specific effects
 class Effect:
     
     def __init__(self, board):
