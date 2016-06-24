@@ -255,7 +255,7 @@ def hoveredCard(screen, pos, status, filename):
 # background: The background colour
 # start: the current position in the card list
 # filename: the filename of an image to highlight
-def showSelect(screen, cards, num, background, start, filename):
+def showSelect(screen, cards, usedCards, num, background, start, filename, filename2):
     
     nameFont = font.Font(None, 30)
     #Draws the background
@@ -271,29 +271,60 @@ def showSelect(screen, cards, num, background, start, filename):
     nameRect.centery = 635
     screen.blit(name, nameRect)
     
+    #Show 4 current Cards
+    cooridinates = [[0, 0, 184, 254],[184, 0, 184, 254],[0, 254, 184, 254],[184, 254, 184, 254]]
+    
+    for i in range (start, min(start + DISPLAYNUM, len(cards))):
+        file = foldername + cards[i].getFilename()
+        img = image.load(file)
+        imgRect = Rect(cooridinates[i - start][0], cooridinates[i - start][1], cooridinates[i -start][2], cooridinates[i - start][3])
+        screen.blit(img, imgRect)
+        
+        
+    # Show selected cards    
+    draw.rect(screen, BLUE, (5, 510, 550, 280), 2)
+    for i in range (len(usedCards)):
+        name = nameFont.render(usedCards[i].getName(), True, (50,50,50), background)
+        nameRect = name.get_rect()
+        if i < 10:
+            nameRect.centerx = 100 
+            nameRect.centery = 530 + 25*i
+        elif i < 20:
+            nameRect.centerx = 280 
+            nameRect.centery = 530 + 25*(i-10)
+        else:
+            nameRect.centerx = 460 
+            nameRect.centery = 530 + 25*(i-20)
+        screen.blit(name, nameRect)
     
     #Box of Card choices
     draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
-	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
-	nameRect = name.get_rect()
-	nameRect.centerx = 500 
-	nameRect.centery = 100 + 50*(i - start)
-	screen.blit(name, nameRect)
+    	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
+    	nameRect = name.get_rect()
+    	nameRect.centerx = 500 
+    	nameRect.centery = 100 + 50*(i - start)
+    	screen.blit(name, nameRect)
+        
+    #Hero Portrait
+    img = image.load(filename2)
+    imgRect = Rect(1050, 100, 300, 100)
+    screen.blit(img, imgRect)
+    
 	
     #Box of class choices
     draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
     classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
     for i in range (9):
-	name = nameFont.render(classes[i], True, (50,50,50), background)
-	nameRect = name.get_rect()
-	nameRect.centerx = 925 
-	nameRect.centery = 95 + 30*i
-	screen.blit(name, nameRect)
+    	name = nameFont.render(classes[i], True, (50,50,50), background)
+    	nameRect = name.get_rect()
+    	nameRect.centerx = 925 
+    	nameRect.centery = 95 + 30*i
+    	screen.blit(name, nameRect)
 	
     #Lines between class choices
     for i in range (9):
-	draw.line(screen, BLUE, (800, 80 + 30*i), (1050, 80 + 30*i))
+	       draw.line(screen, BLUE, (800, 80 + 30*i), (1050, 80 + 30*i))
     
     #Left and right card selectors
     draw.rect(screen, BLUE, (400, 400, 100, 100))

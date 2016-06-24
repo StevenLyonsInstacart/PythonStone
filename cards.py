@@ -221,7 +221,7 @@ class LNC_CAR(Creature):
 	self.img = "lance_carrier.png"
         
     def copy(self):
-        return ABU_SRG(self.board, self.screen)
+        return LNC_CAR(self.board, self.screen)
     
     def getClass(self):
         return self.classType

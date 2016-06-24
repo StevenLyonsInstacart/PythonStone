@@ -35,7 +35,7 @@ class Player:
         self.deck = deck
         self.spots = spots
         self.role = role
-        self.portrait = "guldan_portrait.jpg"
+        self.portrait = "blanks/guldan_portrait.jpg"
         self.life = 30
         self.enemy = None
         self.hp = None
@@ -107,6 +107,8 @@ class Player:
     def setReady(self, ready):
         self.ready = ready
     def setWeapon(self, weapon):
+        if self.weapon:
+            self.power -= self.weapon.getPower()
         self.weapon = weapon
         if weapon:
             self.power += weapon.getPower()

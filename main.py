@@ -12,6 +12,7 @@ from cards import *
 from heroPower import *
 from spawn import *
 from Constants import *
+from Messages import *
 
 
 
@@ -46,11 +47,20 @@ def check_to_quit():
 
 
 #Check to see if User wants to submit Deck
-def checkExit(mouse):
+def checkExit(mouse, player, deck):
     mx, my = mouse.pos
     if 1000 < mx < 1200 and 600 < my < 670:
+        if not deck:
+            NoDeckMessage = Message("Please Select at least 1 Card", screen)
+            NoDeckMessage.displayMessage()
+            return True
+        if player.getHP() == None:
+            NoDeckMessage = Message("Please Select a Character", screen)
+            NoDeckMessage.displayMessage()
+            return True
         return False
-    return  True
+    else:
+        return True
 
 # Assign a card to a player
 # returns a new card assigned to player (Card)
@@ -305,37 +315,41 @@ start = 0
 
 #Select screen for Player1
 while (selecting):
-    showSelect(screen, cardList, 1, (255,255,255), start, filename)
+    showSelect(screen, cardList, deck1Cards, 1, (255,255,255), start, filename, player1.getPortrait())
     for evnt in event.get():
-	if evnt.type == MOUSEBUTTONDOWN:
-	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList, start, player1)
-	    updateClass(player1, evnt.pos)
-	    if newCard:
-		deck1Cards.append(newCard)
-	    start += updateList(evnt.pos)
-	elif evnt.type == QUIT:
-	    quit()
-	elif evnt.type == MOUSEMOTION:
-	    filename = hoverCard(filename, evnt.pos, cardList, start)
+        if evnt.type == MOUSEBUTTONDOWN:
+            selecting = checkExit(evnt, player1, deck1Cards)
+            newCard = addCard(evnt.pos, cardList, start, player1)
+            updateClass(player1, evnt.pos)
+            if newCard:
+                if len(deck1Cards) < 30:
+                    deck1Cards.append(newCard)
+                else:
+                    ToManyCardsMessage = Message("Decks may only have 30 Cards", screen)
+                    ToManyCardsMessage.displayMessage()
+            start += updateList(evnt.pos)
+        elif evnt.type == QUIT:
+            quit()
+        elif evnt.type == MOUSEMOTION:
+            filename = hoverCard(filename, evnt.pos, cardList, start)
     display.flip()
 selecting = True 
 
 #Select screen for Player2
 while (selecting):
-    showSelect(screen, cardList, 1, (200, 200, 200), start, filename)
+    showSelect(screen, cardList, deck2Cards, 1, (200, 200, 200), start, filename, player2.getPortrait())
     for evnt in event.get():
-	if evnt.type == MOUSEBUTTONDOWN:
-	    selecting = checkExit(evnt)
-	    newCard = addCard(evnt.pos, cardList, start, player2)
-	    updateClass(player2, evnt.pos)
-	    if newCard:
-		deck2Cards.append(newCard)
-	    start += updateList(evnt.pos)
-	elif evnt.type == QUIT:
-	    quit()
-	elif evnt.type == MOUSEMOTION:
-	    filename = hoverCard(filename, evnt.pos, cardList, start)
+        if evnt.type == MOUSEBUTTONDOWN:
+            selecting = checkExit(evnt, player2, deck2Cards)
+            newCard = addCard(evnt.pos, cardList, start, player2)
+            updateClass(player2, evnt.pos)
+            if newCard:
+                deck2Cards.append(newCard)
+            start += updateList(evnt.pos)
+        elif evnt.type == QUIT:
+            quit()
+        elif evnt.type == MOUSEMOTION:
+            filename = hoverCard(filename, evnt.pos, cardList, start)
     display.flip()
 
 deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards, player1, player2)
