@@ -15,20 +15,27 @@ from Constants import *
 
 
 
-
+#Colour Declerations
 RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
 LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
+
+# Turn tracker
 turn = 0
+# Get foldername from Constants
 foldername = foldername()
 
+#Number of cards show at a time on card selection screen
 DISPLAYNUM = 4
+
+#filename to be hovered over
 filename = foldername+"abusive_sergeant.png"
 
 
+#Check to see if User wants to quit the application
 def check_to_quit():
     for evnt in event.get(): # checks all events that happen
         keys = key.get_pressed()
@@ -38,13 +45,15 @@ def check_to_quit():
     return True
 
 
-
+#Check to see if User wants to submit Deck
 def checkExit(mouse):
     mx, my = mouse.pos
     if 1000 < mx < 1200 and 600 < my < 670:
-	return False
+        return False
     return  True
 
+# Assign a card to a player
+# returns a new card assigned to player (Card)
 def addCard(pos, cards, start, player):
     for i in range (4):
 	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
@@ -53,14 +62,16 @@ def addCard(pos, cards, start, player):
 	    return newCard
     return None
 
+#Check if a Player has clicked on their hero power
 def checkHeroPower(pos, turn):
     if turn  == 1:
-	if 950 < pos[0] < 1050 and 100 < pos[1] < 200:
-	    player1.doHeroPower()
+    	if 950 < pos[0] < 1050 and 100 < pos[1] < 200:
+    	    player1.doHeroPower()
     else:
-	if 950 < pos[0] < 1050 and 600 < pos[1] < 700:
-	    player2.doHeroPower()
+    	if 950 < pos[0] < 1050 and 600 < pos[1] < 700:
+    	    player2.doHeroPower()
 
+# Update the class that the player has picked on the deck selection screen.
 def updateClass(player, pos):
     classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
                  ["garrosh_portrait.png", WarriorPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
@@ -68,16 +79,18 @@ def updateClass(player, pos):
                  ["anduin_portrait.png", PriestPower(player, screen, board)],["valeera_portrait.png", RoguePower(player)], 
                  ["malfurion_portrait.png", DruidPower(player)]]
     for i in range (9):
-	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
-	    player.setPortrait(foldername + classPort[i][0])
-	    player.setHP(classPort[i][1])
+    	if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
+    	    player.setPortrait(foldername + classPort[i][0])
+    	    player.setHP(classPort[i][1])
 
+#Return the filename of the last card hovered over in the card selection screen
 def hoverCard(filename, pos, cards, start):
     for i in range (min(len(cards) - start, 4)):
-	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-	    return foldername + cards[i + start].getFilename()
+    	if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
+    	    return foldername + cards[i + start].getFilename()
     return filename
 
+#Return the filename of the last card hovered over in the main screen
 def hoverCardMain(filename, pos, spots, hands):
     for i in range (0,10):
 	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
@@ -93,6 +106,7 @@ def hoverCardMain(filename, pos, spots, hands):
 		return foldername + spots[0][i].getCard().getFilename(), 1
     return filename, 0
 
+# Shift the DISPLAYNUM
 def updateList(pos):
     if 400 < pos[0] < 500 and 400 < pos[1] < 500:
 	    return -DISPLAYNUM
@@ -100,7 +114,7 @@ def updateList(pos):
 	    return DISPLAYNUM
     return 0
     
-    
+# Highlight the current space hovered over and the last space clicked    
 def highlight(pos, screen, selcted, square):
     for i in range (0,10):
 	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
@@ -128,7 +142,7 @@ def highlight(pos, screen, selcted, square):
     
 		
 	
-		
+# A completely massive function which handles how selections work		
 def select(mouseObj, spots, current, state, hands):
     global filename
     if current  == None:
@@ -239,7 +253,8 @@ def select(mouseObj, spots, current, state, hands):
 		return None, None,  None
 	
     return current, [i,j, 200, 250], state
-    
+
+#Play a card onto the board    
 def playCard(player, mana, card, spot, hand1, hand2):
     if card.getCost() <= player.getCurMana():
 	player.changeCurMana(-card.getCost())
@@ -260,7 +275,7 @@ def playCard(player, mana, card, spot, hand1, hand2):
     
 
 	    
-    
+#Initialize the board and Pygame    
 init()    
 size =(1600,800)
 screen= display.set_mode (size)
@@ -287,6 +302,8 @@ cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen),
 deck1Cards = []
 deck2Cards = []
 start = 0
+
+#Select screen for Player1
 while (selecting):
     showSelect(screen, cardList, 1, (255,255,255), start, filename)
     for evnt in event.get():
@@ -304,6 +321,7 @@ while (selecting):
     display.flip()
 selecting = True 
 
+#Select screen for Player2
 while (selecting):
     showSelect(screen, cardList, 1, (200, 200, 200), start, filename)
     for evnt in event.get():
@@ -326,29 +344,33 @@ hands[1].initialize(deck2)
 lastpos = [1400, 0]    
 stat = 0
 curpos = [1200, 0]
+
+#GamePlay Loop
 while (breaker):
     breaker = check_to_quit()
+    #Draw the board
     drawGrid(screen, board, filename, lastpos, stat)
+    #Highlight current mouse POS
     highlight(mouse.get_pos(), screen, selected, square)
 
-
+    # Show minions on board
     showBoard(spots, screen)
+    # Show cards in hand
     showHand(hands, screen, turn)
     time.wait(10)
     for newEvent in event.get():
-	if newEvent.type == MOUSEBUTTONDOWN:
-	    
-	    selected, square, state = select(newEvent, spots, selected, state, hands)
-	    checkHeroPower(newEvent.pos, turn)
-	    turn = endTurn(newEvent.pos, turn, board)
-	    filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
-	elif newEvent.type == MOUSEMOTION:
-	    lastpos = newEvent.pos
-	    filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
-	    curpos = newEvent.pos
-	else:
-	    if newEvent.type == QUIT: 
-		breaker = False
+        if newEvent.type == MOUSEBUTTONDOWN:
+            selected, square, state = select(newEvent, spots, selected, state, hands)
+            checkHeroPower(newEvent.pos, turn)
+            turn = endTurn(newEvent.pos, turn, board)
+            filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
+        elif newEvent.type == MOUSEMOTION:
+            lastpos = newEvent.pos
+            filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
+            curpos = newEvent.pos
+        else:
+            if newEvent.type == QUIT: 
+                breaker = False
     hoveredCard(screen, curpos, stat, filename)
     display.flip()
 quit()

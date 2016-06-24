@@ -120,7 +120,7 @@ class MagePower(heroPower):
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-	    target, typ = MagePing(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
+	    target, typ = SelectTarget(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
 	    if typ == "Creature":
 		dealDamage(target, 1, self.board)
 	    else:

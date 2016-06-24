@@ -1,4 +1,8 @@
+# This function is called at the end of each turn, to reset the board for the next player
+# returns the Turn number (int)
 def endTurn(pos, turn, board):
+    
+    # Getting the variables that need to be reset
     spots = board.getSpots()
     decks = board.getDecks()
     hands= board.getHands()
@@ -7,39 +11,48 @@ def endTurn(pos, turn, board):
    
     
     if 1400<pos[0]<1550 and 400 < pos[1] < 500:
-	board.getCurrentPlayer().setReady(False)
-	newPower = 0
-	if board.getCurrentPlayer().isArmed():
-	    newPower += board.getCurrentPlayer().getWeapon().getPower()
-	board.getCurrentPlayer().setPower(newPower)
-	board.getCurrentPlayer().getEnemy().setReady(True)
-	board.switchCurrent()
-	print "endTurn", turn
-	if turn == 1:
-	    player2.changeTotMana(1)
-	    player2.startTurn()
-	    player2.getHP().setTired(False)
-	    
-	else:
-	    player1.changeTotMana(1)
-	    player1.startTurn()
-	    player1.getHP().setTired(False)
-	    
-	hands[turn].draw(decks[turn])
-	for j in range (7):
-	    if spots[turn][j].getOccupied():
-		spots[turn][j].getCard().setTired(True)
-		print "tired"
-	turn = abs(1 - turn)
-	for j in range (7):
-	    if spots[turn][j].getOccupied():
-		spots[turn][j].getCard().setTired(False)
-		print "g2g"
-	checkBuffs(spots)
-	return turn
+    	board.getCurrentPlayer().setReady(False)
+    	newPower = 0
+        # Check if the player has a weapon
+    	if board.getCurrentPlayer().isArmed():
+    	    newPower += board.getCurrentPlayer().getWeapon().getPower()
+        # Remove Buff to Players power
+    	board.getCurrentPlayer().setPower(newPower)
+        # Switch Current Player
+    	board.getCurrentPlayer().getEnemy().setReady(True)
+    	board.switchCurrent()
+    	print "endTurn", turn
+        
+        # Give the new player updated mana and ste as ready
+    	if turn == 1:
+    	    player2.changeTotMana(1)
+    	    player2.startTurn()
+    	    player2.getHP().setTired(False)
+    	    
+    	else:
+    	    player1.changeTotMana(1)
+    	    player1.startTurn()
+    	    player1.getHP().setTired(False)
+    	 
+        # Draw a card    
+    	hands[turn].draw(decks[turn])
+        # Set all current player minions to ready, and the enemies to tired
+    	for j in range (7):
+    	    if spots[turn][j].getOccupied():
+        		spots[turn][j].getCard().setTired(True)
+        		print "tired"
+        # Update turn
+    	turn = abs(1 - turn)
+    	for j in range (7):
+    	    if spots[turn][j].getOccupied():
+        		spots[turn][j].getCard().setTired(False)
+        		print "g2g"
+        # Check all till end of turn buffs
+    	checkBuffs(spots)
+    	return turn
     else:
-	return turn
-    
+        return turn
+# Finish all till end of turn buffs    
 def checkBuffs(spots):
     for i in range (2):
         for j in range (7):
