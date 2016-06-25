@@ -23,3 +23,13 @@ class Message():
             messRect.centery = 350
             self.screen.blit(mess, messRect)
             display.flip()
+            
+class NonValidTarget(Message):
+    
+    def __init__(self, screen):
+        Message.__init__(self, "You must Attack a Valid Target", screen)
+        
+class WrongTurn(Message):
+    
+    def __init__(self, screen):
+        Message.__init__(self, "You can't atack your own minion", screen)
