@@ -16,6 +16,7 @@ from Messages import *
 from Generator import *
 from selectionScreen import *
 from hover import *
+from inputbox import *
 
 
 #Colour Declerations
@@ -260,10 +261,10 @@ start = 0
 choosing = True
 
 #Initialize Player1's Deck
-player1, deck1Cards, save1 = selectScreen(player1, screen, board)
+player1, deck1Cards, save1, name1 = selectScreen(player1, screen, board)
 
 #Initialize Player2's Deck
-player2, deck2Cards, save2 = selectScreen(player2, screen, board)
+player2, deck2Cards, save2, name2 = selectScreen(player2, screen, board)
 
 
 
@@ -272,6 +273,7 @@ selecting = True
 
 if save1:
 	Deck1 = open('deck1.txt', 'w')
+	Deck1.write(name1+"\n")
 	Deck1.write(player1.getRole()+"\n")
 	for i in deck1Cards:
 	    Deck1.write(i.getName()+"\n")
@@ -279,6 +281,7 @@ if save1:
 	
 if save2:        
 	Deck2 = open('deck2.txt', 'w')
+	Deck2.write(name2+"\n")
 	Deck2.write(player2.getRole()+"\n")
 	for i in deck2Cards:
 	    Deck2.write(i.getName()+"\n")

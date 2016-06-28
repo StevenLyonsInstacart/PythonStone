@@ -1,6 +1,7 @@
 from DrawBoard import *
 from Generator import *
 from hover import *
+from inputbox import *
 
 
 DISPLAYNUM = 4
@@ -14,6 +15,7 @@ def selectScreen(player, screen, board):
     start = 0
     filename = "pics/Abusive_sergeant.png"
     saved = False
+    name = ""
     while True:
         drawDeckChoice(screen)
         for evnt in event.get():
@@ -22,6 +24,8 @@ def selectScreen(player, screen, board):
                         if outcome[0]:
                             if outcome[0] == "Custom":
                                 saved = outcome[1]
+                                if saved:
+                                    name = ask(screen, "Please Name Your Deck")
                                 #Select screen for Player1
                                 while (selecting):
                                         showSelect(screen, cardList, deckCards, 1, (255,255,255), start, filename, player.getPortrait())
@@ -54,14 +58,14 @@ def selectScreen(player, screen, board):
                                 cardDict = generator.getCardDict()
                                 playerDict = generator.getPlayerDict()
                                 
-                                for i in deckData[1:]:
+                                for i in deckData[2:]:
                                     deckCards.append(cardDict[i].copy())
-                                playerData = playerDict[deckData[0]]
+                                playerData = playerDict[deckData[1]]
                                 player.setPortrait(foldername + playerData[0])
                                 player.setHP(playerData[1])
                                 player.setRole(playerData[2])
                                 
-                        return player, deckCards, saved
+                        return player, deckCards, saved, name
                     elif evnt.type == QUIT:
                         quit()
         display.flip()

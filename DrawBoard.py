@@ -344,7 +344,7 @@ def drawDeckChoice(screen):
     draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
     for i in range (0,2):
         Deck = open('deck'+str(i+1)+'.txt', 'r')
-        name = nameFont.render(Deck.readline()[:-1], True, (50,50,50), (255,255,255))
+        name = nameFont.render(Deck.readline()[:-1]+": ("+Deck.readline()[:-1]+")", True, (50,50,50), (255,255,255))
         nameRect = name.get_rect()
         nameRect.centerx = 925 
         nameRect.centery = 95 + 30*i
