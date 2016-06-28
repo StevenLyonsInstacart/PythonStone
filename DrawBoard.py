@@ -7,7 +7,7 @@ from card import *
 from Constants import *
 
 
-foldername = foldername()
+foldername = getFoldername()
 DISPLAYNUM = 4
 
 RED = (255, 0, 0)
@@ -334,3 +334,22 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     img = image.load(filename)
     imgRect = Rect(1400, 0, 200, 200)
     screen.blit(img, imgRect)
+    
+def drawDeckChoice(screen):
+    nameFont = font.Font(None, 30)
+    #Draws the background
+    draw.rect(screen, (255,255,255), (0,0,1400,800))
+    
+    #Deck Selection
+    draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
+    for i in range (0,2):
+        Deck = open('deck'+str(i+1)+'.txt', 'r')
+        name = nameFont.render(Deck.readline()[:-1], True, (50,50,50), (255,255,255))
+        nameRect = name.get_rect()
+        nameRect.centerx = 925 
+        nameRect.centery = 95 + 30*i
+        screen.blit(name, nameRect)
+        Deck.close()
+        
+    draw.rect(screen, RED, (200, 200, 200, 200))
+    draw.rect(screen, RED, (400, 400, 200, 200))

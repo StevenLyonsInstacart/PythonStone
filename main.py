@@ -13,7 +13,9 @@ from heroPower import *
 from spawn import *
 from Constants import *
 from Messages import *
-
+from Generator import *
+from selectionScreen import *
+from hover import *
 
 
 #Colour Declerations
@@ -27,7 +29,7 @@ LINDSAY = (255, 7, 162)
 # Turn tracker
 turn = 0
 # Get foldername from Constants
-foldername = foldername()
+foldername = getFoldername()
 
 #Number of cards show at a time on card selection screen
 DISPLAYNUM = 4
@@ -46,31 +48,6 @@ def check_to_quit():
 		return True
 
 
-#Check to see if User wants to submit Deck
-def checkExit(mouse, player, deck):
-		mx, my = mouse.pos
-		if 1000 < mx < 1200 and 600 < my < 670:
-				if not deck:
-						NoDeckMessage = Message("Please Select at least 1 Card", screen)
-						NoDeckMessage.displayMessage()
-						return True
-				if player.getHP() == None:
-						NoDeckMessage = Message("Please Select a Character", screen)
-						NoDeckMessage.displayMessage()
-						return True
-				return False
-		else:
-				return True
-
-# Assign a card to a player
-# returns a new card assigned to player (Card)
-def addCard(pos, cards, start, player):
-    for i in range (4):
-        if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-            newCard = cards[i + start].copy()
-            newCard.setPlayer(player)
-            return newCard
-    return None
 
 #Check if a Player has clicked on their hero power
 def checkHeroPower(pos, turn):
@@ -81,48 +58,7 @@ def checkHeroPower(pos, turn):
 			if 950 < pos[0] < 1050 and 600 < pos[1] < 700:
 					player2.doHeroPower()
 
-# Update the class that the player has picked on the deck selection screen.
-def updateClass(player, pos):
-		classPort = [["guldan_portrait.jpg", WarlockPower(player)], ["rexxar_portrait.jpg", HunterPower(player)],
-								 ["garrosh_portrait.png", WarriorPower(player)],["thrall_portrait.jpg", WarlockPower(player)]
-								 ,["uther_portrait.png", PaladinPower(player, board)], ["jaina_portrait.jpg", MagePower(player, screen, board)],
-								 ["anduin_portrait.png", PriestPower(player, screen, board)],["valeera_portrait.png", RoguePower(player)],
-								 ["malfurion_portrait.png", DruidPower(player)]]
-		for i in range (9):
-			if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
-					player.setPortrait(foldername + classPort[i][0])
-					player.setHP(classPort[i][1])
 
-#Return the filename of the last card hovered over in the card selection screen
-def hoverCard(filename, pos, cards, start):
-		for i in range (min(len(cards) - start, 4)):
-			if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
-					return foldername + cards[i + start].getFilename()
-		return filename
-
-#Return the filename of the last card hovered over in the main screen
-def hoverCardMain(filename, pos, spots, hands):
-    for i in range (0,10):
-        if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
-            return foldername + hands[0].getCards()[i].getFilename(), 1
-        if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
-            return foldername + hands[1].getCards()[i].getFilename(), 1
-    for i in range (0,7):
-        if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-            if spots[1][i].getOccupied():
-                return foldername + spots[1][i].getCard().getFilename(), 1
-        if pos[1] < 700 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-            if spots[0][i].getOccupied():
-                return foldername + spots[0][i].getCard().getFilename(), 1
-	return filename, 0
-
-# Shift the DISPLAYNUM
-def updateList(pos):
-		if 400 < pos[0] < 500 and 400 < pos[1] < 500:
-			return -DISPLAYNUM
-		elif 600 < pos[0] < 700 and 400 < pos[1] < 500:
-			return DISPLAYNUM
-		return 0
 
 # Highlight the current space hovered over and the last space clicked
 def highlight(pos, screen, selcted, square):
@@ -148,7 +84,6 @@ def highlight(pos, screen, selcted, square):
     if selected != None:
         square0 = abs(1-square[0])
         draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
-
 
 
 
@@ -211,6 +146,7 @@ def select(mouseObj, spots, current, state, hands):
                     #Play Card
                     elif state == "H":
                         if spots[i][j].getOccupied() == False:
+                            board.playedCreature(current[0])
                             return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j],
 											hands[current[1][0]], current[1][1])
                         else:
@@ -227,6 +163,7 @@ def select(mouseObj, spots, current, state, hands):
                                     shiftLeft([i,j], spots, prevCard)
                                 elif canRight:
                                     shiftRight([i,j], spots, prevCard)
+                                board.playedCreature(current[0])
                         return None, None, None
 			#Hero attack
                     elif state == "C":
@@ -256,16 +193,18 @@ def select(mouseObj, spots, current, state, hands):
                     if weapon.attackCheck():
                         attacker.unarmed()
                         attacker.setWeapon(None)
-            return None, None, None
-        elif 550 < mx < 850 and 600 < my  < 700 and player1.isReady():
-            faceToFace(player2, player1)
-            attacker = player1
-            if attacker.isArmed():
-                weapon = attacker.getWeapon()
-                if weapon.attackCheck():
-                    attacker.unarmed()
-                    attacker.setWeapon(None)
-            return None, None,  None
+            	return None, None, None
+            elif 550 < mx < 850 and 600 < my  < 700 and player1.isReady():
+            	faceToFace(player2, player1)
+            	attacker = player1
+            	if attacker.isArmed():
+            		weapon = attacker.getWeapon()
+            		if weapon.attackCheck():
+            			attacker.unarmed()
+            			attacker.setWeapon(None)
+               	return None, None,  None
+        
+        return None, None, None
 
     return current, [i,j, 200, 250], state
 
@@ -318,44 +257,33 @@ deck1Cards = []
 deck2Cards = []
 start = 0
 
-#Select screen for Player1
-while (selecting):
-		showSelect(screen, cardList, deck1Cards, 1, (255,255,255), start, filename, player1.getPortrait())
-		for evnt in event.get():
-				if evnt.type == MOUSEBUTTONDOWN:
-						selecting = checkExit(evnt, player1, deck1Cards)
-						newCard = addCard(evnt.pos, cardList, start, player1)
-						updateClass(player1, evnt.pos)
-						if newCard:
-								if len(deck1Cards) < 30:
-										deck1Cards.append(newCard)
-								else:
-										ToManyCardsMessage = Message("Decks may only have 30 Cards", screen)
-										ToManyCardsMessage.displayMessage()
-						start += updateList(evnt.pos)
-				elif evnt.type == QUIT:
-						quit()
-				elif evnt.type == MOUSEMOTION:
-						filename = hoverCard(filename, evnt.pos, cardList, start)
-		display.flip()
+choosing = True
+
+#Initialize Player1's Deck
+player1, deck1Cards, save1 = selectScreen(player1, screen, board)
+
+#Initialize Player2's Deck
+player2, deck2Cards, save2 = selectScreen(player2, screen, board)
+
+
+
+
 selecting = True
 
-#Select screen for Player2
-while (selecting):
-		showSelect(screen, cardList, deck2Cards, 1, (200, 200, 200), start, filename, player2.getPortrait())
-		for evnt in event.get():
-				if evnt.type == MOUSEBUTTONDOWN:
-						selecting = checkExit(evnt, player2, deck2Cards)
-						newCard = addCard(evnt.pos, cardList, start, player2)
-						updateClass(player2, evnt.pos)
-						if newCard:
-								deck2Cards.append(newCard)
-						start += updateList(evnt.pos)
-				elif evnt.type == QUIT:
-						quit()
-				elif evnt.type == MOUSEMOTION:
-						filename = hoverCard(filename, evnt.pos, cardList, start)
-		display.flip()
+if save1:
+	Deck1 = open('deck1.txt', 'w')
+	Deck1.write(player1.getRole()+"\n")
+	for i in deck1Cards:
+	    Deck1.write(i.getName()+"\n")
+	Deck1.close()
+	
+if save2:        
+	Deck2 = open('deck2.txt', 'w')
+	Deck2.write(player2.getRole()+"\n")
+	for i in deck2Cards:
+	    Deck2.write(i.getName()+"\n")
+	Deck2.close()
+
 
 deck1, deck2 = board.simpleDecks(deck1Cards,deck2Cards, player1, player2)
 hands[0].initialize(deck1)
@@ -374,6 +302,7 @@ while (breaker):
 
 		# Show minions on board
 		showBoard(spots, screen)
+        
 		# Show cards in hand
 		showHand(hands, screen, turn)
 		time.wait(10)
