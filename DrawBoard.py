@@ -290,99 +290,109 @@ def hoveredCard(screen, pos, status, filename):
 # filename: the filename of an image to highlight
 def showSelect(screen, cards, usedCards, num, background, start, filename, filename2):
     
-    nameFont = font.Font(None, 30)
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
+    
+    nameFont = font.Font(None, int(30*convx))
     #Draws the background
-    draw.rect(screen, background, (0,0,1400,800))
+    draw.rect(screen, background, (0,0,1400*convx,800*convy))
     
     
     
     #Submit Deck button
-    draw.rect(screen, RED, (1000,600, 200, 70), 5)
+    draw.rect(screen, RED, (1000*convx,600*convy, 200*convx, 70*convy), 5)
     name = nameFont.render("Submit Deck" , True, (50,50,50), background)
     nameRect = name.get_rect()
-    nameRect.centerx = 1100 
-    nameRect.centery = 635
+    nameRect.centerx = 1100*convx 
+    nameRect.centery = 635*convy
     screen.blit(name, nameRect)
     
     #Show 4 current Cards
-    cooridinates = [[0, 0, 184, 254],[184, 0, 184, 254],[0, 254, 184, 254],[184, 254, 184, 254]]
+    cooridinates = [[0, 0, 184*convx, 254*convy],[184*convx, 0, 184*convx, 254*convy],[0, 254*convy, 184*convx, 254*convy],[184*convx, 254*convy, 184*convx, 254*convy]]
     
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
         file = foldername + cards[i].getFilename()
         img = image.load(file)
+        img = transform.scale(img, (int(184*convx), int(254*convy)))
         imgRect = Rect(cooridinates[i - start][0], cooridinates[i - start][1], cooridinates[i -start][2], cooridinates[i - start][3])
         screen.blit(img, imgRect)
         
         
     # Show selected cards    
-    draw.rect(screen, BLUE, (5, 510, 550, 280), 2)
+    draw.rect(screen, BLUE, (5*convx, 510*convy, 550*convx, 280*convy), 2)
     for i in range (len(usedCards)):
         name = nameFont.render(usedCards[i].getName(), True, (50,50,50), background)
         nameRect = name.get_rect()
         if i < 10:
-            nameRect.centerx = 100 
-            nameRect.centery = 530 + 25*i
+            nameRect.centerx = 100*convx 
+            nameRect.centery = (530 + 25*i)*convy
         elif i < 20:
-            nameRect.centerx = 280 
-            nameRect.centery = 530 + 25*(i-10)
+            nameRect.centerx = 280*convx 
+            nameRect.centery = (530 + 25*(i-10))*convy
         else:
-            nameRect.centerx = 460 
-            nameRect.centery = 530 + 25*(i-20)
+            nameRect.centerx = 460*convx 
+            nameRect.centery = (530 + 25*(i-20))*convy
         screen.blit(name, nameRect)
     
     #Box of Card choices
-    draw.rect(screen, GREEN, (400, 80, 250, 170), 10 )
+    draw.rect(screen, GREEN, (400*convx, 80*convy, 250*convx, 170*convy), int(10*convx) )
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
     	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
     	nameRect = name.get_rect()
-    	nameRect.centerx = 500 
-    	nameRect.centery = 100 + 50*(i - start)
+    	nameRect.centerx = 500*convx 
+    	nameRect.centery = (100 + 50*(i - start))*convy
     	screen.blit(name, nameRect)
         
     #Hero Portrait
     img = image.load(filename2)
-    imgRect = Rect(1050, 100, 300, 100)
+    img = transform.scale(img, (int(300*convx), int(100*convy)))
+    imgRect = Rect(1050*convx, 100*convy, 300*convx, 100*convy)
     screen.blit(img, imgRect)
     
 	
     #Box of class choices
-    draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
+    draw.rect(screen, BLUE, (800*convx, 80*convy, 250*convx, 270*convy), int(10*convx))
     classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
     for i in range (9):
     	name = nameFont.render(classes[i], True, (50,50,50), background)
     	nameRect = name.get_rect()
-    	nameRect.centerx = 925 
-    	nameRect.centery = 95 + 30*i
+    	nameRect.centerx = 925*convx 
+    	nameRect.centery = (95 + 30*i)*convy
     	screen.blit(name, nameRect)
 	
     #Lines between class choices
     for i in range (9):
-	       draw.line(screen, BLUE, (800, 80 + 30*i), (1050, 80 + 30*i))
+	       draw.line(screen, BLUE, (800*convx, (80 + 30*i)*convy), (1050*convx, convy*(80 + 30*i)))
     
     #Left and right card selectors
-    draw.rect(screen, BLUE, (400, 400, 100, 100))
-    draw.rect(screen, RED, (600, 400, 100, 100))
+    draw.rect(screen, BLUE, (400*convx, 400*convy, 100*convx, 100*convy))
+    draw.rect(screen, RED, (600*convx, 400*convy, 100*convx, 100*convy))
     
     #Hover Card
     img = image.load(filename)
-    imgRect = Rect(1400, 0, 200, 200)
+    imgRect = Rect(1400*convx, 0, 200*convx, 200*convy)
     screen.blit(img, imgRect)
     
 def drawDeckChoice(screen):
-    nameFont = font.Font(None, 30)
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
+    nameFont = font.Font(None, int(convx*30))
     #Draws the background
-    draw.rect(screen, (255,255,255), (0,0,1400,800))
+    
+    draw.rect(screen, (255,255,255), (0,0,1400*convx,800*convy))
     
     #Deck Selection
-    draw.rect(screen, BLUE, (800, 80, 250, 270), 10)
+    draw.rect(screen, BLUE, (800*convx, 80*convy, 250*convx, 270*convy), 10)
     for i in range (0,2):
         Deck = open('deck'+str(i+1)+'.txt', 'r')
         name = nameFont.render(Deck.readline()[:-1]+": ("+Deck.readline()[:-1]+")", True, (50,50,50), (255,255,255))
         nameRect = name.get_rect()
-        nameRect.centerx = 925 
-        nameRect.centery = 95 + 30*i
+        nameRect.centerx = 925*convx 
+        nameRect.centery = (95 + 30*i)*convy
         screen.blit(name, nameRect)
         Deck.close()
         
-    draw.rect(screen, RED, (200, 200, 200, 200))
-    draw.rect(screen, RED, (400, 400, 200, 200))
+    draw.rect(screen, RED, (200*convx, 200*convy, 200*convx, 200*convy))
+    draw.rect(screen, RED, (400*convx, 400*convy, 200*convx, 200*convy))

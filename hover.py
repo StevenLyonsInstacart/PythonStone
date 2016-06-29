@@ -4,9 +4,9 @@ from Spot import *
 from Hand import *
 
 #Return the filename of the last card hovered over in the card selection screen
-def hoverCard(filename, pos, cards, start):
+def hoverCard(filename, pos, cards, start, convx, convy):
         for i in range (min(len(cards) - start, 4)):
-            if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
+            if 400*convx < pos[0] < 650*convx and convy*(80+50*i) < pos[1] < convy*(80+(50*(i+1))):
                     return foldername + cards[i + start].getFilename()
         return filename
 

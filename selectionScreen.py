@@ -2,6 +2,7 @@ from DrawBoard import *
 from Generator import *
 from hover import *
 from inputbox import *
+from Messages import *
 
 
 DISPLAYNUM = 4
@@ -16,11 +17,15 @@ def selectScreen(player, screen, board):
     filename = "pics/Abusive_sergeant.png"
     saved = False
     name = ""
+    
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
     while True:
         drawDeckChoice(screen)
         for evnt in event.get():
                     if evnt.type == MOUSEBUTTONDOWN:
-                        outcome = makeOrBreak(evnt.pos)
+                        outcome = makeOrBreak(evnt.pos, convx, convy)
                         if outcome[0]:
                             if outcome[0] == "Custom":
                                 saved = outcome[1]
@@ -31,20 +36,21 @@ def selectScreen(player, screen, board):
                                         showSelect(screen, cardList, deckCards, 1, (255,255,255), start, filename, player.getPortrait())
                                         for evnt in event.get():
                                                 if evnt.type == MOUSEBUTTONDOWN:
-                                                        selecting = checkExit(evnt, player, deckCards)
-                                                        newCard = addCard(evnt.pos, cardList, start, player)
-                                                        updateClass(player, evnt.pos, board, screen)
+                                                        selecting = checkExit(evnt, player, deckCards, convx, convy, screen)
+                                                        newCard = addCard(evnt.pos, cardList, start, player, convx, convy)
+                                                        updateClass(player, evnt.pos, board, screen, convx, convy)
                                                         if newCard:
                                                                 if len(deckCards) < 30:
                                                                         deckCards.append(newCard)
                                                                 else:
                                                                         ToManyCardsMessage = Message("Decks may only have 30 Cards", screen)
                                                                         ToManyCardsMessage.displayMessage()
-                                                        start += updateList(evnt.pos)
+                                                        start += updateList(evnt.pos, convx, convy)
+                                                        start = max(start, 0)
                                                 elif evnt.type == QUIT:
                                                         quit()
                                                 elif evnt.type == MOUSEMOTION:
-                                                        filename = hoverCard(filename, evnt.pos, cardList, start)
+                                                        filename = hoverCard(filename, evnt.pos, cardList, start, convx, convy)
                                         display.flip()
                         
                             else:
@@ -72,14 +78,14 @@ def selectScreen(player, screen, board):
         
 
 # Update the class that the player has picked on the deck selection screen.
-def updateClass(player, pos, board, screen):
+def updateClass(player, pos, board, screen, convx, convy):
         classPort = [["guldan_portrait.jpg", WarlockPower(player), 'Warlock'], ["rexxar_portrait.jpg", HunterPower(player), 'Hunter'],
                                  ["garrosh_portrait.png", WarriorPower(player), 'Warrior'],["thrall_portrait.jpg", WarlockPower(player), 'Shaman']
                                  ,["uther_portrait.png", PaladinPower(player, board), 'Paladin'], ["jaina_portrait.jpg", MagePower(player, screen, board), 'Mage'],
                                  ["anduin_portrait.png", PriestPower(player, screen, board),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
                                  ["malfurion_portrait.png", DruidPower(player), 'Druid']]
         for i in range (9):
-            if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
+            if 800*convx < pos[0] < 1050*convx and convy*(80+30*i) < pos[1] < convy*(80+(30*(i+1))):
                     player.setPortrait(foldername + classPort[i][0])
                     player.setHP(classPort[i][1])
                     player.setRole(classPort[i][2])
@@ -95,17 +101,17 @@ def check_to_quit():
         return True
 
 # Shift the DISPLAYNUM
-def updateList(pos):
-        if 400 < pos[0] < 500 and 400 < pos[1] < 500:
+def updateList(pos, convx, convy):
+        if 400*convx < pos[0] < 500*convx and 400*convy < pos[1] < 500*convy:
             return -DISPLAYNUM
-        elif 600 < pos[0] < 700 and 400 < pos[1] < 500:
+        elif 600*convx < pos[0] < 700*convx and 400*convy < pos[1] < 500*convy:
             return DISPLAYNUM
         return 0
 
 #Check to see if User wants to submit Deck
-def checkExit(mouse, player, deck):
+def checkExit(mouse, player, deck, convx, convy, screen):
         mx, my = mouse.pos
-        if 1000 < mx < 1200 and 600 < my < 670:
+        if 1000*convx < mx < 1200*convx and 600*convy < my < 670*convy:
                 if not deck:
                         NoDeckMessage = Message("Please Select at least 1 Card", screen)
                         NoDeckMessage.displayMessage()
@@ -118,21 +124,21 @@ def checkExit(mouse, player, deck):
         else:
                 return True
             
-def makeOrBreak(pos):
-    if 200 < pos[0] < 400 and 200 < pos[1] < 400:
+def makeOrBreak(pos, convx, convy):
+    if 200*convx < pos[0] < 400*convx and 200*convy < pos[1] < 400*convy:
         return ["Custom", False]
-    elif  400 < pos[0] < 600 and 400 < pos[1] < 600:
+    elif  400*convx < pos[0] < 600*convx and 400*convy < pos[1] < 600*convy:
         return ["Custom", True]
     for i in range (2):
-        if 800 < pos[0] < 1050 and 80+30*i < pos[1] < 80+(30*(i+1)):
+        if 800*convx < pos[0] < 1050*convx and convy*(80+30*i) < pos[1] < convy*(80+(30*(i+1))):
             return ["Past", i]
     return [False]
 
 # Assign a card to a player
 # returns a new card assigned to player (Card)
-def addCard(pos, cards, start, player):
+def addCard(pos, cards, start, player, convx, convy):
     for i in range (4):
-        if 400 < pos[0] < 650 and 80+50*i < pos[1] < 80+(50*(i+1)):
+        if 400*convx < pos[0] < 650*convx and convy*(80+50*i) < pos[1] < convy*(80+(50*(i+1))):
             newCard = cards[i + start].copy()
             newCard.setPlayer(player)
             return newCard
