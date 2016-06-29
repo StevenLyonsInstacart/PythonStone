@@ -45,33 +45,49 @@ def showHand(hands, screen, turn):
 
 #Shows a cardBack		
 def showCardBack(card, pos, screen, img):
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    conversionx = width / 1600.0
+    conversiony = height / 800.0
+    
     if card.isNull() == False:
-	imgRect = Rect(pos[0]*140, 700*pos[1], 140, 100)
-	screen.blit(img, imgRect)
+        img = transform.scale(img, (int(conversionx*140), int(conversiony*100)))
+        imgRect = Rect(pos[0]*140*conversionx, 700*pos[1]*conversiony, conversionx*140, conversiony*100)
+        screen.blit(img, imgRect)
     
 	
 # Show a card on the Board
 # row1: A bool used to see what player the card belongs too       
 def showCard2(spot, screen, row1):
+    
+    
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    conversionx = width / 1600.0
+    conversiony = height / 800.0
+    
+    nameFont = font.Font(None, int(30*conversionx))
+    
     #Name Text
-    nameFont = font.Font(None, 30)
     name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
     nameRect = name.get_rect()
-    nameRect.centerx = spot.getPos()[0] +25
+    nameRect.centerx = (spot.getPos()[0] +25 ) * conversionx
     if row1:
-        nameRect.centery = spot.getPos()[1] + 50
+        nameRect.centery = (spot.getPos()[1] + 50) * conversiony
     else:
-        nameRect.centery = spot.getPos()[1]
+        nameRect.centery = (spot.getPos()[1]) * conversiony
         
     #Power Toughness Text
     pts = str(spot.getCard().getPower()) + "                  " + str(spot.getCard().getToughness())
     pt = nameFont.render(pts, True, (255, 255, 255), BOARD)
     ptRect = pt.get_rect()
-    ptRect.centerx = spot.getPos()[0] + 30
+    ptRect.centerx = (spot.getPos()[0] + 30) * conversionx
     if row1:
-        ptRect.centery = spot.getPos()[1] + 150
+        ptRect.centery = (spot.getPos()[1] + 150) * conversiony
     else:
-        ptRect.centery = spot.getPos()[1] + 100
+        ptRect.centery = (spot.getPos()[1] + 100) * conversiony
         
     #Blit to Screen
     screen.blit(name, nameRect)
@@ -79,19 +95,25 @@ def showCard2(spot, screen, row1):
 
 #Shows a hand card    
 def showHandCard(card, pos, screen):
-    handFont = font.Font(None, 15)
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    conversionx = width / 1600.0
+    conversiony = height / 800.0
+    
+    handFont = font.Font(None, int(15*conversionx)+2)
     if card.getName() != "Null":
         #Name Text
     	name = handFont.render(card.getName() , True, (255, 255, 255), BOARD)
     	nameRect = name.get_rect()
-    	nameRect.centerx = pos[1]*140 + 70
-    	nameRect.centery = pos[0]*700 + 20
+    	nameRect.centerx = (pos[1]*140 + 70)*conversionx
+    	nameRect.centery = (pos[0]*700 + 20)*conversiony
     	
         #Cost Text
     	cost = handFont.render(str(card.getCost()) , True, (255, 255, 255), BOARD)
     	costRect = cost.get_rect()
-    	costRect.centerx = pos[1]*140 + 70
-    	costRect.centery = pos[0]*700 + 40
+    	costRect.centerx = (pos[1]*140 + 70)*conversionx
+    	costRect.centery = (pos[0]*700 + 40)*conversiony
     	
         #Blit to Screen
     	screen.blit(name, nameRect)
@@ -108,36 +130,47 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
     player2 = board.getPlayer2()
     
     nameFont = font.Font(None, 30)
+    
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    widthInc = width/32.0
+    heightInc = height/16.0
+    
+    tenth = width/11.42
+    
     #Base coat of the board
-    draw.rect(screen, BOARD, (0,0,1400,800))
+    draw.rect(screen, BOARD, (0,0,width,height))
     
     #Player1 Portrait
     player1 = board.getPlayer1()
     portrait1 = image.load(player1.getPortrait())
-    port1Rect = Rect(550, 100, 300, 100)
+    portrait1 = transform.scale(portrait1, (int(widthInc*6), int(heightInc*2)))
+    port1Rect = Rect(widthInc*11, heightInc*2, widthInc*6, heightInc*2)
     screen.blit(portrait1, port1Rect)
     
     #Player2 Portrait
     player2 = board.getPlayer2()
     portrait2 = image.load(player2.getPortrait())
-    port2Rect = Rect(550, 600, 300, 100)
+    portrait2 = transform.scale(portrait2, (int(widthInc*6), int(heightInc*2)))
+    port2Rect = Rect(widthInc*11, heightInc*12, widthInc*6, heightInc*2)
     screen.blit(portrait2, port2Rect)
     
     #Player1 Armor
     crest = image.load("pics/armor.png")
-    crest1Rect = Rect(900, 150, 40, 45)
+    crest1Rect = Rect(widthInc*18, heightInc*3, 40, 45)
     screen.blit(crest, crest1Rect)
     
     #Player2 Armor
     crest = image.load("pics/armor.png")
-    crest2Rect = Rect(900, 650, 40, 45)
+    crest2Rect = Rect(widthInc*18, heightInc*13, 40, 45)
     screen.blit(crest, crest2Rect)
     
     #Player1 Health
     health1 = nameFont.render((str(player1.getLife()) +"    "+ str(player1.getArmor())) , True, (255, 255, 255), BOARD)
     health1Rect = health1.get_rect()
-    health1Rect.centerx = 900
-    health1Rect.centery = 120
+    health1Rect.centerx = widthInc*18
+    health1Rect.centery = heightInc*2.4
     screen.blit(health1, health1Rect)
     
     #Player1 Weapon
@@ -146,8 +179,8 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
         
     	Weapon1 = nameFont.render((str(weapon.getPower()) +" / "+ str(weapon.getDurability())) , True, (255, 255, 255), BOARD)
     	Weapon1Rect = Weapon1.get_rect()
-    	Weapon1Rect.centerx = 300
-    	Weapon1Rect.centery = 150
+    	Weapon1Rect.centerx = widthInc*6
+    	Weapon1Rect.centery = heightInc*3
     	screen.blit(Weapon1, Weapon1Rect)
 	
     #Player2 Weapon
@@ -156,84 +189,84 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
         
     	Weapon2 = nameFont.render((str(weapon.getPower()) +" / "+ str(weapon.getDurability())) , True, (255, 255, 255), BOARD)
     	Weapon2Rect = Weapon2.get_rect()
-    	Weapon2Rect.centerx = 300
-    	Weapon2Rect.centery = 650
+    	Weapon2Rect.centerx = widthInc*6
+    	Weapon2Rect.centery = heightInc*13
     	screen.blit(Weapon2, Weapon2Rect)
 	
 	#Player 2 Health
     health2 = nameFont.render((str(player2.getLife()) +"    "+ str(player2.getArmor())) , True, (255, 255, 255), BOARD)
     health2Rect = health1.get_rect()
-    health2Rect.centerx = 900
-    health2Rect.centery = 620
+    health2Rect.centerx = widthInc*18
+    health2Rect.centery = heightInc*12.4
     screen.blit(health2, health2Rect)
     
     
     #Verticals
     for i in range (1,7):
-	draw.line(screen, RED, (200*i, 200) , (200*i, 600))
+        draw.line(screen, RED, ((widthInc*4)*i, heightInc*4) , ((widthInc*4)*i, heightInc*12))
         
     for i in range (1,10):
-	draw.line(screen, RED, (140*i, 0) , (140*i, 100))
-	draw.line(screen, RED, (140*i, 700) , (140*i, 800))
+        draw.line(screen, RED, (tenth*i, 0) , (tenth*i, heightInc*2))
+        draw.line(screen, RED, (tenth*i, heightInc*14) , (tenth*i, heightInc*16))
 	
     #Horizontals
-    draw.line(screen, RED, (0, 100) , (1400, 100))
-    draw.line(screen, RED, (0, 200) , (1400, 200))
-    draw.line(screen, RED, (0, 600) , (1400, 600))
-    draw.line(screen, RED, (0, 700) , (1400, 700))
+    draw.line(screen, RED, (0, height/8) , (width, height/8))
+    draw.line(screen, RED, (0, height/4) , (width, height/4))
+    draw.line(screen, RED, (0, height*0.75) , (width, height*0.75))
+    draw.line(screen, RED, (0, 7*height/8) , (width, 7*height/8))
     
     
     #Hero Section 1
-    draw.line(screen, RED, (450, 100), (450, 200))
-    draw.line(screen, RED, (450, 600), (450, 700))
-    draw.line(screen, RED, (550, 100), (550, 200))
-    draw.line(screen, RED, (550, 600), (550, 700))
+    draw.line(screen, RED, (widthInc*9, heightInc*2), (widthInc*9, heightInc*4))
+    draw.line(screen, RED, (widthInc*9, heightInc*12), (widthInc*9, heightInc*14))
+    draw.line(screen, RED, (widthInc*11, heightInc*2), (widthInc*11, heightInc*4))
+    draw.line(screen, RED, (widthInc*11, heightInc*12), (widthInc*11, heightInc*14))
     
     #Hero Section 2
-    draw.line(screen, RED, (850, 100), (850, 200))
-    draw.line(screen, RED, (850, 600), (850, 700))
-    draw.line(screen, RED, (950, 100), (950, 200))
-    draw.line(screen, RED, (950, 600), (950, 700))
+    draw.line(screen, RED, (widthInc*17, heightInc*2), (widthInc*17, heightInc*4))
+    draw.line(screen, RED, (widthInc*17, heightInc*12), (widthInc*17, heightInc*14))
+    draw.line(screen, RED, (widthInc*19, heightInc*2), (widthInc*19, heightInc*4))
+    draw.line(screen, RED, (widthInc*19, heightInc*12), (widthInc*19, heightInc*14))
     
     #Hero Power Boxes
-    draw.rect(screen, BLUE, (950, 100, 100, 100))
-    draw.rect(screen, BLUE, (950, 600, 100, 100))
+    draw.rect(screen, BLUE, (widthInc*19, heightInc*2, widthInc*2, heightInc*2))
+    draw.rect(screen, BLUE, (widthInc*19, heightInc*12, widthInc*2, heightInc*2))
     
     
     #End Turn Button
-    draw.rect(screen, (100, 100, 255), (1400,400,150,100))
+    draw.rect(screen, (100, 100, 255), (widthInc*28, heightInc*8,150,100))
     name = nameFont.render("End Turn" , True, (155,155,255 ), (100, 100, 0))
     nameRect = name.get_rect()
-    nameRect.centerx = 1475 
-    nameRect.centery = 450
+    nameRect.centerx = widthInc*29 + widthInc/2 
+    nameRect.centery = heightInc*9
     screen.blit(name, nameRect)
     
     #Player 1 Mana
     player1Mana = nameFont.render(str(player1.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
     manaRect = player1Mana.get_rect()
-    manaRect.centerx = 1475 
-    manaRect.centery = 150
+    manaRect.centerx = widthInc*29 + widthInc/2  
+    manaRect.centery = heightInc*3
     screen.blit(player1Mana, manaRect)
     
     #Player 1 Power
     player1Power = nameFont.render(str(player1.getPower()) , True, (205,155,20), BOARD)
     powerRect = player1Power.get_rect()
-    powerRect.centerx = 500
-    powerRect.centery = 150
+    powerRect.centerx = widthInc*10
+    powerRect.centery = heightInc*3
     screen.blit(player1Power, powerRect)
     
     #Player 2 Power
     player2Power = nameFont.render(str(player2.getPower()) , True, (205,155,20), BOARD)
     power2Rect = player2Power.get_rect()
-    power2Rect.centerx = 500
-    power2Rect.centery = 650
+    power2Rect.centerx = widthInc*10
+    power2Rect.centery = heightInc*13
     screen.blit(player2Power, power2Rect)
     
     #Player 2 Mana
     player2Mana = nameFont.render(str(player2.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
     mana2Rect = player2Mana.get_rect()
-    mana2Rect.centerx = 1475 
-    mana2Rect.centery = 650
+    mana2Rect.centerx = widthInc*29 + widthInc/2  
+    mana2Rect.centery = heightInc*13
     screen.blit(player2Mana, mana2Rect)
     
 

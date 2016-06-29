@@ -53,34 +53,36 @@ def check_to_quit():
 #Check if a Player has clicked on their hero power
 def checkHeroPower(pos, turn):
 		if turn  == 1:
-			if 950 < pos[0] < 1050 and 100 < pos[1] < 200:
+			if 19*widthInc < pos[0] < 21*widthInc and 2*heightInc < pos[1] < 4*heightInc:
 					player1.doHeroPower()
 		else:
-			if 950 < pos[0] < 1050 and 600 < pos[1] < 700:
+			if 19*widthInc < pos[0] < 21*widthInc and 12*heightInc < pos[1] < 14*heightInc:
 					player2.doHeroPower()
 
 
 
 # Highlight the current space hovered over and the last space clicked
 def highlight(pos, screen, selcted, square):
+
+    
     for i in range (0,10):
-        if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
-            xcor = pos[0] % 140
-            draw.rect(screen, GREEN, (140*i,0, 140, 100), 10)
-        if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
-            xcor = pos[0] % 140
-            draw.rect(screen, GREEN, (140*i,700, 140, 100), 10)
+        if pos[1] < heightInc*2  and pos[0]> i*tenth and pos[0] < (i+1)*tenth:
+            xcor = pos[0] % tenth
+            draw.rect(screen, GREEN, (tenth*i,0, tenth, heightInc*2), 10)
+        if pos[1] > heightInc*14 and pos[0]> i*tenth and pos[0] < (i+1)*tenth:
+            xcor = pos[0] % tenth
+            draw.rect(screen, GREEN, (tenth*i,heightInc*14, tenth, heightInc*2), 10)
     for i in range (0,7):
-        if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-			draw.rect(screen, GREEN, (200*i,200, 200, 200), 10)
-        if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-            draw.rect(screen, GREEN, (200*i,400, 200, 200), 10)
+        if pos[1] > heightInc*4 and pos[1] < heightInc*8 and pos[0]> i*widthInc*4 and pos[0] < (i+1)*widthInc*4:
+			draw.rect(screen, GREEN, (widthInc*4*i,heightInc*4, widthInc*4, heightInc*4), 10)
+        if pos[1] < heightInc*12 and pos[1] > heightInc*8 and pos[0]> i*widthInc*4 and pos[0] < (i+1)*widthInc*4:
+            draw.rect(screen, GREEN, (widthInc*4*i,heightInc*8, widthInc*4, heightInc*4), 10)
     for i in range (2):
-        if 550 < pos[0] < 850 and 100 + 500*i < pos[1] < 200 + 500*i:
-            draw.rect(screen, GREEN, (550,100 + 500*i, 300, 100), 10)
+        if widthInc*11 < pos[0] < widthInc*17 and heightInc*2 + heightInc*10*i < pos[1] < heightInc*4 + heightInc*10*i:
+            draw.rect(screen, GREEN, (widthInc*11,heightInc*2 + heightInc*10*i, widthInc*6, heightInc*2), 10)
             
-        if 950 < pos[0] < 1050 and 100 + 500*i < pos[1] < 200 + 500*i:
-            draw.rect(screen, GREEN, (950,100 + 500*i, 100, 100), 10)
+        if widthInc*19 < pos[0] < widthInc*21 and heightInc*2 + heightInc*10*i < pos[1] < heightInc*4 + heightInc*10*i:
+            draw.rect(screen, GREEN, (widthInc*19,heightInc*2 + heightInc*10*i, widthInc*2, heightInc*2), 10)
 
     if selected != None:
         square0 = abs(1-square[0])
@@ -95,40 +97,40 @@ def select(mouseObj, spots, current, state, hands):
         mx, my = mouseObj.pos
         for i in range (0,2):
             for j in range(0,7):
-                if 200*j < mx < 200*(j+1) and 200 + 200*(i) < my < 200 + 200*(i+1):
+                if widthInc*4*j < mx < widthInc*4*(j+1) and heightInc*4 + heightInc*4*(i) < my < heightInc*4 + heightInc*4*(i+1):
                     square = [i,j]
                     reversei = abs(1-i)
                     if spots[reversei][j].getOccupied():
                         if spots[reversei][j].getCard().getTired() == False:
                             filename = spots[reversei][j].getCard().getFilename()
-                            return spots[reversei][j], [i*200 + 200, j*200, 200, 200], "B"
+                            return spots[reversei][j], [i*widthInc*4 + widthInc*4, j*heightInc*4, widthInc*4, heightInc*4], "B"
         for j in range(0,10):
-            if 140*j < mx < 140*(j+1) and 0 < my < 100 :
+            if tenth*j < mx < tenth*(j+1) and 0 < my < heightInc*2 :
                 square = [i,j]
                 print j, i
                 if turn == 1:
                     filename = hands[0].getCards()[j].getFilename()
-                    return [hands[0].getCards()[j], [0,j]], [0, j*140, 140, 100], "H"
+                    return [hands[0].getCards()[j], [0,j]], [0, j*tenth, tenth, heightInc*2], "H"
 
         for j in range(0,10): 
-            if 140*j < mx < 140*(j+1) and 700 < my < 800 :
+            if tenth*j < mx < tenth*(j+1) and heightInc*14 < my < heightInc*16 :
                 square = [i,j]
                 print j, i
                 if turn == 0:
                     newfilename = hands[1].getCards()[j].getFilename()
                     filename = newfilename
                     print filename
-                    return [hands[1].getCards()[j], [1,j]], [700, j*140, 140, 100], "H"
+                    return [hands[1].getCards()[j], [1,j]], [widthInc*14, j*tenth, tenth, heightInc*2], "H"
         murn = abs(1 - turn)
-        if 550 < mx < 850 and 100 + 500*murn < my < 200 + 500*murn and board.getCurrentPlayer().getPower() > 0 and board.getCurrentPlayer().isReady():
-            return 1, [100 + 500*murn,550, 300, 100], "C"
-        elif 550 < mx < 850 and 100 + 500*murn < my < 200 + 500*murn and board.getCurrentPlayer().getPower() > 0:
+        if widthInc*11 < mx < widthInc*17 and heightInc*2 + heightInc*10*murn < my < heightInc*4 + heightInc*10*murn and board.getCurrentPlayer().getPower() > 0 and board.getCurrentPlayer().isReady():
+            return 1, [widthInc*2 + widthInc*10*murn,heightInc*11, widthInc*6, heightInc*2], "C"
+        elif widthInc*11 < mx < widthInc*17 and heightInc*2 + heightInc*10*murn < my < heightInc*4 + heightInc*10*murn and board.getCurrentPlayer().getPower() > 0:
             return  None, None, None
     else:
         mx, my = mouseObj.pos
         for i in range (0,2):
             for j in range(0,7):
-                if 200*j < mx < 200*(j+1) and 200 + 200*(i) < my < 200 + 200*(i+1):
+                if widthInc*4*j < mx < widthInc*4*(j+1) and heightInc*4 + heightInc*4*(i) < my < heightInc*4 + heightInc*4*(i+1):
                     i = abs(1-i)
                     if state == "B":
                         if i != turn:
@@ -158,7 +160,7 @@ def select(mouseObj, spots, current, state, hands):
                                 playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j],
 												hands[current[1][0]], current[1][1])
 
-                                if mx > 200*j + 100 and canRight:
+                                if mx > widthInc*4*j + widthInc*2 and canRight:
                                     shiftRight([i,j], spots, prevCard)
                                 elif canLeft:
                                     shiftLeft([i,j], spots, prevCard)
@@ -179,14 +181,14 @@ def select(mouseObj, spots, current, state, hands):
                                     attacker.setWeapon(None)
                         return None, None, None
         if state == "B":
-            if 550 < mx < 850 and 100 < my  < 200 and not (current.getCard().getTired()):
+            if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and not (current.getCard().getTired()):
                 goFace(current.getCard(), player1)
                 return None, None, None
-            elif 550 < mx < 850 and 600 < my  < 700 and not (current.getCard().getTired()):
+            elif widthInc*11 < mx < heightIinc*17 and  heightInc*12 < my  <heightInc*14 and not (current.getCard().getTired()):
                 goFace(current.getCard(), player2)
                 return None, None,  None
         elif state == "C":
-            if 550 < mx < 850 and 100 < my  < 200 and player2.isReady():
+            if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and player2.isReady():
                 faceToFace(player1, player2)
                 attacker = player2
                 if attacker.isArmed():
@@ -195,7 +197,7 @@ def select(mouseObj, spots, current, state, hands):
                         attacker.unarmed()
                         attacker.setWeapon(None)
             	return None, None, None
-            elif 550 < mx < 850 and 600 < my  < 700 and player1.isReady():
+            elif widthInc*11 < mx < heightInc*17 and heightInc*12 < my  <heightInc*14 and player1.isReady():
             	faceToFace(player2, player1)
             	attacker = player1
             	if attacker.isArmed():
@@ -207,7 +209,7 @@ def select(mouseObj, spots, current, state, hands):
         
         return None, None, None
 
-    return current, [i,j, 200, 250], state
+    return current, [i,j, widthInc*4, heightInc*5], state
 
 #Play a card onto the board
 def playCard(player, mana, card, spot, hand1, hand2):
@@ -233,7 +235,18 @@ def playCard(player, mana, card, spot, hand1, hand2):
 #Initialize the board and Pygame
 init()
 size =(1600,800)
-screen= display.set_mode (size)
+screen= display.set_mode(size)
+width = screen.get_width()	
+height = screen.get_height()
+
+widthInc = width/32.0
+heightInc = height/16.0
+
+tenth = width/11.42
+
+convx = width / 1600.0
+convy = height/ 800.0
+
 nameFont = font.Font(None, 30)
 handFont = font.Font(None, 15)
 selected = None
@@ -313,7 +326,7 @@ while (breaker):
 				if newEvent.type == MOUSEBUTTONDOWN:
 						selected, square, state = select(newEvent, spots, selected, state, hands)
 						checkHeroPower(newEvent.pos, turn)
-						turn = endTurn(newEvent.pos, turn, board)
+						turn = endTurn(newEvent.pos, turn, board, convx, convy)
 						filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)
 				elif newEvent.type == MOUSEMOTION:
 						lastpos = newEvent.pos

@@ -384,6 +384,8 @@ class ELF_ARC(Creature):
 def selectCard(board, screen, filename):	
     waiting = True
     spots = board.getSpots()
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
     while waiting:
 	
     	for evnt in event.get():
@@ -394,7 +396,7 @@ def selectCard(board, screen, filename):
     		for i in range (2):
                 #j represents the index of the spot
     		    for j in range(0,7):
-    			     if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
+    			     if convx*200*j < mx < convx*200*(j+1) and convy*(150 + 250*(i)) < my < convy*(150 + 250*(i+1)):
     			         square = [i,j]
     			         reversei = abs(1-i)
                          #Exit when clicked on a spot with a card in it
@@ -410,43 +412,49 @@ def selectCard(board, screen, filename):
 def selectedBattleCry(buff, board, screen, filename):	
     waiting = True
     spots = board.getSpots()
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
     while waiting:
 	
-	for evnt in event.get():
+        for evnt in event.get():
 	    
-	    if evnt.type == MOUSEBUTTONDOWN:
-		mx, my = evnt.pos
-		for i in range (2):
-		    for j in range(0,7):
-			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
-			    square = [i,j]
-			    reversei = abs(1-i)
-			    if spots[reversei][j].getOccupied():
-				buff.setCreature(spots[reversei][j].getCard())
-				spots[reversei][j].getCard().addBuff(buff)
-				buff.applyBuff()
-				waiting = False
-	    drawGrid(screen, board, filename)
-	    showBoard(board.getSpots(), screen)
-	    showHand(board.getHands(), screen, 1)
-	    highlight((255, 255, 0), evnt.pos, screen)
-	    display.flip()
+            if evnt.type == MOUSEBUTTONDOWN:
+                mx, my = evnt.pos
+                for i in range (2):
+                    for j in range(0,7):
+                        if convx*200*j < mx < convx*200*(j+1) and convy*(150 + 250*(i)) < my < convy*(150 + 250*(i+1)):
+                            square = [i,j]
+                            reversei = abs(1-i)
+                            if spots[reversei][j].getOccupied():
+                                buff.setCreature(spots[reversei][j].getCard())
+                                spots[reversei][j].getCard().addBuff(buff)
+                                buff.applyBuff()
+                                waiting = False
+            elif evnt.type == MOUSEMOTION:
+        	    drawGrid(screen, board, filename)
+        	    showBoard(board.getSpots(), screen)
+        	    showHand(board.getHands(), screen, 1)
+        	    highlight((255, 255, 0), evnt.pos, screen)
+    	    display.flip()
 	    
 
 #While selecting a battle cry, highlight wherever the mouse is
 def highlight(colour, pos, screen):
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
     for i in range (0,10):
-	if pos[1] < 100 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    xcor = pos[0] % 140
-	    draw.rect(screen, colour, (140*i,0, 140, 100), 10)
-	if pos[1] > 700 and pos[0]> i*140 and pos[0] < (i+1)*140:
-	    xcor = pos[0] % 140
-	    draw.rect(screen, colour, (140*i,700, 140, 100), 10)
+        if pos[1] < 100*convy and pos[0]> i*140*convx and pos[0] < (i+1)*140*convx:
+            xcor = pos[0] % 140*convx
+            draw.rect(screen, colour, (140*i*convx,0, 140*convx, 100*convy), 10)
+        if pos[1] > 700*convy and pos[0]> i*140*convx and pos[0] < (i+1)*140*convx:
+            xcor = pos[0] % 140*convx
+            draw.rect(screen, colour, (140*i*convx,700*convy, 140*convx, 100*convy), 10)
     for i in range (0,7):
-	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,200, 200, 200), 10)
-	if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,400, 200, 200), 10)
+        if pos[1] > 200*convy and pos[1] < 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
+            draw.rect(screen, colour, (200*i*convx,200*convy, 200*convx, 200*convy), 10)
+        if pos[1] < 600*convy and pos[1] > 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
+            draw.rect(screen, colour, (200*i*convx,400*convy, 200*convx, 200*convy), 10)
 	    
 
     

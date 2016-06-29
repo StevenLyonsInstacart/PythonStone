@@ -176,40 +176,47 @@ class PriestPower(heroPower):
 def SelectTarget(board, screen, filename, player, enemy):	
     waiting = True
     spots = board.getSpots()
+    
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
     while waiting:
 	
-	for evnt in event.get():
+        for evnt in event.get():
 	    
-	    if evnt.type == MOUSEBUTTONDOWN:
-		mx, my = evnt.pos
-		for i in range (2):
-		    for j in range(0,7):
-			if 200*j < mx < 200*(j+1) and 150 + 250*(i) < my < 150 + 250*(i+1):
-			    square = [i,j]
-			    reversei = abs(1-i)
-			    if spots[reversei][j].getOccupied():
-				return spots[reversei][j], "Creature"
-		for i in range (2):
-		    if 550 < mx < 850 and 100 + 500*i < my < 200 + i*500:
-			return i, "Player"
+            if evnt.type == MOUSEBUTTONDOWN:    
+                mx, my = evnt.pos
+                for i in range (2):
+                    for j in range(0,7):
+                        if convx*200*j < mx < convx*200*(j+1) and convy*(150 + 250*(i)) < my < convy*(150 + 250*(i+1)):
+                            square = [i,j]
+                            reversei = abs(1-i)
+                            if spots[reversei][j].getOccupied():
+                                return spots[reversei][j], "Creature"
+                for i in range (2):
+                    if convx*550 < mx < convx*850 and convy*(100 + 500*i) < my < convy*(200 + i*500):
+                        return i, "Player"
 			
-	    elif evnt.type == MOUSEMOTION:
-		drawGrid(screen, board, filename)
-		showBoard(board.getSpots(), screen)
-		showHand(board.getHands(), screen, 0)
-		highlight((255, 255, 0), evnt.pos, screen)
+            elif evnt.type == MOUSEMOTION:
+                drawGrid(screen, board, filename)
+                showBoard(board.getSpots(), screen)
+                showHand(board.getHands(), screen, 0)
+                highlight((255, 255, 0), evnt.pos, screen)
 	    display.flip()
 	    
 
 #A highlight function which only works on minions on the board or heroes
 def highlight(colour, pos, screen):
+    convx = screen.get_width() / 1600.0
+    convy = screen.get_height() / 800.0
+    
     for i in range (0,7):
-	if pos[1] > 200 and pos[1] < 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,200, 200, 200), 10)
-	if pos[1] < 600 and pos[1] > 400 and pos[0]> i*200 and pos[0] < (i+1)*200:
-	    draw.rect(screen, colour, (200*i,400, 200, 200), 10)    
+        if pos[1] > 200*convy and pos[1] < 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
+            draw.rect(screen, colour, (200*i*convx,200*convy, 200*convx, 200*convy), 10)
+        if pos[1] < 600*convy and pos[1] > 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
+            draw.rect(screen, colour, (200*i*convx,400*convy, 200*convx, 200*convy), 10)  
     for i in range (2):
-	if 550 < pos[0] < 850 and 100 + 500*i < pos[1] < 200 + i*500:
-	    draw.rect(screen, colour, (550,100 + 500*i, 300, 100), 10)
+        if convx*550 < pos[0] < convx*850 and convy*(100 + 500*i) < pos[1] < convy*(200 + i*500):
+            draw.rect(screen, colour, (convx*550,convy*(100 + 500*i), convx*300, convy*100), 10)
             
         

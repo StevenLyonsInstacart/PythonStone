@@ -1,6 +1,6 @@
 # This function is called at the end of each turn, to reset the board for the next player
 # returns the Turn number (int)
-def endTurn(pos, turn, board):
+def endTurn(pos, turn, board, convx, convy):
     
     # Getting the variables that need to be reset
     spots = board.getSpots()
@@ -10,7 +10,7 @@ def endTurn(pos, turn, board):
     player2 = board.getPlayer2()
    
     
-    if 1400<pos[0]<1550 and 400 < pos[1] < 500:
+    if convx*1400<pos[0]<convx*1550 and convy*400 < pos[1] < convy*500:
     	board.getCurrentPlayer().setReady(False)
     	newPower = 0
         # Check if the player has a weapon
