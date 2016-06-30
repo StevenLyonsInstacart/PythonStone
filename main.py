@@ -28,7 +28,7 @@ LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
 
 # Turn tracker
-turn = 0
+turn = getTurn()
 # Get foldername from Constants
 foldername = getFoldername()
 
@@ -62,8 +62,9 @@ def checkHeroPower(pos, turn):
 
 
 # Highlight the current space hovered over and the last space clicked
-def highlight(pos, screen, selcted, square):
+def highlight(pos, selcted, square):
 
+    screen = getScreen()
     
     for i in range (0,10):
         if pos[1] < heightInc*2  and pos[0]> i*tenth and pos[0] < (i+1)*tenth:
@@ -236,6 +237,7 @@ def playCard(player, mana, card, spot, hand1, hand2):
 init()
 size =(1600,800)
 screen= display.set_mode(size)
+setScreen(screen)
 width = screen.get_width()	
 height = screen.get_height()
 
@@ -254,6 +256,7 @@ square = None
 display.flip()
 breaker = True
 board = Board()
+setBoard(board)
 spots = board.getSpots()
 hands = board.getHands()
 player1 = board.getPlayer1()
@@ -265,8 +268,8 @@ twice = 0
 state = None
 x = 0
 selecting = True
-cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen), ELF_ARC(board, screen),
-						GRM_MUR(board, screen), NOV_ENG(board, screen), LOT_HRD(board, screen)]
+cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
+						GRM_MUR(), NOV_ENG(), LOT_HRD()]
 deck1Cards = []
 deck2Cards = []
 start = 0
@@ -310,17 +313,18 @@ curpos = [1200, 0]
 
 #GamePlay Loop
 while (breaker):
+		turn = getTurn()
 		breaker = check_to_quit()
 		#Draw the board
-		drawGrid(screen, board, filename, lastpos, stat)
+		drawGrid(filename, lastpos, stat)
 		#Highlight current mouse POS
-		highlight(mouse.get_pos(), screen, selected, square)
+		highlight(mouse.get_pos(), selected, square)
 
 		# Show minions on board
-		showBoard(spots, screen)
+		showBoard(spots)
         
 		# Show cards in hand
-		showHand(hands, screen, turn)
+		showHand(hands, turn)
 		time.wait(10)
 		for newEvent in event.get():
 				if newEvent.type == MOUSEBUTTONDOWN:

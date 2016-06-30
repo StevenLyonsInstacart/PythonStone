@@ -12,6 +12,7 @@ from Weapon import *
 from card import *
 from cards import *
 from spawn import *
+from Constants import *
 
 #Hero power class
 class heroPower():
@@ -111,34 +112,32 @@ class WarriorPower(heroPower):
 #Deal 1 damage to a minion or player            
 class MagePower(heroPower):
     
-    def __init__(self, player, screen, board):
+    def __init__(self, player):
         heroPower.__init__(self, "Fireball", "Mage", player)
-        self.screen = screen
-	self.board = board
         
         
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-	    target, typ = SelectTarget(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
-	    if typ == "Creature":
-		dealDamage(target, 1, self.board)
-	    else:
-		if target == self.player.getOrder():
-		    burstFace(self.player, 1)
-		else:
-		    burstFace(self.player.getEnemy(), 1)
+            target, typ = SelectTarget("abusive_sergeant.png", self.player, self.player.getEnemy() )
+            if typ == "Creature":
+                dealDamage(target, 1, getBoard())
+            else:
+                if target == self.player.getOrder():
+                    burstFace(self.player, 1)
+                else:
+                    burstFace(self.player.getEnemy(), 1)
             
 # Summon a silver hand recruit	    
 class PaladinPower(heroPower):
-    def __init__(self, player, board):
+    def __init__(self, player):
         heroPower.__init__(self, "Call to Arms", "Paladin", player)
-	self.board = board
+        self.board = getBoard()
 	
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-	    spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
+            spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
         
 # Equip a Dagger	    
 class RoguePower(heroPower):
@@ -153,27 +152,28 @@ class RoguePower(heroPower):
         
 # Heal yourself for two life	    
 class PriestPower(heroPower):
-    def __init__(self, player, screen, board):
+    def __init__(self, player):
         heroPower.__init__(self, "The Light Shall Burn You", "Priest", player)
-	self.board = board
-	self.screen = screen
+
 	
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-	    target, typ = SelectTarget(self.board, self.screen, "abusive_sergeant.png", self.player, self.player.getEnemy() )
-	    if typ == "Creature":
-		healCreature(target.getCard(), 2)
-	    else:
-		if target == self.player.getOrder():
-		    self.player.heal(2)
-		else:
-		    self.player.getEnemy().heal(2)
+            target, typ = SelectTarget("abusive_sergeant.png", self.player, self.player.getEnemy() )
+            if typ == "Creature":
+                healCreature(target.getCard(), 2)
+            else:
+                if target == self.player.getOrder():
+                    self.player.heal(2)
+                else:
+                    self.player.getEnemy().heal(2)
     
 # Select either a minion or a hero
 # Returns a target and a classifier
 
-def SelectTarget(board, screen, filename, player, enemy):	
+def SelectTarget(filename, player, enemy):
+    board = getBoard()
+    screen = getScreen()	
     waiting = True
     spots = board.getSpots()
     
@@ -198,15 +198,16 @@ def SelectTarget(board, screen, filename, player, enemy):
                         return i, "Player"
 			
             elif evnt.type == MOUSEMOTION:
-                drawGrid(screen, board, filename)
-                showBoard(board.getSpots(), screen)
-                showHand(board.getHands(), screen, 0)
-                highlight((255, 255, 0), evnt.pos, screen)
+                drawGrid(filename)
+                showBoard(board.getSpots())
+                showHand(board.getHands(), 0)
+                highlight((255, 255, 0), evnt.pos)
 	    display.flip()
 	    
 
 #A highlight function which only works on minions on the board or heroes
-def highlight(colour, pos, screen):
+def highlight(colour, pos):
+    screen = getScreen()
     convx = screen.get_width() / 1600.0
     convy = screen.get_height() / 800.0
     

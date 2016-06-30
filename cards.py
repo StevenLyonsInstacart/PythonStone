@@ -1,6 +1,15 @@
 from pygame import *
 from random import *
 
+from StringIO import *
+
+import requests
+import urllib
+import os.path
+
+
+
+
 from Buff import *
 from Buffs import *
 from Damage import *
@@ -8,6 +17,8 @@ from DrawBoard import *
 from Effect import *
 from Effects import *
 from card import *
+from Constants import *
+import unirest
 
 #Colours
 RED = (255, 0, 0)
@@ -15,6 +26,18 @@ GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
 
+
+def getImage(cardName, saveName): 
+    response = unirest.get("https://omgvamp-hearthstone-v1.p.mashape.com/cards/"+cardName,
+                           headers={"X-Mashape-Key": "QrzUPBv9wAmshvo7g3fypeqSwQPCp1KZuo7jsnuMK9B8m1ZTkY",
+                                    "Accept": "application/json"
+                                    }
+                           )
+    print response.body[0]['img']
+    urllib.urlretrieve(response.body[0]['img'], saveName)
+
+
+   
 
 
 #Null Creature is an empty creature that wont be shown on screen.
@@ -47,7 +70,11 @@ class CH_YETI(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
-	self.img = "chillwind_yeti.png"
+        if os.path.isfile(foldername+"chillwind_yeti.png"):
+            pass
+        else:
+            getImage("Chillwind%20Yeti", foldername+"chillwind_yeti.png")
+        self.img = "chillwind_yeti.png"
 	
     def getClass(self):
         return self.classType
@@ -68,8 +95,12 @@ class RIV_CROC(Creature):
         self.battleCry = None
         self.owner = 0
         self.tired = True
-	self.buffs = []
-	self.img = "river_crocolisk.png"
+        self.buffs = []
+        if os.path.isfile(foldername+"river_crocolisk.png"):
+            pass
+        else:
+            getImage("River%20Crocolisk", foldername+"river_crocolisk.png")      
+        self.img = "river_crocolisk.png"
 	
         
     def getClass(self):
@@ -104,7 +135,11 @@ class FL_JUG(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
-	self.img = "flame_juggler.png"
+        if os.path.isfile(foldername+"flame_juggler.png"):
+            pass
+        else:
+            getImage("Flame%20Juggler", foldername+"flame_juggler.png") 
+        self.img = "flame_juggler.png"
 	
     def getClass(self):
         return self.classType
@@ -128,8 +163,12 @@ class MUR_RAID(Creature):
         self.creatureType = "Murloc"
         self.owner = 0
         self.tired = True
-	self.buffs = []
-	self.img = "murloc_raider.png"
+        self.buffs = []
+        if os.path.isfile(foldername+"murloc_raider.png"):
+            pass
+        else:
+            getImage("Murloc%20Raider", foldername+"murloc_raider.png") 
+        self.img = "murloc_raider.png"
         
     def copy(self):
         return MUR_RAID()
@@ -140,24 +179,28 @@ class MUR_RAID(Creature):
 #Representation of Grimscale Oracle    
 class GRM_MUR(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Grimscale Oracle"
         self.power = 1
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = "Murloc"
         self.owner = 0
         self.tired = True
-	self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.effects = [GRM_EFF(board, self)]
-	self.img = "grimscale_oracle.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        self.effects = [GRM_EFF(board, self)]
+        if os.path.isfile(foldername+"grimscale_oracle.png"):
+            pass
+        else:
+            getImage("grimscale%20oracle", foldername+"grimscale_oracle.png") 
+        self.img = "grimscale_oracle.png"
         
     def copy(self):
-        return GRM_MUR(self.board, self.screen)
+        return GRM_MUR()
     
     def getClass(self):
         return self.classType
@@ -167,30 +210,34 @@ class GRM_MUR(Creature):
     
     #Buff all other murlocs with +1 attack
     def doEffect(self):
-	self.board.addEffect(self.effects[0])
-	self.effects[0].onPlay()
+        self.board.addEffect(self.effects[0])
+        self.effects[0].onPlay()
     
 #Representation of Abusive Sergeant    
 class ABU_SRG(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Abusive Sergeant"
         self.power = 2
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.effects = []
-	self.img = "abusive_sergeant.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        self.effects = []
+        if os.path.isfile(foldername+"abusive_sergeant.png"):
+            pass
+        else:
+            getImage("Abusive%20Sergeant", foldername+"abusive_sergeant.png")
+        self.img = "abusive_sergeant.png"
         
     def copy(self):
-        return ABU_SRG(self.board, self.screen)
+        return ABU_SRG()
     
     def getClass(self):
         return self.classType
@@ -200,28 +247,32 @@ class ABU_SRG(Creature):
     
     #Give a minion +2 attack until end of turn
     def battleCry(self):
-	selectedBattleCry(ABU_BUFF(None), self.board, self.screen, self.img)
+        selectedBattleCry(ABU_BUFF(None), self.img)
 
 #Lance Carrier Representation	
 class LNC_CAR(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Lance Carrier"
         self.power = 1
         self.toughness = 2
-	self.maxHealth = 2
+        self.maxHealth = 2
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.img = "lance_carrier.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        if os.path.isfile(foldername+"lance_carrier.png"):
+            pass
+        else:
+            getImage("Lance%20Carrier", foldername+"lance_carrier.png") 
+        self.img = "lance_carrier.png"
         
     def copy(self):
-        return LNC_CAR(self.board, self.screen)
+        return LNC_CAR()
     
     def getClass(self):
         return self.classType
@@ -230,28 +281,32 @@ class LNC_CAR(Creature):
         return True
     #Ggive a minion +2 attack permanently
     def battleCry(self):
-	selectedBattleCry(LNC_BUFF(None), self.board, self.screen, self.img)
+        selectedBattleCry(LNC_BUFF(None), self.img)
 	
 #Representation of IronBeak Owl    
 class IRN_OWL(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Iron Beak Owl"
         self.power = 2
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 3
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.img = "ironbeak_owl.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        if os.path.isfile(foldername+"ironbeak_owl.png"):
+            pass
+        else:
+            getImage("Ironbeak%20Owl", foldername+"ironbeak_owl.png") 
+        self.img = "ironbeak_owl.png"
         
     def copy(self):
-        return IRN_OWL(self.board, self.screen)
+        return IRN_OWL()
     
     def getClass(self):
         return self.classType
@@ -261,28 +316,32 @@ class IRN_OWL(Creature):
     
     #Silence a Creature
     def battleCry(self):
-	selectedBattleCry(OWL_BUFF(None), self.board, self.screen, self.img)
+        selectedBattleCry(OWL_BUFF(None), self.img)
 
 #Representation of Novice Engineer	
 class NOV_ENG(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Novice Engineer"
         self.power = 1
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.img = "novice_engineer.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        if os.path.isfile(foldername+"novice_engineer.png"):
+            pass
+        else:
+            getImage("Novice%20Engineer", foldername+"novice_engineer.png") 
+        self.img = "novice_engineer.png"
         
     def copy(self):
-        return NOV_ENG(self.board, self.screen)
+        return NOV_ENG()
     
     def getClass(self):
         return self.classType
@@ -291,8 +350,8 @@ class NOV_ENG(Creature):
         return True
     #Draw a card
     def battleCry(self):
-	player = self.getPlayer()
-	player.getHand().draw(player.getDeck())
+        player = self.getPlayer()
+        player.getHand().draw(player.getDeck())
 
 #Representation of Silver Hand Recruit	
 class DUDE(Creature):
@@ -319,23 +378,27 @@ class DUDE(Creature):
 #Rrepresentation of Loot Hoarder	
 class LOT_HRD(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Loot Hoarder"
         self.power = 2
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 2
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.img = "loot_hoarder.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        if os.path.isfile(foldername+"loot_hoarder.png"):
+            pass
+        else:
+            getImage("Loot%20Hoarder", foldername+"loot_hoarder.png") 
+        self.img = "loot_hoarder.png"
         
     def copy(self):
-        return LOT_HRD(self.board, self.screen)
+        return LOT_HRD()
     
     def getClass(self):
         return self.classType
@@ -351,23 +414,27 @@ class LOT_HRD(Creature):
 #Representation of Elven Archer	
 class ELF_ARC(Creature):
     
-    def __init__(self, board, screen):
+    def __init__(self):
         self.name = "Elvish Archer"
         self.power = 1
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-        self.board = board
-	self.screen = screen
-	self.buffs = []
-	self.img = "elven_archer.png"
+        self.board = getBoard()  
+        self.screen = getScreen()
+        self.buffs = []
+        if os.path.isfile(foldername+"elven_archer.png"):
+            pass
+        else:
+            getImage("Elven%20Archer", foldername+"elven_archer.png") 
+        self.img = "elven_archer.png"
         
     def copy(self):
-        return ELF_ARC(self.board, self.screen)
+        return ELF_ARC()
     
     def getClass(self):
         return self.classType
@@ -377,11 +444,15 @@ class ELF_ARC(Creature):
     
     #Deal 1 Damage
     def battleCry(self):
-	target = selectCard(self.board, self.screen, self.img)
-	dealDamage(target, 1, self.board)
+        target = selectCard(self.img)
+        dealDamage(target, 1, self.board)
 
 #A helper function that will return the spot of a selected card.	
-def selectCard(board, screen, filename):	
+def selectCard(filename):	
+    
+    board = getBoard()
+    screen = getScreen()
+    
     waiting = True
     spots = board.getSpots()
     convx = screen.get_width() / 1600.0
@@ -402,14 +473,16 @@ def selectCard(board, screen, filename):
                          #Exit when clicked on a spot with a card in it
     			         if spots[reversei][j].getOccupied():
     				        return spots[reversei][j]
-    	    drawGrid(screen, board, filename)
-    	    showBoard(board.getSpots(), screen)
-    	    showHand(board.getHands(), screen, 1)
-    	    highlight((255, 255, 0), evnt.pos, screen)
+    	    drawGrid(filename)
+    	    showBoard(board.getSpots())
+    	    showHand(board.getHands(), getTurn())
+    	    highlight((255, 255, 0), evnt.pos)
     	    display.flip()
 
 #Apply a buff to a card currently on the fiels
-def selectedBattleCry(buff, board, screen, filename):	
+def selectedBattleCry(buff, filename):	
+    screen = getScreen()
+    board = getBoard()
     waiting = True
     spots = board.getSpots()
     convx = screen.get_width() / 1600.0
@@ -431,15 +504,16 @@ def selectedBattleCry(buff, board, screen, filename):
                                 buff.applyBuff()
                                 waiting = False
             elif evnt.type == MOUSEMOTION:
-        	    drawGrid(screen, board, filename)
-        	    showBoard(board.getSpots(), screen)
-        	    showHand(board.getHands(), screen, 1)
-        	    highlight((255, 255, 0), evnt.pos, screen)
+        	    drawGrid(filename)
+        	    showBoard(board.getSpots())
+        	    showHand(board.getHands(), getTurn())
+        	    highlight((255, 255, 0), evnt.pos)
     	    display.flip()
 	    
 
 #While selecting a battle cry, highlight wherever the mouse is
-def highlight(colour, pos, screen):
+def highlight(colour, pos):
+    screen  = getScreen()
     convx = screen.get_width() / 1600.0
     convy = screen.get_height() / 800.0
     

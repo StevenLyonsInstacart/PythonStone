@@ -7,6 +7,7 @@ from Damage import *
 from DrawBoard import *
 from Effect import *
 from card import *
+from Constants import *
 
 # Grimscale oracle effect
 # While Grimscale Oracle is in play, all other murlocs gain +1 attack
@@ -17,7 +18,7 @@ class GRM_EFF(Effect):
         self.played = True
         self.endTurn = False
         self.beginTurn = False
-        self.board = board
+        self.board = getBoard()
         self.host = card
         
     #On play give each other Murloc +1 attack

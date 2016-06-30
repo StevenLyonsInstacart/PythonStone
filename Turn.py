@@ -1,3 +1,5 @@
+from Constants import *
+
 # This function is called at the end of each turn, to reset the board for the next player
 # returns the Turn number (int)
 def endTurn(pos, turn, board, convx, convy):
@@ -49,9 +51,10 @@ def endTurn(pos, turn, board, convx, convy):
         		print "g2g"
         # Check all till end of turn buffs
     	checkBuffs(spots)
-    	return turn
+        switchTurn()
+    	return getTurn()
     else:
-        return turn
+        return getTurn()
 # Finish all till end of turn buffs    
 def checkBuffs(spots):
     for i in range (2):

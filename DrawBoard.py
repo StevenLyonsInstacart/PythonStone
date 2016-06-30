@@ -18,7 +18,8 @@ LINDSAY = (255, 7, 162)
 
 
 #Show all of the Cards on the Board
-def showBoard(spots, screen):
+def showBoard(spots):
+    screen  = getScreen()
     for i in range(0,2):
         for j in range(7):
             if (spots[i][j].getOccupied()):
@@ -32,8 +33,8 @@ def showBoard(spots, screen):
 # hands: each player's hand
 # screen: the surface being projected onto
 # turn: an int representation of who's turn it is		
-def showHand(hands, screen, turn):
-    
+def showHand(hands, turn):
+    screen = getScreen()
     #The opposing Player's cards will be shown as cardbacks
     cardBack = image.load(foldername+"cardback.png")
     for i in range (2):
@@ -123,7 +124,10 @@ def showHandCard(card, pos, screen):
 # filename is the name of the current hovercard
 # pos is the mouse position
 # status is an int used to determine if the hovercard should be shown	
-def drawGrid(screen, board, filename, pos=[0,0], status=0):
+def drawGrid(filename, pos=[0,0], status=0):
+    
+    board = getBoard()
+    screen = getScreen()
     
     #establish the players
     player1 = board.getPlayer1()
@@ -272,13 +276,17 @@ def drawGrid(screen, board, filename, pos=[0,0], status=0):
 
 #Shows a card image if mouse is hovering over the card    
 def hoveredCard(screen, pos, status, filename):
+        screen = getScreen()
+        convx = screen.get_width() / 1600.0
+        convy = screen.get_height() / 800.0
         if status == 1:
             img = image.load(filename)
+            img = transform.scale(img, (int(307*convx), int(465*convy)))
             #Check where the card should go to not be off screen
-            if pos[1] > 184:
-                imgRect = Rect(pos[0], pos[1] - 184, 184, 254)
+            if pos[1] > 381:
+                imgRect = Rect(pos[0], pos[1] - 381, 276, 381)
             else:
-                imgRect = Rect(pos[0], pos[1], 184, 254)
+                imgRect = Rect(pos[0], pos[1], 276, 281)
             screen.blit(img, imgRect)
             display.flip()
             

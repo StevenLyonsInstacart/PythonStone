@@ -11,8 +11,8 @@ DISPLAYNUM = 4
 def selectScreen(player, screen, board):
     deckCards = []
     selecting = True
-    cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(board, screen), LNC_CAR(board, screen), IRN_OWL(board, screen), ELF_ARC(board, screen),
-                        GRM_MUR(board, screen), NOV_ENG(board, screen), LOT_HRD(board, screen)]
+    cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
+                        GRM_MUR(), NOV_ENG(), LOT_HRD()]
     start = 0
     filename = "pics/Abusive_sergeant.png"
     saved = False
@@ -81,8 +81,8 @@ def selectScreen(player, screen, board):
 def updateClass(player, pos, board, screen, convx, convy):
         classPort = [["guldan_portrait.jpg", WarlockPower(player), 'Warlock'], ["rexxar_portrait.jpg", HunterPower(player), 'Hunter'],
                                  ["garrosh_portrait.png", WarriorPower(player), 'Warrior'],["thrall_portrait.jpg", WarlockPower(player), 'Shaman']
-                                 ,["uther_portrait.png", PaladinPower(player, board), 'Paladin'], ["jaina_portrait.jpg", MagePower(player, screen, board), 'Mage'],
-                                 ["anduin_portrait.png", PriestPower(player, screen, board),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
+                                 ,["uther_portrait.png", PaladinPower(player), 'Paladin'], ["jaina_portrait.jpg", MagePower(player), 'Mage'],
+                                 ["anduin_portrait.png", PriestPower(player),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
                                  ["malfurion_portrait.png", DruidPower(player), 'Druid']]
         for i in range (9):
             if 800*convx < pos[0] < 1050*convx and convy*(80+30*i) < pos[1] < convy*(80+(30*(i+1))):
