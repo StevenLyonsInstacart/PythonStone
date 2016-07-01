@@ -90,6 +90,15 @@ def showCard2(spot, screen, row1):
     else:
         ptRect.centery = (spot.getPos()[1] + 100) * conversiony
         
+        
+    num = 0    
+    if spot.getCard().hasTaunt():
+        num += 1
+        img = image.load(foldername+"taunt_symbol.png")
+        img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
+        imgRect = Rect(spot.getPos()[0]*conversionx, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
+        screen.blit(img, imgRect)
+        
     #Blit to Screen
     screen.blit(name, nameRect)
     screen.blit(pt, ptRect)

@@ -27,6 +27,8 @@ BOARD = (205,182,139)
 LINDSAY = (255, 7, 162)
 #BOARD = LINDSAY
 
+id = 0
+
 # Turn tracker
 turn = getTurn()
 # Get foldername from Constants
@@ -145,7 +147,7 @@ def select(mouseObj, spots, current, state, hands):
                     if state == "B":
                         if i != turn:
                             if spots[i][j].getOccupied():
-                                if canAttack(spots[i][j].getCard(), board.getEnemyPlayer()):
+                                if canAttack(spots[i][j].getCard(), getBoard().getEnemyPlayer()):
 									fight(spots[i][j], current, board)
 									current = None
 									state = None
@@ -165,7 +167,6 @@ def select(mouseObj, spots, current, state, hands):
                     elif state == "H":
                         if spots[i][j].getOccupied() == False:
                         	if i == getTurn():
-	                            board.playedCreature(current[0])
 	                            return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j],
 												hands[current[1][0]], current[1][1])
 	                        else:
@@ -184,31 +185,34 @@ def select(mouseObj, spots, current, state, hands):
                                     shiftLeft([i,j], spots, prevCard)
                                 elif canRight:
                                     shiftRight([i,j], spots, prevCard)
-                                board.playedCreature(current[0])
                         return None, None, None
 			#Hero attack
                     elif state == "C":
                         attacker = board.getCurrentPlayer()
                         if spots[i][j].getOccupied():
-                            faceGo(attacker, spots[i][j], board)
-                            attacker.setReady(False)
-                            if attacker.isArmed():
-                                weapon = attacker.getWeapon()
-                                if weapon.attackCheck():
-                                    attacker.unarmed()
-                                    attacker.setWeapon(None)
+                        	if canAttack(spots[i][j].getCard(), getBoard().getEnemyPlayer()):
+	                            faceGo(attacker, spots[i][j], board)
+	                            attacker.setReady(False)
+	                            if attacker.isArmed():
+	                                weapon = attacker.getWeapon()
+	                                if weapon.attackCheck():
+	                                    attacker.unarmed()
+	                                    attacker.setWeapon(None)
+	                        else:
+	                        	nvt = NonValidTarget(screen)
+	                        	nvt.displayMessage()
                         return None, None, None
         if state == "B":
             if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and not (current.getCard().getTired()):
-            	if canAttack(player1, player1):
+            	if canAttack(player1, getBoard().getEnemyPlayer()):
 	                goFace(current.getCard(), player1)
 	                return None, None, None
                 else:
 	            	tauntMessage = TauntMessage(screen)
 	                tauntMessage.displayMessage()
 	                return None, None, None
-            elif widthInc*11 < mx < heightIinc*17 and  heightInc*12 < my  <heightInc*14 and not (current.getCard().getTired()):
-            	if canAttack(player1, player1):
+            elif widthInc*11 < mx < heightInc*17 and  heightInc*12 < my  <heightInc*14 and not (current.getCard().getTired()):
+            	if canAttack(player1, getBoard().getEnemyPlayer()):
                 	goFace(current.getCard(), player2)
                  	return None, None,  None
                 else:
@@ -216,22 +220,30 @@ def select(mouseObj, spots, current, state, hands):
 	                tauntMessage.displayMessage()
         elif state == "C":
             if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and player2.isReady():
-                faceToFace(player1, player2)
-                attacker = player2
-                if attacker.isArmed():
-                    weapon = attacker.getWeapon()
-                    if weapon.attackCheck():
-                        attacker.unarmed()
-                        attacker.setWeapon(None)
-            	return None, None, None
+            	if canAttack(player2, player1):
+	                faceToFace(player1, player2)
+	                attacker = player2
+	                if attacker.isArmed():
+	                    weapon = attacker.getWeapon()
+	                    if weapon.attackCheck():
+	                        attacker.unarmed()
+	                        attacker.setWeapon(None)
+                else:
+	            	tauntMessage = TauntMessage(screen)
+	                tauntMessage.displayMessage()
+                return None, None, None
             elif widthInc*11 < mx < heightInc*17 and heightInc*12 < my  <heightInc*14 and player1.isReady():
-            	faceToFace(player2, player1)
-            	attacker = player1
-            	if attacker.isArmed():
-            		weapon = attacker.getWeapon()
-            		if weapon.attackCheck():
-            			attacker.unarmed()
-            			attacker.setWeapon(None)
+            	if canAttack(player1, player2):
+	            	faceToFace(player2, player1)
+	            	attacker = player1
+	            	if attacker.isArmed():
+	            		weapon = attacker.getWeapon()
+	            		if weapon.attackCheck():
+	            			attacker.unarmed()
+	            			attacker.setWeapon(None)
+                else:
+	            	tauntMessage = TauntMessage(screen)
+	                tauntMessage.displayMessage()
                	return None, None,  None
         
         return None, None, None
@@ -240,23 +252,28 @@ def select(mouseObj, spots, current, state, hands):
 
 #Play a card onto the board
 def playCard(player, mana, card, spot, hand1, hand2):
-    if card.getCost() <= player.getCurMana():
-        player.changeCurMana(-card.getCost())
-        spot.setCard(card)
+	board  = getBoard()
+	global id
+	if card.getCost() <= player.getCurMana():
+		card.setID(id)
+		id +=1
+		player.changeCurMana(-card.getCost())
+		spot.setCard(card)
         spot.setOccupied(True)
         hand1.setNull(hand2)
         
         if card.hasBattleCry():
             card.battleCry()
             
+        board.playedCreature(card)   
         if card.hasEffect():
             card.doEffect()
-            board.playedCreature(card)
+        
             
         if card.hasTaunt():
         	player.addTaunt(card)
-    display.flip()
-    return None, None, None
+	display.flip()
+	return None, None, None
 
 
 
@@ -297,6 +314,10 @@ twice = 0
 state = None
 x = 0
 selecting = True
+gen = Generator(screen, board, player1)
+
+cardList = gen.getCards()
+print "A"
 cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
 						GRM_MUR(), NOV_ENG(), LOT_HRD(), GLD_FOT()]
 deck1Cards = []

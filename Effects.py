@@ -35,7 +35,7 @@ class GRM_EFF(Effect):
                         
     #On another creature being played, check if its a murloc and give buff if needed                    
     def playCreature(self, card):
-        if card.getCreatureType() == "Murloc" and card != self.host:
+        if card.getCreatureType() == "Murloc" and card.getID() != self.host.getID():
                         curBuff = GRM_BUFF(card, self.board)
                         card.addBuff(curBuff)
                         curBuff.applyBuff()

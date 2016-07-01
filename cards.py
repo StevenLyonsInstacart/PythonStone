@@ -108,6 +108,8 @@ class RIV_CROC(Creature):
     def copy(self):
         return RIV_CROC()
     
+#The Taunts
+    
 # Representation of Goldshire Footman    
 class GLD_FOT(Creature):
     def __init__(self):
@@ -135,6 +137,175 @@ class GLD_FOT(Creature):
         return self.classType
     def copy(self):
         return GLD_FOT()
+    
+ #Representation of Frostwolf Grunt   
+class FRT_GRT(Creature):
+    def __init__(self):
+        self.name = "Frostwolf Grunt"
+        self.power = 2
+        self.toughness = 2
+        self.maxHealth = 2
+        self.cost = 2
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"frostwolf_grunt.png"):
+            pass
+        else:
+            getImage("frostwolf%20grunt", foldername+"frostwolf_grunt.png")      
+        self.img = "frostwolf_grunt.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return FRT_GRT()
+    
+#Representation of Ironfur Grizzly   
+class IRN_GRZ(Creature):
+    def __init__(self):
+        self.name = "Ironfur Grizzly"
+        self.power = 3
+        self.toughness = 3
+        self.maxHealth = 3
+        self.cost = 3
+        self.classType = "neutral"
+        self.creatureType = "Beast"
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"ironfur_grizzly.png"):
+            pass
+        else:
+            getImage("ironfur%20grizzly", foldername+"ironfur_grizzly.png")      
+        self.img = "ironfur_grizzly.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return IRN_GRZ()
+    
+#Representation of Silverback Patriarch   
+class SLV_PAT(Creature):
+    def __init__(self):
+        self.name = "Silverback Patriarch"
+        self.power = 1
+        self.toughness = 4
+        self.maxHealth = 4
+        self.cost = 3
+        self.classType = "neutral"
+        self.creatureType = "Beast"
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"silverback_patriarch.png"):
+            pass
+        else:
+            getImage("silverback%20patriarch", foldername+"silverback_patriarch.png")      
+        self.img = "silverback_patriarch.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return SLV_PAT()
+    
+#Representation of Lord of the Arena  
+class LRD_ARN(Creature):
+    def __init__(self):
+        self.name = "Lord of the Arena"
+        self.power = 6
+        self.toughness = 5
+        self.maxHealth = 5
+        self.cost = 6
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"lord_of_the_arena.png"):
+            pass
+        else:
+            getImage("lord%20of%20the%20arena", foldername+"lord_of_the_arena.png")      
+        self.img = "lord_of_the_arena.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return LRD_ARN()
+    
+#Representation of Booty Bay Bodyguard  
+class BOT_BAY(Creature):
+    def __init__(self):
+        self.name = "Booty Bay Bodyguard"
+        self.power = 5
+        self.toughness = 4
+        self.maxHealth = 4
+        self.cost = 5
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"booty_bay_bodyguard.png"):
+            pass
+        else:
+            getImage("booty%20bay%20bodyguard", foldername+"booty_bay_bodyguard.png")      
+        self.img = "booty_bay_bodyguard.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return BOT_BAY()
+    
+#Representation of Booty Bay Bodyguard  
+class SEN_JIN(Creature):
+    def __init__(self):
+        self.name = "Sen'jin Shieldmasta"
+        self.power = 3
+        self.toughness = 5
+        self.maxHealth = 5
+        self.cost = 4
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"senjin_shieldmasta.png"):
+            pass
+        else:
+            getImage("sen%27jin%20shieldmasta", foldername+"senjin_shieldmasta.png")      
+        self.img = "senjin_shieldmasta.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return SEN_JIN()
+
 
 #Representation of Flame Juggler    
 class FL_JUG(Creature):
@@ -226,6 +397,7 @@ class GRM_MUR(Creature):
         else:
             getImage("grimscale%20oracle", foldername+"grimscale_oracle.png") 
         self.img = "grimscale_oracle.png"
+        self.ID = -1
         
     def copy(self):
         return GRM_MUR()
@@ -234,7 +406,7 @@ class GRM_MUR(Creature):
         return self.classType
     
     def hasEffect(self):
-	return True
+        return True
     
     #Buff all other murlocs with +1 attack
     def doEffect(self):

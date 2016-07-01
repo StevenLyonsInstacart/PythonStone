@@ -39,6 +39,7 @@ class Creature(Card):
         self.img = ""
         self.player = None
         self.maxHealth = toughness
+        self.ID = 0
         
         
     ######################
@@ -81,6 +82,9 @@ class Creature(Card):
     def getBuffs(self):
         return self.buffs
     
+    def getID(self):
+        return self.ID
+    
     ######################
     #    Set Statements  #
     ######################
@@ -108,6 +112,8 @@ class Creature(Card):
         
     def setPlayer(self, player):
         self.player = player
+    def setID(self, ID):
+        self.ID = ID
     
    
     #By default these methods return False, but are overwritten on cards that 
