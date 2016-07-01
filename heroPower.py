@@ -200,7 +200,7 @@ def SelectTarget(filename, player, enemy):
             elif evnt.type == MOUSEMOTION:
                 drawGrid(filename)
                 showBoard(board.getSpots())
-                showHand(board.getHands(), 0)
+                showHand(board.getHands(), getTurn())
                 highlight((255, 255, 0), evnt.pos)
 	    display.flip()
 	    

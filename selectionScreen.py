@@ -12,7 +12,7 @@ def selectScreen(player, screen, board):
     deckCards = []
     selecting = True
     cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
-                        GRM_MUR(), NOV_ENG(), LOT_HRD()]
+                        GRM_MUR(), NOV_ENG(), LOT_HRD(), GLD_FOT()]
     start = 0
     filename = "pics/Abusive_sergeant.png"
     saved = False

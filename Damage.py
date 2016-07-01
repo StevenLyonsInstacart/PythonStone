@@ -21,6 +21,11 @@ def dealDamage(target, total, board):
     if target.getCard().getToughness() <= 0:
         if target.getCard().hasDeathRattle():
             target.getCard().deathRattle()
+        if target.getCard().hasTaunt():
+            if target.getCard() in board.getCurrentPlayer().getTaunts():
+                board.getCurrentPlayer().removeTaunt(target.getCard())
+            if target.getCard() in board.getEnemyPlayer().getTaunts():
+                board.getEnemyPlayer().removeTaunt(target.getCard())
         board.cardDeath(target.getCard())
         target.setCard(NULL_CR())
         target.getCard().clearBuffs()

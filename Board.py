@@ -63,6 +63,9 @@ class Board:
     def getPlayer2(self):
         return self.player2
     
+    def getEnemyPlayer(self):
+        return self.currentPlayer.getEnemy()
+    
     
     # SimpleDecks randomly fills two decks with 30 cards from two
     # cardlists. This is primarily used for testing, as it can take

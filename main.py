@@ -88,6 +88,15 @@ def highlight(pos, selcted, square):
     if selected != None:
         square0 = abs(1-square[0])
         draw.rect(screen, (0,255,255), (square[1], square0, square[2], square[3]), 10)
+        
+        
+def canAttack(target, player):
+	if player.getTaunts():
+		for targ in player.getTaunts():
+			if targ == target:
+				return True
+		return False
+	return True
 
 
 
@@ -136,9 +145,14 @@ def select(mouseObj, spots, current, state, hands):
                     if state == "B":
                         if i != turn:
                             if spots[i][j].getOccupied():
-                                fight(spots[i][j], current, board)
-                                current = None
-                                state = None
+                                if canAttack(spots[i][j].getCard(), board.getEnemyPlayer()):
+									fight(spots[i][j], current, board)
+									current = None
+									state = None
+                                else:
+	                            	tauntMessage = TauntMessage(screen)
+	                            	tauntMessage.displayMessage()
+	                            	return None, None, None
                             else:
                                 NVT = NonValidTarget(screen)
                                 NVT.displayMessage()
@@ -150,9 +164,12 @@ def select(mouseObj, spots, current, state, hands):
                     #Play Card
                     elif state == "H":
                         if spots[i][j].getOccupied() == False:
-                            board.playedCreature(current[0])
-                            return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j],
-											hands[current[1][0]], current[1][1])
+                        	if i == getTurn():
+	                            board.playedCreature(current[0])
+	                            return playCard(board.getCurrentPlayer(), board.getCurrentPlayer().getCurMana(), current[0], spots[i][j],
+												hands[current[1][0]], current[1][1])
+	                        else:
+	                        	return None, None, None
                         else:
                             prevCard = spots[i][j].getCard()
                             canRight = checkRight([i,j], spots)
@@ -183,11 +200,20 @@ def select(mouseObj, spots, current, state, hands):
                         return None, None, None
         if state == "B":
             if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and not (current.getCard().getTired()):
-                goFace(current.getCard(), player1)
-                return None, None, None
+            	if canAttack(player1, player1):
+	                goFace(current.getCard(), player1)
+	                return None, None, None
+                else:
+	            	tauntMessage = TauntMessage(screen)
+	                tauntMessage.displayMessage()
+	                return None, None, None
             elif widthInc*11 < mx < heightIinc*17 and  heightInc*12 < my  <heightInc*14 and not (current.getCard().getTired()):
-                goFace(current.getCard(), player2)
-                return None, None,  None
+            	if canAttack(player1, player1):
+                	goFace(current.getCard(), player2)
+                 	return None, None,  None
+                else:
+	            	tauntMessage = TauntMessage(screen)
+	                tauntMessage.displayMessage()
         elif state == "C":
             if widthInc*11 < mx < heightInc*17 and heightInc*2 < my  <heightInc*4 and player2.isReady():
                 faceToFace(player1, player2)
@@ -226,6 +252,9 @@ def playCard(player, mana, card, spot, hand1, hand2):
         if card.hasEffect():
             card.doEffect()
             board.playedCreature(card)
+            
+        if card.hasTaunt():
+        	player.addTaunt(card)
     display.flip()
     return None, None, None
 
@@ -269,7 +298,7 @@ state = None
 x = 0
 selecting = True
 cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
-						GRM_MUR(), NOV_ENG(), LOT_HRD()]
+						GRM_MUR(), NOV_ENG(), LOT_HRD(), GLD_FOT()]
 deck1Cards = []
 deck2Cards = []
 start = 0

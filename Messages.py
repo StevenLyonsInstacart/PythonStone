@@ -33,3 +33,8 @@ class WrongTurn(Message):
     
     def __init__(self, screen):
         Message.__init__(self, "You can't atack your own minion", screen)
+        
+class TauntMessage(Message):
+    
+    def __init__(self, screen):
+        Message.__init__(self, "You must attack the minion with taunt", screen)

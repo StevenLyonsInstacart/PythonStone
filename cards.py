@@ -107,6 +107,34 @@ class RIV_CROC(Creature):
         return self.classType
     def copy(self):
         return RIV_CROC()
+    
+# Representation of Goldshire Footman    
+class GLD_FOT(Creature):
+    def __init__(self):
+        self.name = "Goldshire Footman"
+        self.power = 1
+        self.toughness = 2
+        self.maxHealth = 2
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = True
+        self.buffs = []
+        if os.path.isfile(foldername+"goldshire_footman.png"):
+            pass
+        else:
+            getImage("Goldshire%20Footman", foldername+"goldshire_footman.png")      
+        self.img = "goldshire_footman.png"
+    
+    def hasTaunt(self):
+        return True
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return GLD_FOT()
 
 #Representation of Flame Juggler    
 class FL_JUG(Creature):

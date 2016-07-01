@@ -12,7 +12,7 @@ class Generator():
         self.cardDict = {"Chillwind Yeti": CH_YETI(), "Flame Juggler": FL_JUG(), "River Crocolisk": RIV_CROC(), "Murloc Raider": MUR_RAID(),
                         "Abusive Sergeant": ABU_SRG(), "Lance Carrier": LNC_CAR(), "Iron Beak Owl": IRN_OWL(),
                         "Elvish Archer": ELF_ARC(), "Grimscale Oracle" : GRM_MUR(), 
-                        "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD()}
+                        "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD(), "Goldshire Footman": GLD_FOT()}
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],

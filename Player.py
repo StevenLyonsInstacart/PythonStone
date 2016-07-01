@@ -47,6 +47,7 @@ class Player:
         self.armor = 0
         self.weapon = None
         self.hasWeapon = False
+        self.taunts = []
     
     #####################
     #    Get Methods    #
@@ -82,6 +83,8 @@ class Player:
         return self.totMana
     def getCurMana(self):
         return self.curMana
+    def getTaunts(self):
+        return self.taunts
     
     #####################
     #    Set Methods    #
@@ -117,6 +120,7 @@ class Player:
     def setEnemies(self, player):
         self.enemy = player
         player.setEnemy(self) 
+
         
     # Set player to Armed
     def armed(self):
@@ -172,5 +176,11 @@ class Player:
     #Heal player    
     def heal(self, inc):
         self.life = min(30, self.life + 2)
+        
+    def addTaunt(self, taunt):
+        self.taunts.append(taunt)
+        
+    def removeTaunt(self, taunt):
+        self.taunts.remove(taunt)
     
     

@@ -124,6 +124,9 @@ class Creature(Card):
     def doEffect(self):
         pass
     
+    def hasTaunt(self):
+        return  False
+    
     
     #A function that should be removed
     def ping(self, val=1):
