@@ -1,5 +1,7 @@
-Warrior
+this int
+Druid
 Murloc Raider
 River Crocolisk
 Flame Juggler
 Chillwind Yeti
+Abusive Sergeant

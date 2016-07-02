@@ -1,5 +1,4 @@
-Shaman
-Murloc Raider
-River Crocolisk
-Flame Juggler
-Chillwind Yeti
+taunt test
+Rogue
+Grimscale Oracle
+Frostwolf Grunt
