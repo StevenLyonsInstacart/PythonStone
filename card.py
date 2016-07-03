@@ -1,3 +1,4 @@
+from Constants import *
 # Card Template. Currently based on an obeslete template, will improve when
 # spells, weapons and secrets are implemented.
 class Card:
@@ -24,20 +25,25 @@ class Card:
 # player: The player who selected ths card for his deck
 # maxHealth: This maximum health this minion can heal too
 class Creature(Card):
-    def __init__(self, name, cost, power, toughness, owner) :
+    def __init__(self, name, cost, power, toughness, owner, tired, buffs, effects, img, keywords, creaturetype, classType) :
+        
+        
+        
         self.name = name;
         self.power = power;
         self.cost = cost;
         self.toughness = toughness;
         self.state = None
-        self.creatureType = None
+        self.creatureType = creaturetype
+        self.classType = classType
         self.owner = owner
-        self.tired = True
-        self.buffs = []
-        self.effects = []
-        self.screen = screen
-        self.img = ""
+        self.tired = tired
+        self.buffs = buffs
+        self.effects = effects
+        self.screen = getScreen()
+        self.img = img
         self.player = None
+        self.keywords = keywords
         self.maxHealth = toughness
         self.ID = 0
         
@@ -85,6 +91,9 @@ class Creature(Card):
     def getID(self):
         return self.ID
     
+    def getKeywords(self):
+        return self.keywords
+    
     ######################
     #    Set Statements  #
     ######################
@@ -112,8 +121,12 @@ class Creature(Card):
         
     def setPlayer(self, player):
         self.player = player
+        
     def setID(self, ID):
         self.ID = ID
+        
+    def setKeyword(self, key, ind):
+        self.keywords[ind] = key
     
    
     #By default these methods return False, but are overwritten on cards that 

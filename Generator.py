@@ -14,7 +14,8 @@ class Generator():
                         "Elvish Archer": ELF_ARC(), "Grimscale Oracle" : GRM_MUR(), "Frostwolf Grunt": FRT_GRT(), 
                         "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD(), "Goldshire Footman": GLD_FOT(),
                         "Ironfur Grizzly": IRN_GRZ(), "Silverback Patriarch": SLV_PAT(), "Lord of the Arena": LRD_ARN(),
-                        "Booty Bay Bodyguard": BOT_BAY(), "Sen'jin Shieldmasta": SEN_JIN()}
+                        "Booty Bay Bodyguard": BOT_BAY(), "Sen'jin Shieldmasta": SEN_JIN(), "Stonetusk_Boar": STN_BOR(),
+                        "Bluegill Warrior": BLU_WAR(), "Wolfrider": WLF_RID(), "Stormwind Knight": STR_KNT(),"Reckless Rocketeer": REK_ROC()}
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],

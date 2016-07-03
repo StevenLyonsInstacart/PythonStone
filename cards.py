@@ -26,6 +26,12 @@ GREEN = (0, 200, 0)
 BLUE = (0, 0, 255)
 BOARD = (205,182,139)
 
+VANILLA =  [False, False, False, False]
+TAUNT =    [True, False, False, False ]
+CHARGE =   [False, True, False, False ]
+DIVINE =   [False, False, True, False ]
+WINDFURY = [False, False, False, True ]
+
 
 def getImage(cardName, saveName): 
     response = unirest.get("https://omgvamp-hearthstone-v1.p.mashape.com/cards/"+cardName,
@@ -70,6 +76,7 @@ class CH_YETI(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"chillwind_yeti.png"):
             pass
         else:
@@ -96,6 +103,7 @@ class RIV_CROC(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"river_crocolisk.png"):
             pass
         else:
@@ -124,6 +132,7 @@ class GLD_FOT(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"goldshire_footman.png"):
             pass
         else:
@@ -152,6 +161,7 @@ class FRT_GRT(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"frostwolf_grunt.png"):
             pass
         else:
@@ -180,6 +190,7 @@ class IRN_GRZ(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"ironfur_grizzly.png"):
             pass
         else:
@@ -208,6 +219,7 @@ class SLV_PAT(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"silverback_patriarch.png"):
             pass
         else:
@@ -236,6 +248,7 @@ class LRD_ARN(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"lord_of_the_arena.png"):
             pass
         else:
@@ -264,6 +277,7 @@ class BOT_BAY(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"booty_bay_bodyguard.png"):
             pass
         else:
@@ -292,6 +306,7 @@ class SEN_JIN(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = TAUNT
         if os.path.isfile(foldername+"senjin_shieldmasta.png"):
             pass
         else:
@@ -305,8 +320,119 @@ class SEN_JIN(Creature):
         return self.classType
     def copy(self):
         return SEN_JIN()
+    
+#############################
+####    Charge Minions    ###
+#############################
 
+#Representation of Stonetusk Boar
 
+class STN_BOR(Creature):
+    def __init__(self):
+        self.name = "Stonetusk Boar"
+        self.power = 1
+        self.toughness = 1
+        self.maxHealth = 1
+        self.cost = 1
+        self.classType = "neutral"
+        self.creatureType = "Beast"
+        self.battleCry = None
+        self.owner = 0
+        self.tired = False
+        self.buffs = []
+        self.keywords = CHARGE
+        if os.path.isfile(foldername+"stonetusk_boar.png"):
+            pass
+        else:
+            getImage("stonetusk%20boar", foldername+"stonetusk_boar.png")      
+        self.img = "stonetusk_boar.png"
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return STN_BOR()
+    
+# Bluegill Warrior representation    
+class BLU_WAR(Creature):
+    def __init__(self):
+        self.name = "Bluegill Warrior"
+        self.power = 2
+        self.toughness = 1
+        self.maxHealth = 1
+        self.cost = 2
+        self.classType = "neutral"
+        self.creatureType = "Murloc"
+        self.battleCry = None
+        self.owner = 0
+        self.tired = False
+        self.buffs = []
+        self.keywords = CHARGE
+        if os.path.isfile(foldername+"bluegill_warrior.png"):
+            pass
+        else:
+            getImage("bluegill%20warrior", foldername+"bluegill_warrior.png")      
+        self.img = "bluegill_warrior.png"
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return BLU_WAR()
+
+# Wolfrider representation    
+class WLF_RID(Creature):
+    def __init__(self):
+        self.name = "Wolfrider"
+        self.power = 3
+        self.toughness = 1
+        self.maxHealth = 1
+        self.cost = 3
+        self.classType = "neutral"
+        self.creatureType = None
+        self.battleCry = None
+        self.owner = 0
+        self.tired = False
+        self.buffs = []
+        self.keywords = CHARGE
+        if os.path.isfile(foldername+"Wolfrider.png"):
+            pass
+        else:
+            getImage("wolfrider", foldername+"wolfrider.png")      
+        self.img = "wolfrider.png"
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return WLF_RID()
+    
+    
+# Wolfrider representation    
+class STR_KNT(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"stormwind_knight.png"):
+            pass
+        else:
+            getImage("stormwind%20knight", foldername+"stormwind_knight.png") 
+        Creature.__init__(self, "Stormwind Knight", 4, 2, 5, 0, False, [], [], "stormwind_knight.png", CHARGE, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return STR_KNT()
+
+# Reckless Rocketeer representation    
+class REK_ROC(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"reckless_rocketeer.png"):
+            pass
+        else:
+            getImage("reckless%20rocketeer", foldername+"reckless_rocketeer.png") 
+        Creature.__init__(self, "Reckless Rocketeer", 6, 5, 2, 0, False, [], [], "reckless_rocketeer.png", CHARGE, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return REK_ROC()
+    
 #Representation of Flame Juggler    
 class FL_JUG(Creature):
     
@@ -334,6 +460,7 @@ class FL_JUG(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"flame_juggler.png"):
             pass
         else:
@@ -363,6 +490,7 @@ class MUR_RAID(Creature):
         self.owner = 0
         self.tired = True
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"murloc_raider.png"):
             pass
         else:
@@ -391,6 +519,7 @@ class GRM_MUR(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         self.effects = [GRM_EFF(board, self)]
         if os.path.isfile(foldername+"grimscale_oracle.png"):
             pass
@@ -429,6 +558,7 @@ class ABU_SRG(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         self.effects = []
         if os.path.isfile(foldername+"abusive_sergeant.png"):
             pass
@@ -465,6 +595,7 @@ class LNC_CAR(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"lance_carrier.png"):
             pass
         else:
@@ -499,6 +630,7 @@ class IRN_OWL(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"ironbeak_owl.png"):
             pass
         else:
@@ -534,6 +666,7 @@ class NOV_ENG(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"novice_engineer.png"):
             pass
         else:
@@ -560,14 +693,15 @@ class DUDE(Creature):
         self.name = "SilverHand recruit"
         self.power = 1
         self.toughness = 1
-	self.maxHealth = 1
+        self.maxHealth = 1
         self.cost = 1
         self.classType = "neutral"
         self.creatureType = None
         self.owner = 0
         self.tired = True
-	self.buffs = []
-	self.img = "silverhand_recruit.png"
+        self.buffs = []
+        self.keywords = VANILLA
+        self.img = "silverhand_recruit.png"
         
     def copy(self):
         return DUDE()
@@ -591,6 +725,7 @@ class LOT_HRD(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"loot_hoarder.png"):
             pass
         else:
@@ -627,6 +762,7 @@ class ELF_ARC(Creature):
         self.board = getBoard()  
         self.screen = getScreen()
         self.buffs = []
+        self.keywords = VANILLA
         if os.path.isfile(foldername+"elven_archer.png"):
             pass
         else:

@@ -92,11 +92,19 @@ def showCard2(spot, screen, row1):
         
         
     num = 0    
-    if spot.getCard().hasTaunt():
-        num += 1
+    if spot.getCard().getKeywords()[0]:
+        num += 20*conversionx
         img = image.load(foldername+"taunt_symbol.png")
         img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
         imgRect = Rect(spot.getPos()[0]*conversionx, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
+        screen.blit(img, imgRect)
+        
+    if spot.getCard().getKeywords()[1]:
+        
+        img = image.load(foldername+"charge_symbol.png")
+        img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
+        imgRect = Rect(spot.getPos()[0]*conversionx +  num, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
+        num += 20*conversionx
         screen.blit(img, imgRect)
         
     #Blit to Screen
