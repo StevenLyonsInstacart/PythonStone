@@ -259,19 +259,20 @@ def playCard(player, mana, card, spot, hand1, hand2):
 		id +=1
 		player.changeCurMana(-card.getCost())
 		spot.setCard(card)
-        spot.setOccupied(True)
-        hand1.setNull(hand2)
+		spot.setOccupied(True)
+		hand1.setNull(hand2)
         
-        if card.hasBattleCry():
-            card.battleCry()
+		if card.hasBattleCry():
+			card.battleCry()
             
-        board.playedCreature(card)   
-        if card.hasEffect():
-            card.doEffect()
+		board.playedCreature(card)   
+		
+		if card.hasEffect():
+			card.doEffect()
         
             
-        if card.hasTaunt():
-        	player.addTaunt(card)
+ 	   	if card.hasTaunt():
+ 	   		player.addTaunt(card)
 	display.flip()
 	return None, None, None
 

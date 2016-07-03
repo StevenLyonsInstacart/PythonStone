@@ -329,23 +329,12 @@ class SEN_JIN(Creature):
 
 class STN_BOR(Creature):
     def __init__(self):
-        self.name = "Stonetusk Boar"
-        self.power = 1
-        self.toughness = 1
-        self.maxHealth = 1
-        self.cost = 1
-        self.classType = "neutral"
-        self.creatureType = "Beast"
-        self.battleCry = None
-        self.owner = 0
-        self.tired = False
-        self.buffs = []
-        self.keywords = CHARGE
+        
         if os.path.isfile(foldername+"stonetusk_boar.png"):
             pass
         else:
             getImage("stonetusk%20boar", foldername+"stonetusk_boar.png")      
-        self.img = "stonetusk_boar.png"
+        Creature.__init__(self, "Stonetusk Boar", 1, 1, 1, 0, False, [], [], "stonetusk_boar.png", CHARGE, None, "neutral")
         
     def getClass(self):
         return self.classType
@@ -355,23 +344,11 @@ class STN_BOR(Creature):
 # Bluegill Warrior representation    
 class BLU_WAR(Creature):
     def __init__(self):
-        self.name = "Bluegill Warrior"
-        self.power = 2
-        self.toughness = 1
-        self.maxHealth = 1
-        self.cost = 2
-        self.classType = "neutral"
-        self.creatureType = "Murloc"
-        self.battleCry = None
-        self.owner = 0
-        self.tired = False
-        self.buffs = []
-        self.keywords = CHARGE
         if os.path.isfile(foldername+"bluegill_warrior.png"):
             pass
         else:
             getImage("bluegill%20warrior", foldername+"bluegill_warrior.png")      
-        self.img = "bluegill_warrior.png"
+        Creature.__init__(self, "Bluegill Warrior", 2, 2, 1, 0, False, [], [], "bluegill_warrior.png", CHARGE, "Murloc", "neutral")
         
     def getClass(self):
         return self.classType
@@ -381,23 +358,11 @@ class BLU_WAR(Creature):
 # Wolfrider representation    
 class WLF_RID(Creature):
     def __init__(self):
-        self.name = "Wolfrider"
-        self.power = 3
-        self.toughness = 1
-        self.maxHealth = 1
-        self.cost = 3
-        self.classType = "neutral"
-        self.creatureType = None
-        self.battleCry = None
-        self.owner = 0
-        self.tired = False
-        self.buffs = []
-        self.keywords = CHARGE
         if os.path.isfile(foldername+"Wolfrider.png"):
             pass
         else:
             getImage("wolfrider", foldername+"wolfrider.png")      
-        self.img = "wolfrider.png"
+        Creature.__init__(self, "Wolfrider", 3, 3, 1, 0, False, [], [], "wolfrider.png", CHARGE, None, "neutral")
         
     def getClass(self):
         return self.classType
@@ -432,6 +397,72 @@ class REK_ROC(Creature):
         return self.classType
     def copy(self):
         return REK_ROC()
+    
+    
+##########################
+##    Divine Minions    ##
+##########################
+
+# Argent Squire representation    
+class ARG_SQU(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"argent_squire.png"):
+            pass
+        else:
+            getImage("argent%20squire", foldername+"argent_squire.png") 
+        Creature.__init__(self, "Argent Squire", 1, 1, 1, 0, True, [], [], "argent_squire.png", DIVINE, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return ARG_SQU()
+    
+class SCR_CRU(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"scarlet_crusader.png"):
+            pass
+        else:
+            getImage("scarlet%20crusader", foldername+"scarlet_crusader.png") 
+        Creature.__init__(self, "Scarlet Crusader", 3, 3, 1, 0, True, [], [], "scarlet_crusader.png", DIVINE, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return SCR_CRU()
+    
+class ARG_COM(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"argent_commander.png"):
+            pass
+        else:
+            getImage("argent%20commander", foldername+"argent_commander.png") 
+        Creature.__init__(self, "Argent Commander", 6, 4, 2, 0, False, [], [], "argent_commander.png", [False, True, True, False], None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return ARG_COM()
+    
+# Argent Squire representation    
+class AL_AKIR(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"alakir_the_windlord.png"):
+            pass
+        else:
+            getImage("al%27akir%20the%20windlord", foldername+"alakir_the_windlord.png") 
+        Creature.__init__(self, "Al'akir the Windlord", 8, 3, 5, 0, False, [], [], "alakir_the_windlord.png", [True, True, True, True], None, "neutral")
+
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return AL_AKIR()    
+    
+    def hasTaunt(self):
+        return True
+
+
+
     
 #Representation of Flame Juggler    
 class FL_JUG(Creature):

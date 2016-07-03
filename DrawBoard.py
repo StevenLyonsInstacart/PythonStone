@@ -78,7 +78,7 @@ def showCard2(spot, screen, row1):
     if row1:
         nameRect.centery = (spot.getPos()[1] + 50) * conversiony
     else:
-        nameRect.centery = (spot.getPos()[1]) * conversiony
+        nameRect.centery = (spot.getPos()[1] + 50) * conversiony
         
     #Power Toughness Text
     pts = str(spot.getCard().getPower()) + "                  " + str(spot.getCard().getToughness())
@@ -88,7 +88,7 @@ def showCard2(spot, screen, row1):
     if row1:
         ptRect.centery = (spot.getPos()[1] + 150) * conversiony
     else:
-        ptRect.centery = (spot.getPos()[1] + 100) * conversiony
+        ptRect.centery = (spot.getPos()[1] + 150) * conversiony
         
         
     num = 0    
@@ -102,6 +102,22 @@ def showCard2(spot, screen, row1):
     if spot.getCard().getKeywords()[1]:
         
         img = image.load(foldername+"charge_symbol.png")
+        img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
+        imgRect = Rect(spot.getPos()[0]*conversionx +  num, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
+        num += 20*conversionx
+        screen.blit(img, imgRect)
+        
+    if spot.getCard().getKeywords()[2]:
+        
+        img = image.load(foldername+"divine_symbol.png")
+        img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
+        imgRect = Rect(spot.getPos()[0]*conversionx +  num, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
+        num += 20*conversionx
+        screen.blit(img, imgRect)
+        
+    if spot.getCard().getKeywords()[3]:
+        
+        img = image.load(foldername+"windfury_symbol.png")
         img = transform.scale(img, (int(conversionx*20), int(conversiony*20)))
         imgRect = Rect(spot.getPos()[0]*conversionx +  num, (spot.getPos()[1]+100)*conversiony, conversionx*20, conversiony*20)
         num += 20*conversionx

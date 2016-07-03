@@ -171,7 +171,10 @@ class Creature(Card):
         
     # Deals damage to the creature 
     def takeDamage(self, damage):
-        self.toughness = self.toughness - damage
+        if self.keywords[2]:
+            self.keywords[2] = False
+        else:
+            self.toughness = self.toughness - damage
         
 
     #On Null creatures this function will be overwritten    

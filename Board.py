@@ -15,8 +15,8 @@ class Board:
         #spots are the 14 possible spots where you can play a minion
         self.spots = ([],[])
         for i in range (0,7):
-            self.spots[0].append(Spot((200*i+70,435)))
-            self.spots[1].append(Spot((200*i+70,180)))
+            self.spots[0].append(Spot((200*i+70,390)))
+            self.spots[1].append(Spot((200*i+70,190)))
         #Hands are each player's hands
         self.hands = (Hand(),Hand())
         

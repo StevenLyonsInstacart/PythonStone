@@ -3,6 +3,9 @@ from cards import *
 from Player import *
 from heroPower import *
 
+def my_cmp(a, b):
+    return cmp(a.getCost(), b.getCost()) or cmp(a.getName(), b.getName())
+
 class Generator():
     
     def __init__(self, screen, board, player):
@@ -15,7 +18,8 @@ class Generator():
                         "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD(), "Goldshire Footman": GLD_FOT(),
                         "Ironfur Grizzly": IRN_GRZ(), "Silverback Patriarch": SLV_PAT(), "Lord of the Arena": LRD_ARN(),
                         "Booty Bay Bodyguard": BOT_BAY(), "Sen'jin Shieldmasta": SEN_JIN(), "Stonetusk_Boar": STN_BOR(),
-                        "Bluegill Warrior": BLU_WAR(), "Wolfrider": WLF_RID(), "Stormwind Knight": STR_KNT(),"Reckless Rocketeer": REK_ROC()}
+                        "Bluegill Warrior": BLU_WAR(), "Wolfrider": WLF_RID(), "Stormwind Knight": STR_KNT(),"Reckless Rocketeer": REK_ROC(),
+                        "Argent Squire": ARG_SQU(), "Al'akir the Windlord": AL_AKIR(), "Scarlet Crusader": SCR_CRU(), "Argent Commander": ARG_COM()}
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],
@@ -38,4 +42,7 @@ class Generator():
         cards = []
         for i in names:
             cards.append(self.getCard(i))
+        print cards
+        cards.sort(my_cmp)
+        print cards
         return cards
