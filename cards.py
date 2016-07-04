@@ -16,6 +16,7 @@ from Damage import *
 from DrawBoard import *
 from Effect import *
 from Effects import *
+from Health import *
 from card import *
 from Constants import *
 import unirest
@@ -462,6 +463,43 @@ class AL_AKIR(Creature):
         return True
 
 
+# Reckless Rocketeer representation    
+class BLD_FEN(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"bloodfen_raptor.png"):
+            pass
+        else:
+            getImage("bloodfen%20raptor", foldername+"bloodfen_raptor.png") 
+        Creature.__init__(self, "Bloodfen Raptor", 2, 3, 2, 0, True, [], [], "bloodfen_raptor.png", VANILLA, "Beast", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return BLD_FEN()
+    
+# Reckless Rocketeer representation    
+class VOO_DOO(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"voodoo_doctor.png"):
+            pass
+        else:
+            getImage("voodoo%20doctor", foldername+"voodoo_doctor.png") 
+        Creature.__init__(self, "Voodoo Doctor", 1, 2, 1, 0, True, [], [], "voodoo_doctor.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return VOO_DOO()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        target = selectCard(self.img)
+        if target.getType() == "Spot":
+            healCreature(target.getCard(), 2)
+        else:
+            target.heal(2)
 
     
 #Representation of Flame Juggler    
@@ -812,7 +850,10 @@ class ELF_ARC(Creature):
     #Deal 1 Damage
     def battleCry(self):
         target = selectCard(self.img)
-        dealDamage(target, 1, self.board)
+        if target.getType() == "Spot":
+            dealDamage(target, 1, self.board)
+        else:
+            burstFace(target, 1)
 
 #A helper function that will return the spot of a selected card.	
 def selectCard(filename):	
@@ -826,25 +867,32 @@ def selectCard(filename):
     convy = screen.get_height() / 800.0
     while waiting:
 	
-    	for evnt in event.get():
+        for evnt in event.get():
     	    
-    	    if evnt.type == MOUSEBUTTONDOWN:
-    		mx, my = evnt.pos
-            #i represents the side of the board
-    		for i in range (2):
-                #j represents the index of the spot
-    		    for j in range(0,7):
-    			     if convx*200*j < mx < convx*200*(j+1) and convy*(150 + 250*(i)) < my < convy*(150 + 250*(i+1)):
-    			         square = [i,j]
-    			         reversei = abs(1-i)
-                         #Exit when clicked on a spot with a card in it
-    			         if spots[reversei][j].getOccupied():
-    				        return spots[reversei][j]
-    	    drawGrid(filename)
-    	    showBoard(board.getSpots())
-    	    showHand(board.getHands(), getTurn())
-    	    highlight((255, 255, 0), evnt.pos)
-    	    display.flip()
+            if evnt.type == MOUSEBUTTONDOWN:
+                mx, my = evnt.pos
+                #i represents the side of the board
+                for i in range (2):
+                    #j represents the index of the spot
+                    for j in range(0,7):
+                        if convx*200*j < mx < convx*200*(j+1) and convy*(200 + 200*(i)) < my < convy*(200 + 200*(i+1)):
+                            square = [i,j]
+                            reversei = abs(1-i)
+                            #Exit when clicked on a spot with a card in it
+                            if spots[reversei][j].getOccupied():
+        				        return spots[reversei][j]
+                    if 550*convx < mx < 850*convx and 100*convy + 500*convy*i < my < 200*convy + 500*convy*i:
+                        if i == 0:
+                            return getBoard().getPlayer1()
+                        else:
+                            return getBoard().getPlayer2()
+            elif evnt.type == MOUSEMOTION:
+                drawGrid(filename)
+                showBoard(board.getSpots())
+                showHand(board.getHands(), getTurn())
+                highlight((255, 255, 0), evnt.pos)
+                highlightRest((255, 255, 0), evnt.pos)
+                display.flip()
 
 #Apply a buff to a card currently on the fiels
 def selectedBattleCry(buff, filename):	
@@ -870,6 +918,7 @@ def selectedBattleCry(buff, filename):
                                 spots[reversei][j].getCard().addBuff(buff)
                                 buff.applyBuff()
                                 waiting = False
+                                
             elif evnt.type == MOUSEMOTION:
         	    drawGrid(filename)
         	    showBoard(board.getSpots())
@@ -884,18 +933,25 @@ def highlight(colour, pos):
     convx = screen.get_width() / 1600.0
     convy = screen.get_height() / 800.0
     
-    for i in range (0,10):
-        if pos[1] < 100*convy and pos[0]> i*140*convx and pos[0] < (i+1)*140*convx:
-            xcor = pos[0] % 140*convx
-            draw.rect(screen, colour, (140*i*convx,0, 140*convx, 100*convy), 10)
-        if pos[1] > 700*convy and pos[0]> i*140*convx and pos[0] < (i+1)*140*convx:
-            xcor = pos[0] % 140*convx
-            draw.rect(screen, colour, (140*i*convx,700*convy, 140*convx, 100*convy), 10)
     for i in range (0,7):
         if pos[1] > 200*convy and pos[1] < 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
             draw.rect(screen, colour, (200*i*convx,200*convy, 200*convx, 200*convy), 10)
         if pos[1] < 600*convy and pos[1] > 400*convy and pos[0]> i*200*convx and pos[0] < (i+1)*200*convx:
             draw.rect(screen, colour, (200*i*convx,400*convy, 200*convx, 200*convy), 10)
+            
+
+def highlightRest(colour, pos):
+    screen = getScreen()
+    width = screen.get_width()
+    height = screen.get_height()
+    widthInc = width/32.0
+    heightInc = height/16.0
+    for i in range (2):
+        if widthInc*11 < pos[0] < widthInc*17 and heightInc*2 + heightInc*10*i < pos[1] < heightInc*4 + heightInc*10*i:
+            draw.rect(screen, colour, (widthInc*11,heightInc*2 + heightInc*10*i, widthInc*6, heightInc*2), 10)
+            
+        if widthInc*19 < pos[0] < widthInc*21 and heightInc*2 + heightInc*10*i < pos[1] < heightInc*4 + heightInc*10*i:
+            draw.rect(screen, colour, (widthInc*19,heightInc*2 + heightInc*10*i, widthInc*2, heightInc*2), 10)
 	    
 
     

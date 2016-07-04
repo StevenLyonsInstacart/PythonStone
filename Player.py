@@ -182,5 +182,8 @@ class Player:
         
     def removeTaunt(self, taunt):
         self.taunts.remove(taunt)
+        
+    def getType(self):
+        return "Player"
     
     

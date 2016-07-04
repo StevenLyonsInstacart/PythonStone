@@ -22,4 +22,8 @@ class Spot:
     
     def setPos(self,newPos):
         self.pos = newPos
+        
+        
+    def getType(self):
+        return "Spot"
     

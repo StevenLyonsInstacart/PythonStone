@@ -140,6 +140,8 @@ class Creature(Card):
     def hasEffect(self):
         return False
     
+    def getType(self):
+        return "Creature"
     def doEffect(self):
         pass
     
