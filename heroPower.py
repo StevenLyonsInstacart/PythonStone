@@ -1,5 +1,5 @@
 from pygame import *
-from random import *
+import random
 
 from Buff import *
 from Buffs import *
@@ -69,6 +69,22 @@ class HunterPower(heroPower):
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
+            self.player.getEnemy().incLife(-2)
+            
+# Deal two damage to the Enemy hero        
+class ShamanPower(heroPower):
+    
+    def __init__(self, player):
+        heroPower.__init__(self, "Totemic Call", "Shaman", player)
+        self.board = getBoard()
+        
+        
+    def doPower(self):
+        if self.player.getCurMana() >= self.cost:
+            totems = [STN_TOT(), SEA_TOT(), AIR_TOT()]
+            ind = int(random()*3)
+            totems[ind].setPlayer(self.player)
+            spawnCreature(totems[ind], self.player.getEnemy().getSpots(), self.board, 6)
             self.player.getEnemy().incLife(-2)
 
 #Draw a card and lose two life            

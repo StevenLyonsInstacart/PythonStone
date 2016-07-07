@@ -1,8 +1,6 @@
 #Main  HS game
 #To Lindsay
 from pygame import *
-import random
-
 from Board import *
 from Damage import *
 from DrawBoard import *

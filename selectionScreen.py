@@ -79,7 +79,7 @@ def selectScreen(player, screen, board):
 # Update the class that the player has picked on the deck selection screen.
 def updateClass(player, pos, board, screen, convx, convy):
         classPort = [["guldan_portrait.jpg", WarlockPower(player), 'Warlock'], ["rexxar_portrait.jpg", HunterPower(player), 'Hunter'],
-                                 ["garrosh_portrait.png", WarriorPower(player), 'Warrior'],["thrall_portrait.jpg", WarlockPower(player), 'Shaman']
+                                 ["garrosh_portrait.png", WarriorPower(player), 'Warrior'],["thrall_portrait.jpg", ShamanPower(player), 'Shaman']
                                  ,["uther_portrait.png", PaladinPower(player), 'Paladin'], ["jaina_portrait.jpg", MagePower(player), 'Mage'],
                                  ["anduin_portrait.png", PriestPower(player),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
                                  ["malfurion_portrait.png", DruidPower(player), 'Druid']]

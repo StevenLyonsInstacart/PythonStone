@@ -968,6 +968,57 @@ class MEC_DRG(Creature):
     def copy(self):
         return MEC_DRG()
     
+#################
+##    Totem    ##
+#################
+    
+class STN_TOT(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"stoneclaw_totem.png"):
+            pass
+        else:
+            getImage("stoneclaw%20totem", foldername+"stoneclaw_totem.png") 
+        Creature.__init__(self, "Stoneclaw Totem", 1, 0, 2, 0, True, [], [], "stoneclaw_totem.png", TAUNT, "Totem", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return STN_TOT()
+    
+class SEA_TOT(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"searing_totem.png"):
+            pass
+        else:
+            getImage("searing%20totem", foldername+"searing_totem.png") 
+        Creature.__init__(self, "Searing Totem", 1, 1, 1, 0, True, [], [], "searing_totem.png", VANILLA, "Totem", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return SEA_TOT()
+    
+class AIR_TOT(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"wrath_of_air_totem.png"):
+            pass
+        else:
+            getImage("wrath%20of%20air%20totem", foldername+"wrath_of_air_totem.png") 
+        Creature.__init__(self, "Wrath of Air Totem", 1, 0, 2, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 1)], "wrath_of_air_totem.png", VANILLA, "Totem", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return AIR_TOT()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+    
     
 #Representation of Flame Juggler    
 class FL_JUG(Creature):

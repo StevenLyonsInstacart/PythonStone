@@ -69,7 +69,7 @@ def showCard2(spot, screen, row1):
     conversionx = width / 1600.0
     conversiony = height / 800.0
     
-    nameFont = font.Font(None, int(30*conversionx))
+    nameFont = font.Font(None, int(24*conversionx))
     
     #Name Text
     name = nameFont.render(spot.getCard().getName() , True, (255, 255, 255), BOARD)
