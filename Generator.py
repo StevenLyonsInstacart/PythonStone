@@ -20,7 +20,10 @@ class Generator():
                         "Booty Bay Bodyguard": BOT_BAY(), "Sen'jin Shieldmasta": SEN_JIN(), "Stonetusk Boar": STN_BOR(),
                         "Bluegill Warrior": BLU_WAR(), "Wolfrider": WLF_RID(), "Stormwind Knight": STR_KNT(),"Reckless Rocketeer": REK_ROC(),
                         "Argent Squire": ARG_SQU(), "Al'akir the Windlord": AL_AKIR(), "Scarlet Crusader": SCR_CRU(), "Argent Commander": ARG_COM(),
-                        "Bloodfen Raptor": BLD_FEN(), "Voodoo Doctor": VOO_DOO()}
+                        "Bloodfen Raptor": BLD_FEN(), "Voodoo Doctor": VOO_DOO(), "Acidic Swamp Ooze": ACD_OOZ(), "Kobold Geomancer": KBL_GEO(),
+                        "Dalaran  Mage": DAL_MAG(), "Murloc Tidehunter": MUR_TID(), "Ironforge Rifleman": IRN_RFL(), "Magma Rager": MAG_RAG(),
+                        "Razorfen Hunter": RAZ_HUN(), "Ogre Magi": OGR_MAG(), "Dragonling Mechanic": DRG_MEC(), "Gnomish Inventor": GNM_INV(),
+                        "War Golem": WAR_GLM(), "Core Hound": COR_HND(), "Boulderfist Ogre": BLD_OGR(), "Malygos": MALY()}
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],

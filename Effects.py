@@ -54,6 +54,28 @@ class GRM_EFF(Effect):
                                 onlyOne = False
                                 buff.removeBuff()
             self.board.effects.remove(self)
+            
+class SPELL_DAMAGE(Effect):
+    
+    def __init__ (self, board, card, spellDamage):
+        self.played = True
+        self.endTurn = False
+        self.beginTurn = False
+        self.board = getBoard()
+        self.host = card
+        self.damage = spellDamage
+            
+        #On play give each other Murloc +1 attack
+    def onPlay(self):
+        self.host.getPlayer().addSpellDamage(self.damage)
         
+    def playCreature(self, card):
+        pass
+     
+    #When the Grimscale oracle dies, remove the buff from all other murlocs                    
+    def killCreature(self, card):
+        if card == self.host:
+            self.host.getPlayer().addSpellDamage(-self.damage)
+            self.board.effects.remove(self)
     
     

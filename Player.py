@@ -48,6 +48,7 @@ class Player:
         self.weapon = None
         self.hasWeapon = False
         self.taunts = []
+        self.spellDamage = 0
     
     #####################
     #    Get Methods    #
@@ -85,6 +86,8 @@ class Player:
         return self.curMana
     def getTaunts(self):
         return self.taunts
+    def getSpellDamage(self):
+        return self.spellDamage
     
     #####################
     #    Set Methods    #
@@ -116,6 +119,7 @@ class Player:
         if weapon:
             self.power += weapon.getPower()
         else:
+            self.hasWeapon = False
             self.power = 0
     def setEnemies(self, player):
         self.enemy = player
@@ -185,5 +189,8 @@ class Player:
         
     def getType(self):
         return "Player"
+    
+    def addSpellDamage(self, inc):
+        self.spellDamage += inc
     
     

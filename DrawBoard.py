@@ -279,7 +279,7 @@ def drawGrid(filename, pos=[0,0], status=0):
     screen.blit(name, nameRect)
     
     #Player 1 Mana
-    player1Mana = nameFont.render(str(player1.getCurMana()) , True, (155,155,255 ), (0, 0, 0))
+    player1Mana = nameFont.render(str(player1.getCurMana()) +" "+ str(player1.getSpellDamage()) , True, (155,155,255 ), (0, 0, 0))
     manaRect = player1Mana.get_rect()
     manaRect.centerx = widthInc*29 + widthInc/2  
     manaRect.centery = heightInc*3

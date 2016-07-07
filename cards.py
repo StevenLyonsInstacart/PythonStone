@@ -19,6 +19,7 @@ from Effects import *
 from Health import *
 from card import *
 from Constants import *
+from spawn import *
 import unirest
 
 #Colours
@@ -89,6 +90,51 @@ class CH_YETI(Creature):
     
     def copy(self):
         return CH_YETI()
+    
+#Representation of War Golem    
+class WAR_GLM(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"war_golem.png"):
+            pass
+        else:
+            getImage("war%20golem", foldername+"war_golem.png")
+        Creature.__init__(self, "War Golem", 7, 7, 7, 0, False, [], [], "war_golem.png", VANILLA, None, "neutral")
+    
+    def getClass(self):
+        return self.classType
+    
+    def copy(self):
+        return WAR_GLM()
+    
+#Representation of War Golem    
+class BLD_OGR(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"boulderfist_ogre.png"):
+            pass
+        else:
+            getImage("boulderfist%20ogre", foldername+"boulderfist_ogre.png")
+        Creature.__init__(self, "Boulderfist Ogre", 6, 6, 7, 0, False, [], [], "boulderfist_ogre.png", VANILLA, None, "neutral")
+    
+    def getClass(self):
+        return self.classType
+    
+    def copy(self):
+        return BLD_OGR()
+    
+#Representation of War Golem    
+class COR_HND(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"core_hound.png"):
+            pass
+        else:
+            getImage("core%20hound", foldername+"core_hound.png")
+        Creature.__init__(self, "Core Hound", 7, 7, 5, 0, False, [], [], "core_hound.png", VANILLA, "Beast", "neutral")
+    
+    def getClass(self):
+        return self.classType
+    
+    def copy(self):
+        return COR_HND()
     
 #Representation of River Crocolisk    
 class RIV_CROC(Creature):
@@ -501,6 +547,270 @@ class VOO_DOO(Creature):
         else:
             target.heal(2)
 
+#Representation of Acidic Swamp Ooze
+class ACD_OOZ(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"acidic_swamp_ooze.png"):
+            pass
+        else:
+            getImage("acidic%20swamp%20ooze", foldername+"acidic_swamp_ooze.png") 
+        Creature.__init__(self, "Acidic Swamp Ooze", 2, 3, 2, 0, True, [], [], "acidic_swamp_ooze.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return ACD_OOZ()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        enemy = getBoard().getEnemyPlayer()
+        if enemy.isArmed():
+            enemy.setWeapon(None)
+            
+# Reckless Rocketeer representation    
+class KBL_GEO(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"kobold_geomancer.png"):
+            pass
+        else:
+            getImage("kobold%20geomancer", foldername+"kobold_geomancer.png") 
+        Creature.__init__(self, "Kobold Geomancer", 2, 2, 2, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 1)], "kobold_geomancer.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return KBL_GEO()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+# Dalaran Mage representation    
+class DAL_MAG(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"dalaran_mage.png"):
+            pass
+        else:
+            getImage("dalaran%20mage", foldername+"dalaran_mage.png") 
+        Creature.__init__(self, "Dalaran Mage", 3, 1, 4, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 1)], "dalaran_mage.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return DAL_MAG()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+# Ogre Magi representation    
+class OGR_MAG(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"ogre_magi.png"):
+            pass
+        else:
+            getImage("ogre%20magi", foldername+"ogre_magi.png") 
+        Creature.__init__(self, "Ogre Magi", 4, 4, 4, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 1)], "ogre_magi.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return OGR_MAG()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+# Ogre Magi representation    
+class MALY(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"malygos.png"):
+            pass
+        else:
+            getImage("malygos", foldername+"malygos.png") 
+        Creature.__init__(self, "Malygos", 9, 4, 12, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 5)], "malygos.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return MALY()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+        
+# Murloc Tidecaller representation    
+class MUR_TID(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"murloc_tidehunter.png"):
+            pass
+        else:
+            getImage("murloc%20tidehunter", foldername+"murloc_tidehunter.png") 
+        Creature.__init__(self, "Murloc Tidehunter", 2, 2, 1, 0, True, [], [], "murloc_tidehunter.png", VANILLA, "Murloc", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return MUR_TID()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        spots = self.player.getEnemy().getSpots()
+        i = 0
+        ans = 6
+        for spot in spots:
+            if spot.getOccupied():
+                if spot.getCard() == self:
+                    ans = i
+            i += 1        
+        spawnCreature(MUR_SCT(), self.player.getEnemy().getSpots(), getBoard(), ans)
+        
+# Razorfen Hunter representation    
+class RAZ_HUN(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"razorfen_hunter.png"):
+            pass
+        else:
+            getImage("razorfen%20hunter", foldername+"razorfen_hunter.png") 
+        Creature.__init__(self, "Razorfen Hunter", 3, 2, 3, 0, True, [], [], "razorfen_hunter.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return RAZ_HUN()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        spots = self.player.getEnemy().getSpots()
+        i = 0
+        ans = 6
+        for spot in spots:
+            if spot.getOccupied():
+                if spot.getCard() == self:
+                    ans = i
+            i += 1        
+        spawnCreature(BOAR(), self.player.getEnemy().getSpots(), getBoard(), ans)
+        
+        
+# Dragonling Mechanic representation    
+class DRG_MEC(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"dragonling_mechanic.png"):
+            pass
+        else:
+            getImage("dragonling%20mechanic", foldername+"dragonling_mechanic.png") 
+        Creature.__init__(self, "Dragonling  Mechanic", 4, 2, 4, 0, True, [], [], "dragonling_mechanic.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return DRG_MEC()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        spots = self.player.getEnemy().getSpots()
+        i = 0
+        ans = 6
+        for spot in spots:
+            if spot.getOccupied():
+                if spot.getCard() == self:
+                    ans = i
+            i += 1        
+        spawnCreature(MEC_DRG(), self.player.getEnemy().getSpots(), getBoard(), ans)
+        
+        
+class GNM_INV(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"gnomish_inventor.png"):
+            pass
+        else:
+            getImage("gnomish%20inventor", foldername+"gnomish_inventor.png") 
+        Creature.__init__(self, "Gnomish Inventor", 4, 2, 4, 0, True, [], [], "gnomish_inventor.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return GNM_INV()    
+    
+    def hasBattleCry(self):
+        return True
+    
+    #Draw a card
+    def battleCry(self):
+        player = self.getPlayer()
+        player.getHand().draw(player.getDeck())
+        
+
+
+################
+#    Tokens    #
+################
+# Murloc Tidecaller representation    
+class MUR_SCT(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"murloc_scout.png"):
+            pass
+        else:
+            getImage("murloc%20scout", foldername+"murloc_scout.png") 
+        Creature.__init__(self, "Murloc Scout", 1, 1, 1, 0, True, [], [], "murloc_scout.png", VANILLA, "Murloc", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return MUR_SCT()
+    
+# Murloc Tidecaller representation    
+class BOAR(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"boar.png"):
+            pass
+        else:
+            getImage("boar", foldername+"boar.png") 
+        Creature.__init__(self, "Boar", 1, 1, 1, 0, True, [], [], "boar.png", VANILLA, "Beast", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return BOAR()
+    
+class MEC_DRG(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"mechanical_dragonling.png"):
+            pass
+        else:
+            getImage("mechanical%20dragonling", foldername+"mechanical_dragonling.png") 
+        Creature.__init__(self, "Mechanical Dragonling", 1, 2, 1, 0, True, [], [], "mechanical_dragonling.png", VANILLA, "Mech", "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return MEC_DRG()
+    
     
 #Representation of Flame Juggler    
 class FL_JUG(Creature):
@@ -819,24 +1129,11 @@ class LOT_HRD(Creature):
 class ELF_ARC(Creature):
     
     def __init__(self):
-        self.name = "Elvish Archer"
-        self.power = 1
-        self.toughness = 1
-        self.maxHealth = 1
-        self.cost = 1
-        self.classType = "neutral"
-        self.creatureType = None
-        self.owner = 0
-        self.tired = True
-        self.board = getBoard()  
-        self.screen = getScreen()
-        self.buffs = []
-        self.keywords = VANILLA
         if os.path.isfile(foldername+"elven_archer.png"):
             pass
         else:
-            getImage("Elven%20Archer", foldername+"elven_archer.png") 
-        self.img = "elven_archer.png"
+            getImage("Elven%20Archer", foldername+"elven_archer.png")  
+        Creature.__init__(self, "Elven Archer", 1, 1, 1, 0, True, [], [], "elven_archer.png", VANILLA, None, "neutral")
         
     def copy(self):
         return ELF_ARC()
@@ -854,6 +1151,49 @@ class ELF_ARC(Creature):
             dealDamage(target, 1, self.board)
         else:
             burstFace(target, 1)
+            
+#Representation of ironforge rifleman    
+class IRN_RFL(Creature):
+    
+    def __init__(self):
+        if os.path.isfile(foldername+"ironforge_rifleman.png"):
+            pass
+        else:
+            getImage("ironforge%20rifleman", foldername+"ironforge_rifleman.png")  
+        Creature.__init__(self, "Ironforge Rifleman", 3, 2, 2, 0, True, [], [], "ironforge_rifleman.png", VANILLA, None, "neutral")
+        
+    def copy(self):
+        return IRN_RFL()
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    #Deal 1 Damage
+    def battleCry(self):
+        target = selectCard(self.img)
+        if target.getType() == "Spot":
+            dealDamage(target, 1, self.board)
+        else:
+            burstFace(target, 1)
+            
+#Representation of magma rager    
+class MAG_RAG(Creature):
+    
+    def __init__(self):
+        if os.path.isfile(foldername+"magma_rager.png"):
+            pass
+        else:
+            getImage("magma%20rager", foldername+"magma_rager.png")  
+        Creature.__init__(self, "Magma Rager", 3, 5, 1, 0, True, [], [], "magma_rager.png", VANILLA, None, "neutral")
+        
+    def copy(self):
+        return MAG_RAG()
+    
+    def getClass(self):
+        return self.classType
 
 #A helper function that will return the spot of a selected card.	
 def selectCard(filename):	

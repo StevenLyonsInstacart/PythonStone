@@ -137,7 +137,7 @@ class PaladinPower(heroPower):
     def doPower(self):
         if self.player.getCurMana() >= self.cost:
             self.player.changeCurMana(-self.cost)
-            spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board)
+            spawnCreature(DUDE(), self.player.getEnemy().getSpots(), self.board, 6)
         
 # Equip a Dagger	    
 class RoguePower(heroPower):
