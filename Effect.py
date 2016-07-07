@@ -16,6 +16,7 @@ class Effect:
         self.played = False
         self.endTurn = False
         self.beginTurn = False
+        self.onDamage = False
         self.board = board
         
     def OnPlay(self):
@@ -30,10 +31,13 @@ class Effect:
     def beginTurn(self):
         pass
     
-    def playCreature(self):
+    def playCreature(self, card):
         pass
     
-    def killCreature(self):
+    def killCreature(self, card):
+        pass
+    
+    def onDamage(self, card):
         pass
         
     

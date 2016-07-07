@@ -23,7 +23,10 @@ class Generator():
                         "Bloodfen Raptor": BLD_FEN(), "Voodoo Doctor": VOO_DOO(), "Acidic Swamp Ooze": ACD_OOZ(), "Kobold Geomancer": KBL_GEO(),
                         "Dalaran  Mage": DAL_MAG(), "Murloc Tidehunter": MUR_TID(), "Ironforge Rifleman": IRN_RFL(), "Magma Rager": MAG_RAG(),
                         "Razorfen Hunter": RAZ_HUN(), "Ogre Magi": OGR_MAG(), "Dragonling Mechanic": DRG_MEC(), "Gnomish Inventor": GNM_INV(),
-                        "War Golem": WAR_GLM(), "Core Hound": COR_HND(), "Boulderfist Ogre": BLD_OGR(), "Malygos": MALY()}
+                        "War Golem": WAR_GLM(), "Core Hound": COR_HND(), "Boulderfist Ogre": BLD_OGR(), "Malygos": MALY(), "Shattered Sun Cleric": SHT_SUN(),
+                        "Raid Leader": RAD_LED(), "Oasis Snapjaw": OAS_JAW(), "Stormpike Commando": STR_COM(), "Archmage": ARCH(),
+                        "Nightblade": NGT_BLD(), "Frostwolf Warlord": FRT_WAR(), "Darkscale Healer": DRK_HEL(), "Gurubashi Berserker": GUR_BER(),
+                        "Stormwind Champion": STR_CHM()}
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],

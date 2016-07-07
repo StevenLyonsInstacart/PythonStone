@@ -17,6 +17,7 @@ from cards import *
 # board: a reference to the board
 
 def dealDamage(target, total, board):
+    board.onDamage(target.getCard())
     target.getCard().takeDamage(total)
     if target.getCard().getToughness() <= 0:
         if target.getCard().hasDeathRattle():
@@ -74,4 +75,5 @@ class NULL_CR(Creature):
         self.classType = "neutral"
         self.creatureType = None
         self.battleCry = None
-	self.buffs = []
+        self.buffs = []
+        self.keywords = [False, False, False, False]

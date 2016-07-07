@@ -109,6 +109,10 @@ class Board:
     def switchCurrent(self):
         self.currentPlayer = self.currentPlayer.getEnemy()
         
+    def onDamage(self, card):
+        for eff in self.effects:
+            print eff
+            eff.onDamage(card)
         
 
         

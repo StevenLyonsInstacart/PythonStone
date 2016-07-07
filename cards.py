@@ -21,6 +21,7 @@ from card import *
 from Constants import *
 from spawn import *
 import unirest
+from _ast import Num
 
 #Colours
 RED = (255, 0, 0)
@@ -55,13 +56,14 @@ class NULL_CREATURE(Creature):
         self.name = "Null"
         self.power = 0
         self.toughness = 0
-	self.maxHealth = 0
+        self.maxHealth = 0
         self.cost = 0
         self.classType = "neutral"
         self.creatureType = None
         self.battleCry = None
-	self.buffs = []
-	self.img = "abusive_sergeant.png"
+        self.buffs = []
+        self.keywords = [False, False, False, False]
+        self.img = "abusive_sergeant.png"
     
     
 #Representation of Chillwind Yeti    
@@ -105,6 +107,21 @@ class WAR_GLM(Creature):
     
     def copy(self):
         return WAR_GLM()
+    
+#Representation of War Golem    
+class OAS_JAW(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"oasis_snapjaw.png"):
+            pass
+        else:
+            getImage("oasis%20snapjaw", foldername+"oasis_snapjaw.png")
+        Creature.__init__(self, "Oasis Snapjaw", 4, 2, 7, 0, False, [], [], "oasis_snapjaw.png", VANILLA, "Beast", "neutral")
+    
+    def getClass(self):
+        return self.classType
+    
+    def copy(self):
+        return OAS_JAW()
     
 #Representation of War Golem    
 class BLD_OGR(Creature):
@@ -635,7 +652,7 @@ class OGR_MAG(Creature):
         getBoard().addEffect(self.effects[0])
         self.effects[0].onPlay()
         
-# Ogre Magi representation    
+# Malygos representation    
 class MALY(Creature):
     def __init__(self):
         if os.path.isfile(foldername+"malygos.png"):
@@ -657,6 +674,146 @@ class MALY(Creature):
         getBoard().addEffect(self.effects[0])
         self.effects[0].onPlay()
         
+# Archmage representation    
+class ARCH(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"archmage.png"):
+            pass
+        else:
+            getImage("archmage", foldername+"archmage.png") 
+        Creature.__init__(self, "Archmage", 6, 4, 7, 0, True, [], [SPELL_DAMAGE(getBoard(), self, 1)], "archmage.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return ARCH()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+# Shattered Sun Cleric representation    
+class SHT_SUN(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"shattered_sun_cleric.png"):
+            pass
+        else:
+            getImage("shattered%20sun%20cleric", foldername+"shattered_sun_cleric.png") 
+        Creature.__init__(self, "Shattered Sun Cleric", 3, 3, 2, 0, True, [], [], "shattered_sun_cleric.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return SHT_SUN()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        selectedBattleCry(SUN_BUFF(None), self.img)
+        
+        
+# Nightblade representation    
+class NGT_BLD(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"nightblade.png"):
+            pass
+        else:
+            getImage("nightblade", foldername+"nightblade.png") 
+        Creature.__init__(self, "Nightblade", 5, 4, 4, 0, True, [], [], "nightblade.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return NGT_BLD()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        getBoard().getEnemyPlayer().incLife(-3)
+        
+# Frostwolf Warlord representation    
+class FRT_WAR(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"frostwolf_warlord.png"):
+            pass
+        else:
+            getImage("frostwolf%20warlord", foldername+"frostwolf_warlord.png") 
+        Creature.__init__(self, "Frostwolf Warlord", 5, 4, 4, 0, True, [], [], "frostwolf_warlord.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return FRT_WAR()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        spots = getBoard().getEnemyPlayer().getSpots()
+        num = -1
+        for i in spots:
+            if i.getOccupied():
+                num += 1
+        self.power += num 
+        self.toughness += num
+        
+# Darkscale Healer representation    
+class DRK_HEL(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"darkscale_healer.png"):
+            pass
+        else:
+            getImage("darkscale%20healer", foldername+"darkscale_healer.png") 
+        Creature.__init__(self, "Darkscale Healer", 5, 4, 5, 0, True, [], [], "darkscale_healer.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return DRK_HEL()
+    
+    def hasBattleCry(self):
+        return True
+    
+    def battleCry(self):
+        spots = getBoard().getSpots()
+        board = getBoard()
+        for i in range (2):
+            for j in range (7):
+                if spots[i][j].getOccupied():
+                    card = spots[i][j].getCard()
+                    healCreature(card, 2)
+        board.getCurrentPlayer().heal(2)
+        board.getEnemyPlayer().heal(2)
+        
+        
+#Gurabashi Beserker representation    
+class GUR_BER(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"gurubashi_berserker.png"):
+            pass
+        else:
+            getImage("gurubashi%20berserker", foldername+"gurubashi_berserker.png") 
+        Creature.__init__(self, "Gurubashi Berserker", 5, 2, 7, 0, True, [], [BRK_EFF(self)], "gurubashi_berserker.png", VANILLA, None, "neutral")
+        
+    def getClass(self):
+        return self.classType
+    def copy(self):
+        return GUR_BER()
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+    
+                    
         
 # Murloc Tidecaller representation    
 class MUR_TID(Creature):
@@ -920,6 +1077,53 @@ class GRM_MUR(Creature):
     def doEffect(self):
         self.board.addEffect(self.effects[0])
         self.effects[0].onPlay()
+        
+#Representation of Raid Leader
+class RAD_LED(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"raid_leader.png"):
+            pass
+        else:
+            getImage("raid%20leader", foldername+"raid_leader.png") 
+        Creature.__init__(self, "Raid Leader", 3, 2, 2, 0, True, [], [RAID_EFF(self)], "raid_leader.png", VANILLA, None, "neutral")
+        
+    def copy(self):
+        return RAD_LED()
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
+        
+        
+#Representation of Stormwind Champion
+class STR_CHM(Creature):
+    def __init__(self):
+        if os.path.isfile(foldername+"stormwind_champion.png"):
+            pass
+        else:
+            getImage("stormwind%20champion", foldername+"stormwind_champion.png") 
+        Creature.__init__(self, "Stormwind Champion", 7, 6, 6, 0, True, [], [CHMP_EFF(self)], "stormwind_champion.png", VANILLA, None, "neutral")
+        
+    def copy(self):
+        return STR_CHM()
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasEffect(self):
+        return True
+    
+    #Buff all other murlocs with +1 attack
+    def doEffect(self):
+        getBoard().addEffect(self.effects[0])
+        self.effects[0].onPlay()
     
 #Representation of Abusive Sergeant    
 class ABU_SRG(Creature):
@@ -1178,6 +1382,33 @@ class IRN_RFL(Creature):
             dealDamage(target, 1, self.board)
         else:
             burstFace(target, 1)
+            
+#Representation of ironforge rifleman    
+class STR_COM(Creature):
+    
+    def __init__(self):
+        if os.path.isfile(foldername+"stormpike_commando.png"):
+            pass
+        else:
+            getImage("stormpike%20commando", foldername+"stormpike_commando.png")  
+        Creature.__init__(self, "Stormpike Commando", 5, 4, 2, 0, True, [], [], "stormpike_commando.png", VANILLA, None, "neutral")
+        
+    def copy(self):
+        return STR_COM()
+    
+    def getClass(self):
+        return self.classType
+    
+    def hasBattleCry(self):
+        return True
+    
+    #Deal 2 Damage
+    def battleCry(self):
+        target = selectCard(self.img)
+        if target.getType() == "Spot":
+            dealDamage(target, 2, getBoard())
+        else:
+            burstFace(target, 2)
             
 #Representation of magma rager    
 class MAG_RAG(Creature):

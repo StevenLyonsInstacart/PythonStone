@@ -162,6 +162,13 @@ class Creature(Card):
         for buff in self.buffs:
             buff.removeBuff()
         self.buffs = []
+        if self.keywords[0]:
+            board = getBoard()
+            if self in board.getCurrentPlayer().getTaunts():
+                board.getCurrentPlayer().removeTaunt(self)
+            if self in board.getEnemyPlayer().getTaunts():
+                board.getEnemyPlayer().removeTaunt(self)
+        self.keywords = [False, False, False, False]
         
     def removeBuff(self, buff):
         self.buffs.remove(buff)
