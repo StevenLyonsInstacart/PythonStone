@@ -280,7 +280,7 @@ def playCard(player, mana, card, spot, hand1, hand2):
 
 #Initialize the board and Pygame
 init()
-size =(1600,800)
+size =(1400,700)
 screen= display.set_mode(size)
 setScreen(screen)
 width = screen.get_width()	
@@ -326,10 +326,10 @@ start = 0
 choosing = True
 
 #Initialize Player1's Deck
-player1, deck1Cards, save1, name1 = selectScreen(player1, screen, board)
+player1, deck1Cards, save1, name1 = selectScreen(player1, screen, board, 1)
 
 #Initialize Player2's Deck
-player2, deck2Cards, save2, name2 = selectScreen(player2, screen, board)
+player2, deck2Cards, save2, name2 = selectScreen(player2, screen, board, 2)
 
 
 

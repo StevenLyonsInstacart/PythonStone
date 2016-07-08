@@ -316,10 +316,10 @@ def hoveredCard(screen, pos, status, filename):
             img = image.load(filename)
             img = transform.scale(img, (int(307*convx), int(465*convy)))
             #Check where the card should go to not be off screen
-            if pos[1] > 381:
-                imgRect = Rect(pos[0], pos[1] - 381, 276, 381)
+            if pos[1] > 381*convy:
+                imgRect = Rect(pos[0]*convx, (pos[1] - 300)*convy, 276*convx, 381*convy)
             else:
-                imgRect = Rect(pos[0], pos[1], 276, 281)
+                imgRect = Rect(pos[0]*convx, pos[1]*convy, 276*convx, 381*convy)
             screen.blit(img, imgRect)
             display.flip()
             
@@ -412,28 +412,54 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     
     #Hover Card
     img = image.load(filename)
+    img = transform.scale(img, (int(184*convx), int(254*convy)))
     imgRect = Rect(1400*convx, 0, 200*convx, 200*convy)
     screen.blit(img, imgRect)
     
-def drawDeckChoice(screen):
+def drawDeckChoice(screen, turn):
     convx = screen.get_width() / 1600.0
     convy = screen.get_height() / 800.0
     
     nameFont = font.Font(None, int(convx*30))
+    questionFont = font.Font(None, int(convx*48))
     #Draws the background
     
-    draw.rect(screen, (255,255,255), (0,0,1400*convx,800*convy))
+    draw.rect(screen, BOARD, (0,0,1600*convx,800*convy))
+    #Draw the question
+    quest = questionFont.render("Player "+str(turn)+", Do you want to use a new deck or create your own?", True, (50,50,50), BOARD)
+    questRect = quest.get_rect()
+    questRect.centerx = 800*convx 
+    questRect.centery = 50*convy
+    screen.blit(quest, questRect)
+    
+    quest = nameFont.render("Create Quick Deck", True, (50,50,50), BOARD)
+    questRect = quest.get_rect()
+    questRect.centerx = 275*convx 
+    questRect.centery = 260*convy
+    screen.blit(quest, questRect)
+    
+    quest = nameFont.render("Create Saved Deck", True, (50,50,50), BOARD)
+    questRect = quest.get_rect()
+    questRect.centerx = 525*convx 
+    questRect.centery = 260*convy
+    screen.blit(quest, questRect)
     
     #Deck Selection
     draw.rect(screen, BLUE, (800*convx, 80*convy, 250*convx, 270*convy), 10)
     for i in range (0,2):
         Deck = open('deck'+str(i+1)+'.txt', 'r')
-        name = nameFont.render(Deck.readline()[:-1]+": ("+Deck.readline()[:-1]+")", True, (50,50,50), (255,255,255))
+        name = nameFont.render(Deck.readline()[:-1]+": ("+Deck.readline()[:-1]+")", True, (50,50,50), BOARD)
         nameRect = name.get_rect()
         nameRect.centerx = 925*convx 
         nameRect.centery = (95 + 30*i)*convy
         screen.blit(name, nameRect)
         Deck.close()
         
-    draw.rect(screen, RED, (200*convx, 200*convy, 200*convx, 200*convy))
-    draw.rect(screen, RED, (400*convx, 400*convy, 200*convx, 200*convy))
+    draw.rect(screen, RED, (150*convx, 200*convy, 250*convx, 120*convy), int(3*convx)+1)
+    draw.rect(screen, RED, (400*convx, 200*convy, 250*convx, 120*convy), int(3*convx)+1) 
+     
+    img = image.load(foldername+"Title.png")
+    img = transform.scale(img, (int(602*convx), int(387*convy)))
+    imgRect = Rect(500*convx, 400*convy, 602*convx, 387*convy)
+    screen.blit(img, imgRect)  
+        

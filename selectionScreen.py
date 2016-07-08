@@ -8,7 +8,7 @@ from Messages import *
 DISPLAYNUM = 4
 
 
-def selectScreen(player, screen, board):
+def selectScreen(player, screen, board, turn):
     deckCards = []
     selecting = True
     cardList = Generator(screen, board, player).getCards()
@@ -21,7 +21,7 @@ def selectScreen(player, screen, board):
     convy = screen.get_height() / 800.0
     
     while True:
-        drawDeckChoice(screen)
+        drawDeckChoice(screen, turn)
         for evnt in event.get():
                     if evnt.type == MOUSEBUTTONDOWN:
                         outcome = makeOrBreak(evnt.pos, convx, convy)
@@ -70,7 +70,7 @@ def selectScreen(player, screen, board):
                                 player.setHP(playerData[1])
                                 player.setRole(playerData[2])
                                 
-                        return player, deckCards, saved, name
+                            return player, deckCards, saved, name
                     elif evnt.type == QUIT:
                         quit()
         display.flip()
@@ -124,9 +124,9 @@ def checkExit(mouse, player, deck, convx, convy, screen):
                 return True
             
 def makeOrBreak(pos, convx, convy):
-    if 200*convx < pos[0] < 400*convx and 200*convy < pos[1] < 400*convy:
+    if 150*convx < pos[0] < 400*convx and 200*convy < pos[1] < 320*convy:
         return ["Custom", False]
-    elif  400*convx < pos[0] < 600*convx and 400*convy < pos[1] < 600*convy:
+    elif  400*convx < pos[0] < 650*convx and 200*convy < pos[1] < 320*convy:
         return ["Custom", True]
     for i in range (2):
         if 800*convx < pos[0] < 1050*convx and convy*(80+30*i) < pos[1] < convy*(80+(30*(i+1))):
