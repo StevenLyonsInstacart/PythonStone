@@ -53,3 +53,11 @@ class Generator():
         cards.sort(my_cmp)
         print cards
         return cards
+    
+def skim(player, cards):
+    newList = []
+    for card in cards:
+        if card.getClass()== "neutral" or card.getClass() == player.getRole():
+            newList.append(card)
+    return newList
+        

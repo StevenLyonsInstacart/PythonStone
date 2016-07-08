@@ -27,6 +27,8 @@ def selectScreen(player, screen, board, turn):
                         outcome = makeOrBreak(evnt.pos, convx, convy)
                         if outcome[0]:
                             if outcome[0] == "Custom":
+                                choosePlayer(player)
+                                cardList = skim(player, cardList)
                                 saved = outcome[1]
                                 if saved:
                                     name = ask(screen, "Please Name Your Deck")
@@ -37,7 +39,6 @@ def selectScreen(player, screen, board, turn):
                                                 if evnt.type == MOUSEBUTTONDOWN:
                                                         selecting = checkExit(evnt, player, deckCards, convx, convy, screen)
                                                         newCard = addCard(evnt.pos, cardList, start, player, convx, convy)
-                                                        updateClass(player, evnt.pos, board, screen, convx, convy)
                                                         if newCard:
                                                                 if len(deckCards) < 30:
                                                                         deckCards.append(newCard)
@@ -142,3 +143,37 @@ def addCard(pos, cards, start, player, convx, convy):
             newCard.setPlayer(player)
             return newCard
     return None
+
+def choosePlayer(player):
+    screen = getScreen()
+    convx = screen.get_width()/ 1600.0
+    convy = screen.get_height()/ 800.0
+    nameFont = font.Font(None, int(convx*30))
+    classPort = [["guldan_portrait.jpg", WarlockPower(player), 'Warlock'], ["rexxar_portrait.jpg", HunterPower(player), 'Hunter'],
+                                 ["garrosh_portrait.png", WarriorPower(player), 'Warrior'],["thrall_portrait.jpg", ShamanPower(player), 'Shaman']
+                                 ,["uther_portrait.png", PaladinPower(player), 'Paladin'], ["jaina_portrait.jpg", MagePower(player), 'Mage'],
+                                 ["anduin_portrait.png", PriestPower(player),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
+                                 ["malfurion_portrait.png", DruidPower(player), 'Druid']]
+    keepGoing = True
+    while keepGoing:
+        draw.rect(screen, (180, 180, 200), (600*convx,20*convy, 300*convx, 630*convy) )
+        draw.rect(screen, RED, (600*convx,20*convy, 300*convx, 630*convy), int(5*convx) )
+        for i in range (9):
+            draw.line(screen, RED, (600*convx, (20 +70*i)*convy), (900*convx, (20 +70*i)*convy) )
+        classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
+        for i in range (9):
+            name = nameFont.render(classes[i], True, (50,50,50), (180,180,200))
+            nameRect = name.get_rect()
+            nameRect.centerx = 750*convx 
+            nameRect.centery = (55+70*i)*convy
+            screen.blit(name, nameRect)
+        display.flip()
+        for evnt in event.get():
+            if evnt.type == MOUSEBUTTONDOWN:
+                pos = evnt.pos
+                for i in range (9):
+                    if 600*convx < pos[0] < 900*convx and convy*(20+70*i) < pos[1] < convy*(20+(70*(i+1))):
+                        player.setPortrait(foldername + classPort[i][0])
+                        player.setHP(classPort[i][1])
+                        player.setRole(classPort[i][2])
+                        keepGoing = False

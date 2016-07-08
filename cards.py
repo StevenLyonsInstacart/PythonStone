@@ -514,7 +514,7 @@ class AL_AKIR(Creature):
             pass
         else:
             getImage("al%27akir%20the%20windlord", foldername+"alakir_the_windlord.png") 
-        Creature.__init__(self, "Al'akir the Windlord", 8, 3, 5, 0, False, [], [], "alakir_the_windlord.png", [True, True, True, True], None, "neutral")
+        Creature.__init__(self, "Al'akir the Windlord", 8, 3, 5, 0, False, [], [], "alakir_the_windlord.png", [True, True, True, True], None, "Shaman")
 
         
     def getClass(self):

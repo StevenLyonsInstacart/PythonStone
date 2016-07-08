@@ -361,27 +361,27 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
         
         
     # Show selected cards    
-    draw.rect(screen, BLUE, (5*convx, 510*convy, 550*convx, 280*convy), 2)
+    draw.rect(screen, BLUE, (5*convx, 510*convy, 710*convx, 280*convy), 2)
     for i in range (len(usedCards)):
         name = nameFont.render(usedCards[i].getName(), True, (50,50,50), background)
         nameRect = name.get_rect()
         if i < 10:
-            nameRect.centerx = 100*convx 
+            nameRect.centerx = 120*convx 
             nameRect.centery = (530 + 25*i)*convy
         elif i < 20:
-            nameRect.centerx = 280*convx 
+            nameRect.centerx = 340*convx 
             nameRect.centery = (530 + 25*(i-10))*convy
         else:
-            nameRect.centerx = 460*convx 
+            nameRect.centerx = 570*convx 
             nameRect.centery = (530 + 25*(i-20))*convy
         screen.blit(name, nameRect)
     
     #Box of Card choices
-    draw.rect(screen, GREEN, (400*convx, 80*convy, 250*convx, 170*convy), int(10*convx) )
+    draw.rect(screen, GREEN, (400*convx, 80*convy, 250*convx, 190*convy), int(10*convx) )
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
     	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
     	nameRect = name.get_rect()
-    	nameRect.centerx = 500*convx 
+    	nameRect.centerx = 525*convx 
     	nameRect.centery = (100 + 50*(i - start))*convy
     	screen.blit(name, nameRect)
         
@@ -391,20 +391,6 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     imgRect = Rect(1050*convx, 100*convy, 300*convx, 100*convy)
     screen.blit(img, imgRect)
     
-	
-    #Box of class choices
-    draw.rect(screen, BLUE, (800*convx, 80*convy, 250*convx, 270*convy), int(10*convx))
-    classes = ["Warlock","Hunter","Warrior","Shaman","Paladin","Mage","Priest","Rogue","Druid"]
-    for i in range (9):
-    	name = nameFont.render(classes[i], True, (50,50,50), background)
-    	nameRect = name.get_rect()
-    	nameRect.centerx = 925*convx 
-    	nameRect.centery = (95 + 30*i)*convy
-    	screen.blit(name, nameRect)
-	
-    #Lines between class choices
-    for i in range (9):
-	       draw.line(screen, BLUE, (800*convx, (80 + 30*i)*convy), (1050*convx, convy*(80 + 30*i)))
     
     #Left and right card selectors
     draw.rect(screen, BLUE, (400*convx, 400*convy, 100*convx, 100*convy))

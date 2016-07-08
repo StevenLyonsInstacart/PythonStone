@@ -14,8 +14,7 @@ class Deck:
         return self.cardlist.pop()
     
     def insertCard(self, card):
-        if card.getClass() == self.className or card.getClass() == "neutral":
-            self.cardlist.append(card)
+        self.cardlist.append(card)
             
     
         
