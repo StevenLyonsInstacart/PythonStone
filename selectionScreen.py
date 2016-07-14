@@ -6,7 +6,7 @@ from Messages import *
 
 
 DISPLAYNUM = 4
-
+BOARD = (205,182,139)
 
 def selectScreen(player, screen, board, turn):
     deckCards = []
@@ -111,7 +111,7 @@ def updateList(pos, convx, convy):
 #Check to see if User wants to submit Deck
 def checkExit(mouse, player, deck, convx, convy, screen):
         mx, my = mouse.pos
-        if 1000*convx < mx < 1200*convx and 600*convy < my < 670*convy:
+        if 800*convx < mx < 1400*convx and 550*convy < my < 750*convy:
                 if not deck:
                         NoDeckMessage = Message("Please Select at least 1 Card", screen)
                         NoDeckMessage.displayMessage()
@@ -137,11 +137,14 @@ def makeOrBreak(pos, convx, convy):
 # Assign a card to a player
 # returns a new card assigned to player (Card)
 def addCard(pos, cards, start, player, convx, convy):
+    cooridinates = [[0, 0, 184*convx, 254*convy],[184*convx, 0, 368*convx, 254*convy],[0, 254*convy, 184*convx, 508*convy],[184*convx, 254*convy, 368*convx, 508*convy]]
     for i in range (4):
-        if 400*convx < pos[0] < 650*convx and convy*(80+50*i) < pos[1] < convy*(80+(50*(i+1))):
+        if 400*convx < pos[0] < 650*convx and convy*(80+50*i) < pos[1] < convy*(80+(50*(i+1))) or (cooridinates[i][0] < pos[0] < cooridinates[i][2] and cooridinates[i][1] < pos[1] < cooridinates[i][3]):
+            
             newCard = cards[i + start].copy()
             newCard.setPlayer(player)
             return newCard
+        
     return None
 
 def choosePlayer(player):
@@ -155,7 +158,9 @@ def choosePlayer(player):
                                  ["anduin_portrait.png", PriestPower(player),'Priest'],["valeera_portrait.png", RoguePower(player),'Rogue'],
                                  ["malfurion_portrait.png", DruidPower(player), 'Druid']]
     keepGoing = True
+    
     while keepGoing:
+        draw.rect(screen, BOARD, (0,0, screen.get_width(), screen.get_height()) )
         draw.rect(screen, (180, 180, 200), (600*convx,20*convy, 300*convx, 630*convy) )
         draw.rect(screen, RED, (600*convx,20*convy, 300*convx, 630*convy), int(5*convx) )
         for i in range (9):

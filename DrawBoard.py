@@ -337,13 +337,13 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     
     nameFont = font.Font(None, int(30*convx))
     #Draws the background
-    draw.rect(screen, background, (0,0,1400*convx,800*convy))
+    draw.rect(screen, BOARD, (0,0,1400*convx,800*convy))
     
     
     
     #Submit Deck button
     draw.rect(screen, RED, (1000*convx,600*convy, 200*convx, 70*convy), 5)
-    name = nameFont.render("Submit Deck" , True, (50,50,50), background)
+    name = nameFont.render("Submit Deck" , True, (50,50,50), BOARD)
     nameRect = name.get_rect()
     nameRect.centerx = 1100*convx 
     nameRect.centery = 635*convy
@@ -356,14 +356,14 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
         file = foldername + cards[i].getFilename()
         img = image.load(file)
         img = transform.scale(img, (int(184*convx), int(254*convy)))
-        imgRect = Rect(cooridinates[i - start][0], cooridinates[i - start][1], cooridinates[i -start][2], cooridinates[i - start][3])
+        imgRect = Rect(cooridinates[i - start][0], cooridinates[i - start][1], 184*convx, 254*convy)
         screen.blit(img, imgRect)
         
         
     # Show selected cards    
     draw.rect(screen, BLUE, (5*convx, 510*convy, 710*convx, 280*convy), 2)
     for i in range (len(usedCards)):
-        name = nameFont.render(usedCards[i].getName(), True, (50,50,50), background)
+        name = nameFont.render(usedCards[i].getName(), True, (50,50,50), BOARD)
         nameRect = name.get_rect()
         if i < 10:
             nameRect.centerx = 120*convx 
@@ -379,7 +379,7 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     #Box of Card choices
     draw.rect(screen, GREEN, (400*convx, 80*convy, 250*convx, 190*convy), int(10*convx) )
     for i in range (start, min(start + DISPLAYNUM, len(cards))):
-    	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), background)
+    	name = nameFont.render(cards[num*i].getName() , True, (50,50,50), BOARD)
     	nameRect = name.get_rect()
     	nameRect.centerx = 525*convx 
     	nameRect.centery = (100 + 50*(i - start))*convy
@@ -393,8 +393,26 @@ def showSelect(screen, cards, usedCards, num, background, start, filename, filen
     
     
     #Left and right card selectors
-    draw.rect(screen, BLUE, (400*convx, 400*convy, 100*convx, 100*convy))
-    draw.rect(screen, RED, (600*convx, 400*convy, 100*convx, 100*convy))
+    left = image.load(foldername+"/Left.png")
+    left = transform.scale(left, (int(100*convx), int(100*convy)))
+    leftRect = Rect(400*convx, 400*convy, 100*convx, 100*convy)
+    screen.blit(left, leftRect)
+    
+    right = image.load(foldername+"/Right.png")
+    right = transform.scale(right, (int(100*convx), int(100*convy)))
+    rightRect = Rect(600*convx, 400*convy, 100*convx, 100*convy)
+    screen.blit(right, rightRect)
+    
+    select = image.load(foldername+"/selectionMessage.png")
+    select = transform.scale(select, (int(600*convx), int(130*convy)))
+    selectRect = Rect(800*convx, 280*convy, 600*convx, 130*convy)
+    screen.blit(select, selectRect)
+    
+    sub = image.load(foldername+"/submission.png")
+    sub = transform.scale(sub, (int(600*convx), int(200*convy)))
+    subRect = Rect(800*convx, 550*convy, 600*convx, 200*convy)
+    screen.blit(sub, subRect)
+    
     
     #Hover Card
     img = image.load(filename)
@@ -443,6 +461,9 @@ def drawDeckChoice(screen, turn):
         
     draw.rect(screen, RED, (150*convx, 200*convy, 250*convx, 120*convy), int(3*convx)+1)
     draw.rect(screen, RED, (400*convx, 200*convy, 250*convx, 120*convy), int(3*convx)+1) 
+    
+    #draw.rect(screen, RED, (200*convx, 200*convy, 200*convx, 200*convy))
+    #draw.rect(screen, RED, (400*convx, 400*convy, 200*convx, 200*convy)) 
      
     img = image.load(foldername+"Title.png")
     img = transform.scale(img, (int(602*convx), int(387*convy)))
