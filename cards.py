@@ -1403,7 +1403,7 @@ class ELF_ARC(Creature):
     def battleCry(self):
         target = selectCard(self.img)
         if target.getType() == "Spot":
-            dealDamage(target, 1, self.board)
+            dealDamage(target, 1, getBoard())
         else:
             burstFace(target, 1)
             
@@ -1476,6 +1476,36 @@ class MAG_RAG(Creature):
     
     def getClass(self):
         return self.classType
+          
+
+
+
+            ############################
+            ###                      ###
+            ###        SPELLS        ###
+            ###                      ###
+            ############################  
+class STR_FIR(Spell):
+    def __init__(self):
+        if os.path.isfile(foldername+"starfire.png"):
+            pass
+        else:
+            getImage("starfire", foldername+"starfire.png")  
+        Spell.__init__(self, "Starfire","Druid", 6, "starfire.png")
+        
+    def copy(self):
+        return STR_FIR()
+    
+    def doSpell(self, pos):
+        board = getBoard()
+        spots = board.getSpots()
+        convx = getScreen().get_width() / 1600.0
+        convy = getScreen().get_height() / 800.0
+        #for i in range (2):
+            #for j in range (7):
+        if 550*convx < pos[0] < 850*convx and 100*convy < pos[1] < 200*convy:
+            board.getPlayer1().incLife(-5)
+                
 
 #A helper function that will return the spot of a selected card.	
 def selectCard(filename):	

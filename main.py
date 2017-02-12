@@ -103,6 +103,8 @@ def canAttack(target, player):
 # A completely massive function which handles how selections work
 def select(mouseObj, spots, current, state, hands):
     global filename
+    print "Current Type"
+    print current
     if current  == None:
         mx, my = mouseObj.pos
         for i in range (0,2):
@@ -117,7 +119,6 @@ def select(mouseObj, spots, current, state, hands):
         for j in range(0,10):
             if tenth*j < mx < tenth*(j+1) and 0 < my < heightInc*2 :
                 square = [i,j]
-                print j, i
                 if turn == 1:
                     filename = hands[0].getCards()[j].getFilename()
                     return [hands[0].getCards()[j], [0,j]], [0, j*tenth, tenth, heightInc*2], "H"
@@ -125,11 +126,9 @@ def select(mouseObj, spots, current, state, hands):
         for j in range(0,10): 
             if tenth*j < mx < tenth*(j+1) and heightInc*14 < my < heightInc*16 :
                 square = [i,j]
-                print j, i
                 if turn == 0:
                     newfilename = hands[1].getCards()[j].getFilename()
                     filename = newfilename
-                    print filename
                     return [hands[1].getCards()[j], [1,j]], [widthInc*14, j*tenth, tenth, heightInc*2], "H"
         murn = abs(1 - turn)
         if widthInc*11 < mx < widthInc*17 and heightInc*2 + heightInc*10*murn < my < heightInc*4 + heightInc*10*murn and board.getCurrentPlayer().getPower() > 0 and board.getCurrentPlayer().isReady():
@@ -252,7 +251,7 @@ def select(mouseObj, spots, current, state, hands):
 def playCard(player, mana, card, spot, hand1, hand2):
 	board  = getBoard()
 	global id
-	if card.getCost() <= player.getCurMana():
+	if card.getCost() <= player.getCurMana() and card.getType() == "Creature":
 		card.setID(id)
 		id +=1
 		player.changeCurMana(-card.getCost())
@@ -274,7 +273,22 @@ def playCard(player, mana, card, spot, hand1, hand2):
 	display.flip()
 	return None, None, None
 
-
+def spellCheck(spell, square, lastpos, stat):
+	if spell:
+		if type(spell) is list:
+			spell = spell[0]
+			if spell.getType() == "Spell":
+				test = True
+				while test:
+					drawGrid(filename, lastpos, stat)
+					highlight(mouse.get_pos(), None, square)
+					showBoard(spots)
+					showHand(hands, turn)
+					for evnt in event.get():
+						if evnt.type == MOUSEBUTTONDOWN:
+							spell.doSpell(evnt.pos)
+							return True
+					display.flip()
 
 
 
@@ -316,7 +330,7 @@ selecting = True
 gen = Generator(screen, board, player1)
 
 cardList = gen.getCards()
-print "A"
+
 cardList = [CH_YETI(), FL_JUG(), RIV_CROC(), MUR_RAID(), ABU_SRG(), LNC_CAR(), IRN_OWL(), ELF_ARC(),
 						GRM_MUR(), NOV_ENG(), LOT_HRD(), GLD_FOT()]
 deck1Cards = []
@@ -378,6 +392,9 @@ while (breaker):
 		for newEvent in event.get():
 				if newEvent.type == MOUSEBUTTONDOWN:
 						selected, square, state = select(newEvent, spots, selected, state, hands)
+						spellCheck(selected, square, lastpos, stat)
+						print "SELECTED"
+						print selected
 						checkHeroPower(newEvent.pos, turn)
 						turn = endTurn(newEvent.pos, turn, board, convx, convy)
 						filename, stat = hoverCardMain(filename, newEvent.pos, spots, hands)

@@ -1,15 +1,58 @@
 from Constants import *
+import MySQLdb
+from networkx.algorithms.flow.mincost import cost_of_flow
+
 # Card Template. Currently based on an obeslete template, will improve when
 # spells, weapons and secrets are implemented.
 class Card:
-    def __init__(self, name, colour, cmc) :
+    def __init__(self, name, classType, cost, img) :
         self.name = name;
-        self.colour = colour;
-        self.cmc = cmc;
+        self.classType = classType;
+        self.cost = cost;
+        self.img = img
+        self.player = None
+        
     def __str__(self) :
         return self.name
+    
     def getName(self):
         return self.name
+    
+    def getClassType(self):
+        return self.classType
+    
+    def getClass(self):
+        return self.classType
+    
+    def getCost(self):
+        return self.cost
+    
+    def getImg(self):
+        return self.img
+    def getFilename(self):
+        return self.img
+    
+    def getPlayer(self):
+        return self.player
+    
+    def setImg(self, img):
+        self.img = img
+    
+    def setName(self, name):
+        self.name = name
+    
+    def setClassType(self, classType):
+        self.classType = classType
+    
+    def setCost(self, cost):
+        self.cost = cost
+        
+    def setPlayer(self, playa):
+        self.player = playa
+        
+    #On Null creatures this function will be overwritten    
+    def isNull(self):
+        return False
     
 #The Creature class represents a specific minion. 
 # name: string of the card's full name
@@ -27,21 +70,16 @@ class Card:
 class Creature(Card):
     def __init__(self, name, cost, power, toughness, owner, tired, buffs, effects, img, keywords, creaturetype, classType) :
         
-        
-        
-        self.name = name;
+        Card.__init__(self, name, classType, cost, img)
         self.power = power;
-        self.cost = cost;
         self.toughness = toughness;
         self.state = None
         self.creatureType = creaturetype
-        self.classType = classType
         self.owner = owner
         self.tired = tired
         self.buffs = buffs
         self.effects = effects
         self.screen = getScreen()
-        self.img = img
         self.player = None
         self.keywords = keywords
         self.maxHealth = toughness
@@ -78,12 +116,6 @@ class Creature(Card):
 
     def getTired(self):
         return self.tired
-    
-    def getName(self):
-        return self.name
-    
-    def getCost(self):
-        return self.cost
     
     def getBuffs(self):
         return self.buffs
@@ -142,6 +174,7 @@ class Creature(Card):
     
     def getType(self):
         return "Creature"
+    
     def doEffect(self):
         pass
     
@@ -185,9 +218,128 @@ class Creature(Card):
         else:
             self.toughness = self.toughness - damage
         
+class SQLcreature():
+    def __init__(self, row) :
+        
+        self.name = row[1]
+        self.attack = row[2]
+        self.health = row[3]
+        self.cost = row[4]
+        self.class_type = row[5]
+        self.battlecry = row[6]
+        self.deathrattle = row[7]
+        self.effect = row[8]
+        self.img = row[9]
+        self.reference = row
 
-    #On Null creatures this function will be overwritten    
-    def isNull(self):
-        return False
+    def get_reference(self):
+        return self.reference
 
+    def get_name(self):
+        return self.name
+
+
+    def get_attack(self):
+        return self.attack
+
+
+    def get_health(self):
+        return self.health
+
+
+    def get_cost(self):
+        return self.cost
+
+
+    def get_class_type(self):
+        return self.class_type
+
+
+    def get_battlecry(self):
+        return self.battlecry
+
+
+    def get_deathrattle(self):
+        return self.deathrattle
+
+
+    def get_effect(self):
+        return self.effect
+
+
+    def get_img(self):
+        return self.img
+
+
+    def set_name(self, value):
+        self.name = value
+
+
+    def set_attack(self, value):
+        self.attack = value
+
+
+    def set_health(self, value):
+        self.health = value
+
+
+    def set_cost(self, value):
+        self.cost = value
+
+
+    def set_class_type(self, value):
+        self.class_type = value
+
+
+    def set_battlecry(self, value):
+        self.battlecry = value
+
+
+    def set_deathrattle(self, value):
+        self.deathrattle = value
+
+
+    def set_effect(self, value):
+        self.effect = value
+
+
+    def set_img(self, value):
+        self.img = value
+
+
+
+def makeCreature():
+    db = MySQLdb.connect("localhost","root","root","sys" )
+
+    # prepare a cursor object using cursor() method
+    cursor = db.cursor()
+
+    # execute SQL query using execute() method.
+    cursor.execute("SELECT * FROM sys.minion")
+
+    # Fetch a single row using fetchone() method.
+    data = cursor.fetchone()
+    newCreature = SQLcreature(data)
+    print newCreature.get_attack()
+    # disconnect from server
+    db.close()
+    print "Success"
+
+
+
+class Spell(Card):
+    def __init__(self, name, classType, cost, img):
+        Card.__init__(self, name, classType, cost, img)
+        
+    def chooseOne(self):
+        pass
+    
+    def overload(self):
+        pass
+    
+    def doSpell(self, pos):
+        pass
+    
+    def getType(self):
+        return "Spell"
     

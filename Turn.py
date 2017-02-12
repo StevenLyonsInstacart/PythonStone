@@ -23,7 +23,6 @@ def endTurn(pos, turn, board, convx, convy):
         # Switch Current Player
     	board.getCurrentPlayer().getEnemy().setReady(True)
     	board.switchCurrent()
-    	print "endTurn", turn
         
         # Give the new player updated mana and ste as ready
     	if turn == 1:
@@ -42,13 +41,11 @@ def endTurn(pos, turn, board, convx, convy):
     	for j in range (7):
     	    if spots[turn][j].getOccupied():
         		spots[turn][j].getCard().setTired(True)
-        		print "tired"
         # Update turn
     	turn = abs(1 - turn)
     	for j in range (7):
     	    if spots[turn][j].getOccupied():
         		spots[turn][j].getCard().setTired(False)
-        		print "g2g"
         # Check all till end of turn buffs
     	checkBuffs(spots)
         switchTurn()
