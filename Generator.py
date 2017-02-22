@@ -12,21 +12,28 @@ class Generator():
         self.screen = screen
         self.board = board
         self.player = player
-        self.cardDict = {"Chillwind Yeti": CH_YETI(), "Flame Juggler": FL_JUG(), "River Crocolisk": RIV_CROC(), "Murloc Raider": MUR_RAID(),
+        self.cardDict = {"Flame Juggler": FL_JUG(),
                         "Abusive Sergeant": ABU_SRG(), "Lance Carrier": LNC_CAR(), "Iron Beak Owl": IRN_OWL(),
-                        "Elvish Archer": ELF_ARC(), "Grimscale Oracle" : GRM_MUR(), "Frostwolf Grunt": FRT_GRT(), 
-                        "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD(), "Goldshire Footman": GLD_FOT(),
-                        "Ironfur Grizzly": IRN_GRZ(), "Silverback Patriarch": SLV_PAT(), "Lord of the Arena": LRD_ARN(),
-                        "Booty Bay Bodyguard": BOT_BAY(), "Sen'jin Shieldmasta": SEN_JIN(), "Stonetusk Boar": STN_BOR(),
+                        "Elvish Archer": ELF_ARC(), "Grimscale Oracle" : GRM_MUR(),
+                        "Novice Engineer": NOV_ENG(), "Loot Hoarder": LOT_HRD(),
                         "Bluegill Warrior": BLU_WAR(), "Wolfrider": WLF_RID(), "Stormwind Knight": STR_KNT(),"Reckless Rocketeer": REK_ROC(),
                         "Argent Squire": ARG_SQU(), "Al'akir the Windlord": AL_AKIR(), "Scarlet Crusader": SCR_CRU(), "Argent Commander": ARG_COM(),
-                        "Bloodfen Raptor": BLD_FEN(), "Voodoo Doctor": VOO_DOO(), "Acidic Swamp Ooze": ACD_OOZ(), "Kobold Geomancer": KBL_GEO(),
+                        "Bloodfen Raptor": BLD_FEN(), "Kobold Geomancer": KBL_GEO(),
                         "Dalaran  Mage": DAL_MAG(), "Murloc Tidehunter": MUR_TID(), "Ironforge Rifleman": IRN_RFL(), "Magma Rager": MAG_RAG(),
                         "Razorfen Hunter": RAZ_HUN(), "Ogre Magi": OGR_MAG(), "Dragonling Mechanic": DRG_MEC(), "Gnomish Inventor": GNM_INV(),
-                        "War Golem": WAR_GLM(), "Core Hound": COR_HND(), "Boulderfist Ogre": BLD_OGR(), "Malygos": MALY(), "Shattered Sun Cleric": SHT_SUN(),
-                        "Raid Leader": RAD_LED(), "Oasis Snapjaw": OAS_JAW(), "Stormpike Commando": STR_COM(), "Archmage": ARCH(),
+                        "Malygos": MALY(), "Shattered Sun Cleric": SHT_SUN(),
+                        "Raid Leader": RAD_LED(), "Stormpike Commando": STR_COM(), "Archmage": ARCH(),
                         "Nightblade": NGT_BLD(), "Frostwolf Warlord": FRT_WAR(), "Darkscale Healer": DRK_HEL(), "Gurubashi Berserker": GUR_BER(),
                         "Stormwind Champion": STR_CHM(), "Starfire": STR_FIR()}
+    
+        db = MySQLdb.connect("localhost","root","root","sys" )
+        cursor = db.cursor()
+        cursor.execute("SELECT count(*) FROM sys.minion")
+        entries = cursor.fetchone()
+        db.close()
+        for i in range(entries[0]):
+            newCard = makeCreature(i+1)
+            self.cardDict[newCard.getName()] = newCard
         
         self.playerDict = {"Warlock" : ["guldan_portrait.jpg", WarlockPower(self.player), 'Warlock'], 
                            "Hunter" : ["rexxar_portrait.jpg", HunterPower(self.player), 'Hunter'],

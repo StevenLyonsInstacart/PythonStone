@@ -260,6 +260,7 @@ def playCard(player, mana, card, spot, hand1, hand2):
 		hand1.setNull(hand2)
         
 		if card.hasBattleCry():
+			print "WHY NOT"
 			card.battleCry()
             
 		board.playedCreature(card)   

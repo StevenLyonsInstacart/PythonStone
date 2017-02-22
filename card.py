@@ -1,6 +1,7 @@
 from Constants import *
 import MySQLdb
 from networkx.algorithms.flow.mincost import cost_of_flow
+from battlecries import *
 
 # Card Template. Currently based on an obeslete template, will improve when
 # spells, weapons and secrets are implemented.
@@ -84,12 +85,18 @@ class Creature(Card):
         self.keywords = keywords
         self.maxHealth = toughness
         self.ID = 0
+        self.minion_id = -1
+        self.classType = "neutral"
+        self.battlecry = ''
         
         
     ######################
     #    Get Statements  #
     ######################
-       
+    
+    def getMinionID (self):
+        return self.minion_id
+    
     def getMaxHealth (self):
         return self.maxHealth
     
@@ -129,6 +136,9 @@ class Creature(Card):
     ######################
     #    Set Statements  #
     ######################
+    
+    def setMinionID (self, id):
+        self.minion_id = id
         
     def setScreen(self, screen):
         self.screen = screen
@@ -164,7 +174,8 @@ class Creature(Card):
     #By default these methods return False, but are overwritten on cards that 
     #have battlecries, effects or deathrattles
     def hasBattleCry(self):
-        return False
+        print "RESULT EQUALS: "+self.battlecry != ''
+        return self.battlecry != ''
     
     def hasDeathRattle(self):
         return False
@@ -179,7 +190,11 @@ class Creature(Card):
         pass
     
     def hasTaunt(self):
-        return  False
+        return self.keywords[0]
+    
+    def battleCry(self):
+        print "/n/nmmm/n/n"
+        getBCs()[int(self.battlecry)]()
     
     
     #A function that should be removed
@@ -217,10 +232,24 @@ class Creature(Card):
             self.keywords[2] = False
         else:
             self.toughness = self.toughness - damage
+            
+    def copy(self):
+        print self.name + " Break"
+        return makeCreature(str(self.getMinionID()))
+
+    def get_class_type(self):
+        return self.__classType
+
+
+    def set_class_type(self, value):
+        self.__classType = value
+        
+    def setBattleCry(self, bat):
+        self.battlecry = bat
         
 class SQLcreature():
     def __init__(self, row) :
-        
+        self.id = row[0]
         self.name = row[1]
         self.attack = row[2]
         self.health = row[3]
@@ -229,8 +258,13 @@ class SQLcreature():
         self.battlecry = row[6]
         self.deathrattle = row[7]
         self.effect = row[8]
-        self.img = row[9]
+        self.img = row[10].strip("\"")
+        self.keywords = [bool(row[11]), bool(row[12]), bool(row[13]), bool(row[14])]
+        self.battleCry = row[15]
         self.reference = row
+        
+    def getID (self):
+        return self.id
 
     def get_reference(self):
         return self.reference
@@ -269,6 +303,15 @@ class SQLcreature():
 
     def get_img(self):
         return self.img
+    
+    def getKeywords(self):
+        return self.keyword
+    
+    def setKeywords(self, keyword):
+        self.keywords = keyword
+    
+    def setID (self, id):
+        self.id = id
 
 
     def set_name(self, value):
@@ -305,25 +348,34 @@ class SQLcreature():
 
     def set_img(self, value):
         self.img = value
+    
+    def generate_creature(self):
+        tired = not self.keywords[1]
+        newCreature = Creature(self.name, self.cost, self.attack, self.health, 0, tired, 
+     [], None, self.img, self.keywords , None, self.class_type)
+        newCreature.setMinionID(self.getID())
+        newCreature.setBattleCry('1')
+        return newCreature
 
 
 
-def makeCreature():
+def makeCreature(minion_id):
     db = MySQLdb.connect("localhost","root","root","sys" )
-
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
 
     # execute SQL query using execute() method.
-    cursor.execute("SELECT * FROM sys.minion")
-
+    print "SELECT * FROM sys.minion WHERE minion_id = "+str(minion_id)
+    cursor.execute("SELECT * FROM sys.minion WHERE minion_id = "+str(minion_id))
     # Fetch a single row using fetchone() method.
     data = cursor.fetchone()
+    print data
     newCreature = SQLcreature(data)
-    print newCreature.get_attack()
     # disconnect from server
     db.close()
     print "Success"
+    return newCreature.generate_creature()
+
 
 
 
@@ -343,3 +395,4 @@ class Spell(Card):
     def getType(self):
         return "Spell"
     
+makeCreature("1")

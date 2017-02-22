@@ -64,6 +64,8 @@ class NULL_CREATURE(Creature):
         self.buffs = []
         self.keywords = [False, False, False, False]
         self.img = "abusive_sergeant.png"
+    def copy(self):
+        return NULL_CREATURE()
     
     
 #Representation of Chillwind Yeti    
@@ -90,8 +92,6 @@ class CH_YETI(Creature):
     def getClass(self):
         return self.classType
     
-    def copy(self):
-        return CH_YETI()
     
 #Representation of War Golem    
 class WAR_GLM(Creature):
